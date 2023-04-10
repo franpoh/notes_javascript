@@ -1,0 +1,1 @@
+// iteration-methods.js > Array.FILTER - has a very neat promise in a class example
