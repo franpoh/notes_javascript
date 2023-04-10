@@ -1,6 +1,21 @@
+// Table of Contents
+
+// > ARRAY.FOREACH
+// > ARRAY.MAP
+// > ARRAY.FILTER
+// > ARRAY.REDUCE
+// > ARRAY.REDUCERIGHT
+// > ARRAY.EVERY
+// > ARRAY.SOME
+// > ARRAY.INCLUDES
+// > ARRAY.FIND
+// > ARRAY.KEYS
+
+
+
 // Array iteration methods operate on every array item.
 
-// CurrentValue - The value of the current element
+// value - The value of the current element
 // index - The array index of the current element
 // array - The array object the current element belongs to
 
@@ -10,12 +25,13 @@
 
 // The forEach() method calls a function (a callback function) once for each array element.
 
-const numbers = [45, 4, 9, 16, 25];
+const numbersA = [45, 4, 9, 16, 25];
 let txt = "";
-numbers.forEach(myFunction);
+numbersA.forEach(myFunction);
 
 function myFunction(value, index, array) {
-    txt += value + "<br>";
+    txt += value + "/";
+    console.log(txt);
 }
 
 // Note that the function takes 3 arguments:
@@ -26,18 +42,54 @@ function myFunction(value, index, array) {
 // The example above uses only the value parameter.The example can be rewritten to:
 
 function myFunction(value) {
-    txt += value + "<br>";
+    txt += value + "/";
+    console.log(txt);
 }
+
+
+
+// COLOUR CHANGE EXAMPLES
+
+const colours = [
+    {
+        color: "red",
+        value: "#f00"
+    },
+    {
+        color: "green",
+        value: "#0f0"
+    },
+    {
+        color: "blue",
+        value: "#00f"
+    },
+    {
+        color: "cyan",
+        value: "#0ff"
+    },
+    {
+        color: "magenta",
+        value: "#f0f"
+    },
+    {
+        color: "yellow",
+        value: "#ff0"
+    },
+    {
+        color: "black",
+        value: "#000"
+    }
+];
+
+var interval = 1000;
 
 
 
 // Change colours loop, with delay of 1 second, stops at end of array
 
-var interval = 1000;
-
 colours.forEach(function (value, index, array) {
     setTimeout(function () {
-        spanCol.style.backgroundColor = array[index].color;
+        console.log(array[index].color);
     }, index * interval);
     // adding 1 second to each item eg red = 0*1000, green = 1*1000, blue = 2*1000
 })
@@ -49,14 +101,18 @@ colours.forEach(function (value, index, array) {
 colours.forEach(function (value, index, array) {
     let noCol = -1; // setting this to -1 starts the noCol loop at 0, setting at 0 starts it at 1
     setInterval(function () {
-        spanCol.style.backgroundColor = array[noCol = (noCol + 1) % colours.length].color;
+        console.log(array[noCol = (noCol + 1) % colours.length].color);
     }, 1000);
 })
 
 // interval runs forever 
-// just access the next element in names each time
-// by incrementing a variable(noCol) that stores the index of the current name
+// just access the next element in array each time
+// by incrementing a variable(noCol) that stores the index of the current colour
 // using % to reset it back to 0 when it exceeds the length of the array(since 7 % 7 = 0)
+
+// % Remainder / modulo
+// Returns the remainder left over after you've divided the left number into a number of integer portions equal to the right number.
+// 8 % 3 (returns 2, as three goes into 8 twice, leaving 2 left over)
 
 
 
@@ -81,12 +137,15 @@ checkBox.addEventListener("change", colours.forEach(() => {
 // The map() method does not change the original array.
 
 // This example multiplies each array value by 2
+
 const numbers1 = [45, 4, 9, 16, 25];
 const numbers2 = numbers1.map(myFunction);
 
 function myFunction(value, index, array) {
     return value * 2;
 }
+
+console.log(numbers2);
 
 // Note that the function takes 3 arguments:
 // The item value
@@ -102,12 +161,15 @@ function myFunction(value, index, array) {
 // The filter() method creates a new array with array elements that passes a test.
 
 // This example creates a new array from elements with a value larger than 18
-const numbers = [45, 4, 9, 16, 25];
-const over18 = numbers.filter(myFunction);
+
+const numbersB = [45, 4, 9, 16, 25];
+const over18 = numbersB.filter(myFunction);
 
 function myFunction(value, index, array) {
     return value > 18;
 }
+
+console.log(over18);
 
 // Note that the function takes 3 arguments:
 // The item value
@@ -115,6 +177,8 @@ function myFunction(value, index, array) {
 // The array itself
 
 // In the example above, the callback function does not use the index and array parameters, so they can be omitted
+
+
 
 class Database {
     #data = [
@@ -150,26 +214,24 @@ class Database {
 const db = new Database();
 db.filter("gender", "f").then((r) => console.log("filter() returns", r));
 
-// filter() returns [
-// 	{ name: 'Cheryl', age: 29, gender: 'f' },
-// 	{ name: 'Kelly', age: 27, gender: 'f' }
-// ]
-
 
 
 // ----------------------------- > ARRAY.REDUCE -----------------------------
 
-// The reduce() method runs a function on each array element to produce(reduce it to) a single value.
-// The reduce() method works from left - to - right in the array.See also reduceRight().
+// The reduce() method runs a function on each array element to produce (reduce it to) a single value.
+// The reduce() method works from left - to - right in the array. See also reduceRight().
 // The reduce() method does not reduce the original array.
 
 // This example finds the sum of all numbers in an array:
-const numbers = [45, 4, 9, 16, 25];
-let sum = numbers.reduce(myFunction);
+
+const numbersC = [45, 4, 9, 16, 25];
+let sumC = numbersC.reduce(myFunction);
 
 function myFunction(total, value, index, array) {
     return total + value;
-} // 99
+} 
+
+console.log(sumC); // 99
 
 // Note that the function takes 4 arguments:
 // The total(the initial value / previously returned value)
@@ -183,14 +245,16 @@ function myFunction(total, value) {
     return total + value;
 }
 
-The reduce() method can accept an initial value:
+// The reduce() method can accept an initial value:
 
-const numbers = [45, 4, 9, 16, 25];
-let sum = numbers.reduce(myFunction, 100);
+const numbersD = [45, 4, 9, 16, 25];
+let sumD = numbersD.reduce(myFunction, 100);
 
 function myFunction(total, value) {
     return total + value;
-} // 199
+} 
+
+console.log(sumD); // 199
 
 
 
@@ -201,12 +265,15 @@ function myFunction(total, value) {
 // The reduceRight() method does not reduce the original array.
 
 // This example finds the sum of all numbers in an array:
-const numbers = [45, 4, 9, 16, 25];
-let sum = numbers1.reduceRight(myFunction);
+
+const numbersE = [45, 4, 9, 16, 25];
+let sumE = numbersE.reduceRight(myFunction);
 
 function myFunction(total, value, index, array) {
     return total + value;
 }
+
+console.log(sumE); // 99
 
 
 
@@ -215,12 +282,15 @@ function myFunction(total, value, index, array) {
 // The every() method check if all array values pass a test.
 
 // This example check if all array values are larger than 18:
-const numbers = [45, 4, 9, 16, 25];
-let allOver18 = numbers.every(myFunction);
+
+const numbersF = [45, 4, 9, 16, 25];
+let allOver18 = numbersF.every(myFunction);
 
 function myFunction(value, index, array) {
     return value > 18;
 }
+
+console.log(allOver18); // false
 
 // Note that the function takes 3 arguments:
 // 	The item value
@@ -233,21 +303,26 @@ function myFunction(value, index, array) {
 // ----------------------------- > ARRAY.SOME -----------------------------
 
 // The some() method check if some array values pass a test.
-//     some() executes the function once for each element in the array:
-// 	If it finds an array element where the function returns a true value
+// some() executes the function once for each element in the array:
+
+// If it finds an array element where the function returns a true value
 // some() returns true(and does not check the remaining values)
-// 		Otherwise it returns false
+// Otherwise it returns false
+
 // some() does not execute the function for empty array elements.
-//     some() does not change the original array.
+// some() does not change the original array.
 
 // Check if any values in the ages array are 18 or over:
+
 const ages = [3, 10, 18, 20];
 
-ages.some(checkAdult)   // Returns true
+const adults = ages.some(checkAdult)   // Returns true
 
 function checkAdult(age) {
     return age >= 18;
 }
+
+console.log(adults); // true
 
 // Note that the function takes 3 arguments:
 // 	The item value
@@ -260,11 +335,9 @@ function checkAdult(age) {
 
 // allows us to check if an element is present in an array(including NaN, unlike indexOf).
 
-const fruits = ["Banana", "Orange", "Apple", "Mango"];
-fruits.includes("Mango"); // is true
+const fruitsA = ["Banana", "Orange", "Apple", "Mango"];
 
-// Syntax
-// array.includes(search - item)
+console.log(fruitsA.includes("Mango")); // true
 
 
 
@@ -273,6 +346,7 @@ fruits.includes("Mango"); // is true
 // The find() method returns the value of the first array element that passes a test function.
 
 // This example finds (returns the value of) the first element that is larger than 18:
+
 const numbers = [4, 9, 16, 25, 29];
 let first = numbers.find(myFunction);
 
@@ -280,18 +354,26 @@ function myFunction(value, index, array) {
     return value > 18;
 }
 
+console.log(first); // 25
+
 // Note that the function takes 3 arguments:
 // 	The item value
 // 	The item index
 // 	The array itself
 
-// Array.Keys()
-// The Array.keys() method returns an Array Iterator object with the keys of an array.
+
+
+// ----------------------------- > ARRAY.KEYS -----------------------------
+
+// The Array.keys() method returns an Array Iterator object with the keys (indexes) of an array.
 
 // Create an Array Iterator object, containing the keys of the array:
-const fruits = ["Banana", "Orange", "Apple", "Mango"];
-const keys = fruits.keys();
 
-for (let x of keys) {
-    text += x + "<br>";
+const array1 = ['a', 'b', 'c'];
+const iterator = array1.keys();
+
+console.log(iterator); // Object [Array Iterator] {}
+
+for (const key of iterator) {
+  console.log(key);
 }
