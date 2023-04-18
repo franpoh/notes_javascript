@@ -1,3 +1,11 @@
+// Table of Contents
+
+// > ARRAY.MAP BUT NOT REALLY
+// > PUSHING INTO ARRAY A
+// > PUSHING INTO ARRAY B
+// > CALCULATING PAYABLE PRICES
+
+
 
 // Higher order functions are functions that operate on other functions, either by taking them as arguments or by returning them. 
 
@@ -31,7 +39,7 @@ console.log(lenArray); // [ 10, 6, 3, 4, 1 ]
 
 
 
-// ----------------------------- > PUSHING INTO ARRAY -----------------------------
+// ----------------------------- > PUSHING INTO ARRAY A -----------------------------
 
 function addTailElement(fn) {
 
@@ -61,7 +69,7 @@ console.log(result); // [ 1, 2, 3, 'tail element' ]
 
 
 
-// ----------------------------- > PUSHING INTO ARRAY -----------------------------
+// ----------------------------- > PUSHING INTO ARRAY B -----------------------------
 
 function createQueue(fn) {
 

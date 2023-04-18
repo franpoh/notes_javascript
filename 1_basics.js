@@ -1,16 +1,29 @@
-// Table of Contents
+/* 
+Table of Contents
 
-// > EXPLANATIONS & MEANINGS
-// > JAVASCRIPT METHODS
-// > <script> IN HTML HEAD
-// > ERRORS
+> EXPLANATION
+> DEFINITIONS
+> JAVASCRIPT METHODS
+> <script> IN HTML HEAD
+> ERRORS 
+*/
 
 
 
-// ----------------------------- > EXPLANATIONS & MEANINGS -----------------------------
+// ----------------------------- > EXPLANATION -----------------------------
 
 // JavaScript is a "dynamically typed language", 
 // which means that, unlike some other languages, you don't need to specify what data type a variable will contain (numbers, strings, arrays, etc). 
+
+// When you load a web page in your browser, you are running your code (the HTML, CSS, and JavaScript) inside an execution environment (the browser tab).
+
+// Each browser tab has its own separate bucket for running code in (these buckets are called "execution environments" in technical terms) — 
+// this means that in most cases the code in each tab is run completely separately, 
+// and the code in one tab cannot directly affect the code in another tab — or on another website.
+
+
+
+// ----------------------------- > DEFINITIONS -----------------------------
 
 // Expression - any valid unit of code that resolves to a value
 
