@@ -1,10 +1,17 @@
 // Table of Contents
 
+// > SPREAD ...
+// >> Syntax
+// >> In Function Calls
+// >> In Calling Constructors
+// >> In Array Literals
+// >>> A Better Way To Combine Arrays
+// >> Spread In Object Literals
+// > REST ...
 
 
 
-
-// ----------------------------- > SPREAD SYNTAX (…) -----------------------------
+// ----------------------------- > SPREAD ... -----------------------------
 
 // allows an iterable such as an array expression or string to be expanded in places where zero or more arguments (for function calls) or elements (for array literals) are expected, 
 // or an object expression to be expanded in places where zero or more key-value pairs (for object literals) are expected.
@@ -46,7 +53,7 @@ console.log(numberStore); // [ 0, 1, 2, 12 ]
 
 
 
-// ----------------------------- > SPREAD SYNTAX (…) >> Syntax
+// ----------------------------- > SPREAD ... >> Syntax
 
 // // For function calls:
 myFunction(...iterableObj); // pass all elements of iterableObj as arguments to function myFunction
@@ -58,7 +65,7 @@ myFunction(...iterableObj); // pass all elements of iterableObj as arguments to 
 let objClone = { ...obj }; // pass all key:value pairs from an object 
 
 
-// ----------------------------- > SPREAD SYNTAX (…) >> In Function Calls
+// ----------------------------- > SPREAD ... >> In Function Calls
 
 // Replace apply()
 
@@ -82,7 +89,7 @@ console.log(thatFunction(-1, ...args, 2, ...args2)); // 5
 
 
 
-// ----------------------------- > SPREAD SYNTAX (…) >> In Calling Constructors
+// ----------------------------- > SPREAD ... >> In Calling Constructors
 
 // When calling a constructor with new it's not possible to directly use an array and apply() (apply() does a [[Call]] and not a [[Construct]]). 
 // However, an array can be easily used with new thanks to spread syntax:
@@ -93,7 +100,7 @@ console.log(new Date(...dateFields));
 
 
 
-// ----------------------------- > SPREAD SYNTAX (…) >> In Array Literals
+// ----------------------------- > SPREAD ... >> In Array Literals
 
 // A more powerful array literal 
 
@@ -141,7 +148,7 @@ console.log('b', b); // b [ [ [ 'z', 'b' ], [ 'c', 'd' ] ], 'x' ]
 
 
 
-// A better way to concatenate arrays
+// ----------------------------- > SPREAD ... >> In Array Literals >>> A Better Way To Combine Arrays
 
 // Array.prototype.concat() is often used to concatenate an array to the end of an existing array.
 
@@ -187,7 +194,7 @@ console.log("arr1: ", arr1); // arr1:  [ 3, 4, 5, 0, 1, 2 ]
 
 
 
-// Spread in object literals
+// ----------------------------- > SPREAD ... >> Spread In Object Literals
 
 // It copies own enumerable properties from a provided object onto a new object.
 // Shallow-cloning (excluding prototype) or merging of objects is now possible using a shorter syntax than Object.assign().
@@ -217,7 +224,7 @@ let array = [...obj]; // TypeError: obj is not iterable
 
 
 
-// ----------------------------- > REST Parameter -----------------------------
+// ----------------------------- > REST ... -----------------------------
 
 // Rest syntax looks exactly like spread syntax. In a way, rest syntax is the opposite of spread syntax. 
 

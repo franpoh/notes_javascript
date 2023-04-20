@@ -15,6 +15,7 @@
 // > ARRAY.CONCAT
 // > ARRAY.SLICE
 // > ARRAY.TEST
+// > ACCESSING EVERY ITEM 
 
 
 
@@ -346,4 +347,16 @@ console.log("Test - match 'Time': " + + match3.test(quote2)); // Test - match 'T
 
 
 // Also see under array.filter for another example
+
+
+
+// ----------------------------- > ACCESSING EVERY ITEM -----------------------------
+
+// See array\iteration-methods.js
+
+const birds = ['Parrot', 'Falcon', 'Owl'];
+
+for (const bird of birds) {
+    console.log(bird);
+}
 

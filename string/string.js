@@ -1,7 +1,7 @@
 // Table of Contents
 
 // > CONCATENATE STRINGS USING + OPERATOR
-// > CONCATENATE STRINGS USING + OPERATOR
+// > TOSTRING
 // > TEMPLATE LITERAL
 // >> ${ } Construct 
 // >> Split A Traditional String Over Multiple Lines
@@ -12,17 +12,17 @@
 
 
 
-// ----------------------------- > CONCATENATE STRINGS USING + OPERATOR -----------------------------
+// ----------------------------- > ESCAPING CHARACTERS IN A STRING -----------------------------
 
-let one = 'Hello, ';
-let two = 'how are you?';
-let joined = one + two;
+// Escaping characters means that we do something to them to make sure they are recognized as text, not part of the code.
+// In JavaScript, we do this by putting a backslash just before the character.
 
-// The result is a variable called joined, which contains the value "Hello, how are you?".
+const bigmouth = 'I\'ve got no right to take my place…';
+console.log(bigmouth); // I've got no right to take my place…
 
 
 
-// ----------------------------- > CONCATENATE STRINGS USING + OPERATOR -----------------------------
+// ----------------------------- > TOSTRING -----------------------------
 
 // To convert a number value into a string
 

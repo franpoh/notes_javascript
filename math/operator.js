@@ -1,6 +1,20 @@
 /* 
 Table of Contents
 
+> ARITHMETIC OPERATOR
+>> % Remainder / modulo
+>> ** Exponent
+> ASSIGNMENT OPERATORS
+> COMPARISON OPERATORS
+> LOGICAL OPERATORS
+>> Logical AND &&
+>> Logical OR ||
+>> Logical NOT !
+>> Nullish Coalescing Operator ??
+> UNARY OPERATORS
+>> Increment And Decrement Operators 
+> CONDITIONAL (TERNARY) OPERATOR
+> MISC OPERATORS
 */
 
 // NOTE: You'll sometimes see numbers involved in arithmetic referred to as operands
@@ -48,26 +62,6 @@ console.log(3 ** 4); // 81
 
 
 
-// ----------------------------- > INCREMENT AND DECREMENT OPERATORS -----------------------------
-
-// ++ is an incrementation operation, increase by 1
-
-let num = 0;
-
-console.log(num++); // 0 (this is because the browser returns the current value, then increments the variable)
-console.log(num); // 1 (Here it has incremented)
-
-
-
-// -- is a decrement operator, decrease by 1
-
-num = 5;
-
-console.log(num--); // 5
-console.log(num); // 4
-
-
-
 // ----------------------------- > ASSIGNMENT OPERATORS -----------------------------
 
 // Assignment operators are operators that assign a value to a variable.
@@ -107,36 +101,67 @@ console.log(x /= 5); // 3
 
 
 // === 
-// Strict Equality, testing for identical, must be same value and type
+// Strict Equal
+// Returns true if the operands are equal and of the same type.
+
 console.log('Chris' === 'Bob'); // false
 console.log(5 === 2 + 3); // true
 console.log(2 === '2'); // false (number versus string)
 
+
+
 // == 
-// Equality, testing for identical, must be same value, but will attempt to convert and compare operands of different types
+// Equal
+// Returns true if the operands are equal
+
 console.log(5 == 2 + 3); // true
 console.log(2 == '2'); // true (number versus string)
 
+
+
 // !== 
-// Strict-Non-Equality, testing for non-identical
+// Strict Not Equal
+// Returns true if the operands are of the same type but not equal, or are of different type
+
 console.log(5 !== 2 + 4); // true
 console.log('Chris' !== 'Bob'); // true
 console.log(2 !== '2'); // true (number versus string)
 
+
+
+// !=
+// Not Equal
+// Returns true if the operands are not equal
+
+console.log(5 != 2 + 4); // true
+console.log('Chris' != 'Bob'); // true
+console.log(2 != '2'); // false
+
+
 // < 
 // Less than
+
 console.log(6 < 10); // true
+
+
 
 // > 
 // Greater than
+
 console.log(6 > 10); // false
+
+
 
 // <= 
 // Less than or equal to
+
 console.log(3 <= 2); // false
+
+
 
 // >= 
 // Greater than or equal to
+
 console.log(5 >= 4); // true
 
 
@@ -228,66 +253,114 @@ console.log(!'Cat'); // false
 
 
 
-// ----------------------------- > NULLISH COALESCING OPERATOR ??
+// ----------------------------- > LOGICAL OPERATORS >> Nullish Coalescing Operator ??
 
 // leftExpr ?? rightExpr
-// logical operator that returns its right - hand side operand when its left - hand side operand is null or undefined, and otherwise returns its left - hand side operand.
+// logical operator that returns its right-hand side operand when its left-hand side operand is null or undefined, and otherwise returns its left-hand side operand.
 // It is thus the better alternative to provide defaults, when values like '' or 0 are valid values for the first expression, too.
 
-// const nullValue = null;
-// const emptyText = ""; // falsy
-// const someNumber = 42;
+console.log(null ?? "default for A"); // default for A
+console.log("" ?? "default for B"); // "" (as the empty string is not null or undefined)
+console.log(42 ?? 0); // 42
 
-// const valA = nullValue ?? "default for A";
-// const valB = emptyText ?? "default for B";
-// const valC = someNumber ?? 0;
 
-// console.log(valA); // "default for A"
-// console.log(valB); // "" (as the empty string is not null or undefined)
-// console.log(valC); // 42
 
-// It is not possible to combine both the AND(&&) and OR operators(||) directly with ??.A SyntaxError will be thrown in such cases.
+// It is not possible to combine both the AND(&&) and OR operators(||) directly with ??. A SyntaxError will be thrown in such cases.
 // However, providing parenthesis to explicitly indicate precedence is correct:
-// (null || undefined) ?? "foo"; // returns "foo"
+
+(null || undefined) ?? "foo"; // returns "foo"
+
+
+
+let z = 1;
+
+console.log(z ??= y); // 1
+// Nullish coalescing assignment short-circuits, which means that the above is equivalent to
+console.log(z ?? (z = y)); // 1
+
+z = null;
+console.log(z ??= y); // y is not defined
+
+
+
+// No assignment is performed if the left-hand side is not nullish, due to short-circuiting of the nullish coalescing operator. 
+// For example, the following does not throw an error, despite x being const
+
+const w = 1;
+console.log(w ??= 2); // 1
+
+
+
+// In fact, if v is not nullish, y is not evaluated at all.
+const v = 1;
+v ??= console.log("y evaluated"); // Logs nothing
+
+
+
+// NOTE: Useful Example
+
+// You can use the nullish coalescing assignment operator to apply default values to object properties. 
+// Compared to using destructuring and default values, ??= also applies the default value if the property has value null.
+
+function config(options) {
+    options.duration ??= 100;
+    options.speed ??= 25;
+    return options;
+}
+
+console.log(config({ duration: 125 })); // { duration: 125, speed: 25 }
+console.log(config({})); // { duration: 100, speed: 25 }
 
 
 
 // ----------------------------- > UNARY OPERATORS -----------------------------
 
-// unary operators - simplest operators in JavaScript 
-// works on one operand
+// simplest operators in JavaScript
+// A unary operation is an operation with only one operand.
 
-// let a = 10;
+let a = 10;
 
-// Unary plus(+)  – convert an operand into a number
+// Unary Plus +  
+// convert an operand into a number
 
-// a = +a; // 10
+console.log("+a: ", a = +a); // 10
 
-// Unary minus(-) – convert an operand into a number and negate the value after that.
+// Unary Minus -
+// convert an operand into a number and negate the value after that.
 
-// a = -a; // -10
+console.log("-a: ", a = -a); // -10
+
+
 
 // When applied to non - numeric value, performs the same conversion as the Number() function.
 
-// let a = '10';
-// console.log(+a); // 10
+a = '10';
+console.log(+a); // 10
+
+
 
 // converts boolean values into numbers
 
-// let f = false,
-// t = true;
-// console.log(+f); // 0
-// console.log(+t); // 1
+let f = false,
+    t = true;
+console.log(+f); // 0
+console.log(+t); // 1
+
+
 
 // a product object with the valueOf() method, the method is called to return the converted value
 
-// let product = {
-// valueOf: function () {
-// return 60;
-// }
-// };
+let product = {
+    valueOf: function () {
+        return 60;
+    }
+};
 
-// console.log(+product); // 60
+console.log(+product); // 60
+
+
+
+// ----------------------------- > UNARY OPERATORS >> Increment And Decrement Operators 
 
 // prefix / postfix increments(++) – add one to its operand
 // prefix / postfix decrements(--) – subtract one from its operand.
@@ -298,21 +371,60 @@ console.log(!'Cat'); // false
 
 
 
+// ++ is an incrementation operation, increase by 1
+
+let num = 0;
+console.log("Prefix: ", ++num); // 1
+
+num = 0;
+console.log("Postfix Before Evaluation: ", num++); // Postfix Before Evaluation:  0 (this is because the browser returns the current value, then increments the variable)
+console.log("Postfix After Evaluation: ", num); // Postfix After Evaluation:  1 (Here it has incremented)
+
+
+
+// -- is a decrement operator, decrease by 1
+
+num = 5;
+console.log("Prefix: ", --num); // Prefix:  4
+
+num = 5;
+console.log("Postfix Before Evaluation: ", num--); // Postfix Before Evaluation:  5
+console.log("Postfix After Evaluation: ", num); // Postfix After Evaluation:  4
+
+
+
+// ----------------------------- > CONDITIONAL (TERNARY) OPERATOR -----------------------------
+
+// The conditional operator is the only JavaScript operator that takes three operands. 
+// The operator can have one of two values based on a condition. The syntax is:
+
+// condition ? val1 : val2
+
+// If condition is true, the operator has the value of val1. Otherwise it has the value of val2. 
+// You can use the conditional operator anywhere you would use a standard operator.
+
+let age = 23;
+const currentStatus = age >= 18 ? "adult" : "minor";
+console.log(currentStatus); // adult
+
+// This statement assigns the value "adult" to the variable currentStatus if age is eighteen or more. 
+// Otherwise, it assigns the value "minor" to currentStatus. 
+
+
+
 // ----------------------------- > MISC OPERATORS -----------------------------
 
 // instanceof
+// The instanceof operator tests to see if the prototype property of a constructor appears anywhere in the prototype chain of an object.
+// The return value is a boolean value.
 
-// The instanceof operator tests to see if the prototype property of a constructor appears anywhere in the prototype chain of an object.The return value is a boolean value.
+function Car(make, model, year) {
+    this.make = make;
+    this.model = model;
+    this.year = year;
+}
 
-// function Car(make, model, year) {
-// this.make = make;
-// this.model = model;
-// this.year = year;
-// }
-// const auto = new Car('Honda', 'Accord', 1998);
+const auto = new Car('Honda', 'Accord', 1998);
 
-// console.log(auto instanceof Car);
-// // expected output: true
-
-// console.log(auto instanceof Object);
-// // expected output: true
+console.log(auto instanceof Car); // true
+console.log(auto instanceof Object); // true
