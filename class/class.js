@@ -11,7 +11,65 @@ Table of Contents
 
 
 
-// ----------------------------- > CLASS >> Class Expression and Declaration
+// Example as seen in constructor.js
+
+// A base class is defined using the new reserved 'class' keyword
+class Polygon {
+    // ..and an (optional) custom class constructor. 
+    // If one is not supplied, a default constructor is used instead:
+    // constructor() { }
+    constructor(height, width) {
+        this.name = 'Polygon';
+        this.height = height;
+        this.width = width;
+    }
+
+    sayName() {
+        console.log('Hi, I am a ', this.name + '.');
+    }
+
+    sayHistory() {
+        console.log('"Polygon" is derived from the Greek polus (many) ' +
+            'and gonia (angle).');
+    }
+}
+
+let p = new Polygon(300, 400);
+p.sayName(); // Hi, I am a  Polygon.
+console.log('The width of this polygon is ' + p.width); // The width of this polygon is 400
+
+// Classes support extending other classes, but can also extend other objects. 
+// Whatever you extend must be a constructor.
+
+// Let's extend the Polygon class to create a new derived class called Square.
+class Square extends Polygon {
+    constructor(length) {
+        // The reserved 'super' keyword is for making super-constructor calls and allows access to parent methods.
+        // Here, it will call the parent class' constructor with lengths provided for the Polygon's width and height
+        super(length, length);
+        // Note: In derived classes, super() must be called before you can use 'this'. Leaving this out will cause a reference error.
+        this.name = 'Square';
+    }
+
+    // Getter/setter methods are supported in classes,
+    // similar to their ES5 equivalents
+    get area() {
+        return this.height * this.width;
+    }
+
+    set area(value) {
+        this.area = value;
+    }
+}
+
+let s = new Square(5);
+
+s.sayName(); // Hi, I am a  Square.
+console.log('The area of this square is ' + s.area); // The area of this square is 25
+
+
+
+// ----------------------------- > CLASS EXPRESSION AND DECLARATION -----------------------------
 
 // Classes are "special functions", 
 // and just as you can define function expressions and function declarations, the class syntax has two components: 
@@ -48,11 +106,29 @@ const Rectangle = class Rectangle2 {
 
 
 
-// ----------------------------- > CLASS >> Body
+// ----------------------------- > BODY -----------------------------
 
-// The body of a class is the part that is in curly brackets {}. This is where you define class members, such as methods or constructor.
-
+// The body of a class is the part that is in curly brackets {}. 
+// This is where you define class members, such as methods or constructor.
 // The body of a class is executed in strict mode even without the "use strict" directive.
+
+
+
+// Class fields are public by default, but private class members can be created by using a hash # prefix.
+
+// Private features have the restriction that all property names declared in the same class must be unique. 
+// All other public properties do not have this restriction — you can have multiple public properties with the same name, and the last one overwrites the others. 
+// This is the same behavior as in object initializers.
+
+
+
+// Public: These members of the class and available to everyone that can access the (owner) class instance.
+
+// Private: These members are only accessible within the class that instantiated the object.
+
+// Protected: This keyword allows a little more access than private members but a lot less than the public. 
+// A protected member is accessible within the class (similar to private) and any object that inherits from it. 
+// A protected value is shared across all layers of the prototype chain. It is not accessible by anybody else.
 
 
 
@@ -63,35 +139,21 @@ const Rectangle = class Rectangle2 {
 
 
 
-// Together, they add up to 16 possible combinations. 
-
+// Together, they add up to 16 possible combinations:
 // Method definitions: Public instance method
-
 // getter: Public instance getter
-
 // setter: Public instance setter
-
 // Public class fields: Public instance field
-
 // static: Public static method, getter, setter, and field
-
 // Private class features: Everything that's private
-
-
-
-// Note: Private features have the restriction that all property names declared in the same class must be unique. 
-// All other public properties do not have this restriction — you can have multiple public properties with the same name, and the last one overwrites the others. 
-// This is the same behavior as in object initializers.
 
 // In addition, there are two special class element syntaxes: constructor and static initialization blocks, with their own references.
 
 
 
-
-// Example for private and static uses
+// Example For Private And Static Uses
 
 class Permission {
-
     // These are static constants that show what are the possible values when checking permission.
     static OperationsConst = {
         CREATE: "CREATE",
@@ -99,6 +161,7 @@ class Permission {
         UPDATE: "UPDATE",
         DELETE: "DELETE"
     }
+
     static RolesConst = {
         OWNER: "OWNER",
         EDITOR: "EDITOR",
@@ -120,7 +183,6 @@ class Permission {
 
     // function
     check() {
-
         const ops = this.#operation.toUpperCase();
 
         switch (this.#role.toUpperCase()) {
@@ -138,7 +200,6 @@ class Permission {
                 return false;
             default:
                 return false;
-
         }
     }
 }
@@ -176,71 +237,53 @@ c.process(); // "Blocked"
 const d = new Document(Permission.RolesConst.OWNER, Permission.OperationsConst.DELETE, "Hello content")
 d.process(); // "Allowed"
 
-Syntax
 
-class ClassName {
-    constructor() { /* ... */ }
-}
 
-Example
+// ----------------------------- > FIELD DECLARATIONS -----------------------------
 
-class Car {
-    constructor(name, year) {
-        this.name = name;
-        this.year = year;
-    }
-}
+// Both static and instance public fields are writable, enumerable, and configurable properties. 
+// As such, unlike their private counterparts, they participate in prototype inheritance.
 
-// When you have a class, you can use the class to create objects
+// Class fields are similar to object properties, not variables, so we don't use keywords such as const to declare them. 
+// In JavaScript, private features use a special identifier syntax, so modifier keywords like public and private should not be used either.
 
-let myCar1 = new Car("Ford", 2014);
-let myCar2 = new Car("Audi", 2019);
+// As seen below, the fields can be declared with or without a default value. 
+// Fields without default values default to undefined. 
+// By declaring a public field, you can ensure the field is always present, and the class definition is more self-documenting.
 
-// uses the Car class to create two Car objects. Constructor method is called automatically when a new object is created.
 
-// Class declarations
 
-// One way to define a class is using a class declaration. To declare a class, you use the class keyword with the name of the class ("Rectangle" here).
-// function declarations are hoisted and class declarations are not hoisted. 
+// With the class field declaration syntax, the constructor example can be written as:
 
 class Rectangle {
+    height = 20;
+    width;
+    colour = 'blue';
     constructor(height, width) {
         this.height = height;
         this.width = width;
     }
 }
 
-// Class expressions
+const rec = new Rectangle(10, 15);
+console.log(rec); // Rectangle { height: 10, width: 15, colour: 'blue' }
 
-// A class expression is another way to define a class. Class expressions can be named or unnamed. The name given to a named class expression is local to the class's body. However, it can be accessed via the name property.
+rec.width = 5;
+console.log(rec); // Rectangle { height: 10, width: 5, colour: 'blue' }
 
-// unnamed
+const rec1 = new Rectangle();
+console.log(rec1); // Rectangle { height: undefined, width: undefined, colour: 'blue' }
 
-let Rectangle = class {
-    constructor(height, width) {
-        this.height = height;
-        this.width = width;
-    }
-};
-console.log(Rectangle.name); // output: "Rectangle"
 
-// named
 
-let Rectangle = class Rectangle2 {
-    constructor(height, width) {
-        this.height = height;
-        this.width = width;
-    }
-};
-console.log(Rectangle.name); // output: "Rectangle2"
+// ----------------------------- > STATIC -----------------------------
 
-// static 
+// The static keyword defines a static method or field for a class, or a static initialization block 
+// Static properties (fields and methods) are defined on the class itself instead of each instance.
+// Static properties cannot be directly accessed on instances of the class. Instead, they're accessed on the class itself.
 
-// defines a static method or property for a class and not any one object
-// Normally objects created from the class do not have access to the static stuff
-// Neither static methods nor static properties can be called on instances of the class. Instead, they're called on the class itself
-// Static methods are often utility functions, such as functions to create or clone objects
-// static properties are useful for caches, fixed-configuration, or any other data you don't need to be replicated across instances.
+// Static methods are often utility functions, such as functions to create or clone objects, 
+// whereas static properties are useful for caches, fixed-configuration, or any other data you don't need to be replicated across instances.
 
 class Car {
     constructor(brand) {
@@ -256,16 +299,10 @@ mycar = new Car("Ford");
 console.log(Car.hello()); // Hello! 
 console.log(mycar.hello()); // error, because referencing object rather than class
 
-// Syntax
 
-// static methodName() { ... }
-// static propertyName [= value];
 
-// Class static initialization block
-// static {
-// }
+// The following example demonstrates several things:
 
-// Using static members in classes
 // How a static member (method or property) is defined on a class.
 // That a class with a static member can be sub-classed.
 // How a static member can and cannot be called.
@@ -300,31 +337,86 @@ console.log(SquaredTriple.customName); // 'Tripler'
 // This throws because calculate() is a static member, not an instance member.
 console.log(tp.calculate()); // 'tp.calculate is not a function'
 
-// Calling static members from another static method
+
+
+// ----------------------------- > STATIC >> Initializing
+
+// Static fields can have an initializer. 
+// Static fields without initializers are initialized to undefined. 
+// Public static fields are not reinitialized on subclasses, but can be accessed via the prototype chain.
+
+class ClassWithStaticField {
+    static staticField;
+    static staticFieldWithInitializer = "static field";
+}
+
+class SubclassWithStaticField extends ClassWithStaticField {
+    static subStaticField = "subclass field";
+}
+
+console.log(Object.hasOwn(ClassWithStaticField, "staticField")); // true
+console.log(ClassWithStaticField.staticField); // undefined
+console.log(ClassWithStaticField.staticFieldWithInitializer); // "static field"
+console.log(SubclassWithStaticField.staticFieldWithInitializer); // "static field"
+console.log(SubclassWithStaticField.subStaticField); // "subclass field"
+
+
+
+// ----------------------------- > STATIC >> This and Super
+
+// In the field initializer, 
+// this refers to the current class (which you can also access through its name), 
+// and super refers to the base class constructor.
+
+class ClassWithStaticField {
+    static baseStaticField = "base static field";
+    static anotherBaseStaticField = this.baseStaticField;
+
+    static baseStaticMethod() {
+        return "base static method output";
+    }
+}
+
+class SubClassWithStaticField extends ClassWithStaticField {
+    static subStaticField = super.baseStaticMethod();
+}
+
+console.log(ClassWithStaticField.anotherBaseStaticField); // "base static field"
+console.log(SubClassWithStaticField.subStaticField); // "base static method output"
+
+
+
+// ----------------------------- > STATIC >> Calling Static Members From Another Static Method
 
 // In order to call a static method or property within another static method of the same class, you can use the this keyword.
 
 class StaticMethodCall {
     static staticProperty = 'static property';
+
     static staticMethod() {
         return 'Static method and ' + this.staticProperty + ' has been called';
     }
+
     static anotherStaticMethod() {
         return this.staticMethod() + ' from another static method';
     }
 }
 
 StaticMethodCall.staticMethod(); // 'Static method and static property has been called'
+StaticMethodCall.anotherStaticMethod(); // 'Static method and static property has been called from another static method'
 
-StaticMethodCall.anotherStaticMethod();
-// 'Static method and static property has been called from another static method'
 
-// Calling static members from a class constructor and other methods
 
-// Static members are not directly accessible using the this keyword from non-static methods. You need to call them using the class name: 
+// ----------------------------- > STATIC >> Calling Static Members From A Class Constructor And Other Methods
+
+// Static members are not directly accessible using the this keyword from non-static methods. 
+
+// You need to call them using the class name: 
 // CLASSNAME.STATIC_METHOD_NAME()
 // CLASSNAME.STATIC_PROPERTY_NAME 
-// or by calling the method as a property of the constructor: 	this.constructor.STATIC_METHOD_NAME()
+
+// or by calling the method as a property of the constructor: 	
+// this.constructor.STATIC_METHOD_NAME()
 // this.constructor.STATIC_PROPERTY_NAME
 
 class StaticMethodCall {
@@ -341,125 +433,135 @@ class StaticMethodCall {
     }
 }
 
-// Constructor
 
-// a special method of a class for creating and initializing an object instance of that class.
 
-class Dog {
-    constructor(name, breed, origin, hobby = "singing") { // default values can be added here
-        this.name = name;
-        this.breed = breed;
-        this.origin = origin;
-        this.hobby = hobby;
-    }
-    about() {
-        console.log(`My name is ${this.name} and I am a ${this.breed}. I am from ${this.origin} and my hobby is ${this.hobby}.`);
-    }
-}
+// ----------------------------- > PRIVATE -----------------------------
 
-const dog1 = new Dog("Meeko", "Irish Wolfhound", "Skyrim", "barking");
-const dog2 = new Dog("K.K. Slider", "Singer", "Animal Crossing");
+// Class fields are public by default, but private class members can be created by using a hash # prefix. 
+// The privacy encapsulation of these class features is enforced by JavaScript itself.
 
-dog1.about();
-// My name is Meeko and I am a Irish Wolfhound. I am from Skyrim and my hobby is barking.
-dog2.about();
-// My name is K.K. Slider and I am a Singer. I am from Animal Crossing and my hobby is singing.
+// NOTE: It's an error to reference private fields from outside of the class; they can only be read or written within the class body. 
 
-// Another example
+// By defining things that are not visible outside of the class, 
+// you ensure that your classes' users can't depend on internals, which may change from version to version.
 
-let newDate = new Date();
-let thisYear = newDate.getFullYear();
+// Private fields can only be declared up-front in a field declaration. 
+// They cannot be created later through assigning to them, the way that normal properties can.
 
-class MedicalRecord {
 
-    noOfVisit = 0;
-    inClinic = false;
 
-    constructor(firstName, lastName, yearOfBirth, allergy = null, noOfVisit = 0, inClinic = false) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.yearOfBirth = yearOfBirth;
-        this.allergy = allergy;
-        this.noOfVisit = noOfVisit;
-        this.inClinic = inClinic;
-    }
+// All private identifiers declared within a class must be unique. 
+// The namespace is shared between static and instance properties. 
+// The only exception is when the two declarations define a getter-setter pair.
 
-    checkOut() {
-        this.noOfVisit++;
-        this.inClinic = false;
-    }
 
-    checkIn() {
-        this.inClinic = true;
-    }
 
-    isAdult() {
-        const age = thisYear - this.yearOfBirth;
-        if (age > 21) {
-            return "is an Adult";
-        } else {
-            return "is not an Adult";
-        }
-    }
+// Using private fields, the definition can be refined as below.
 
-    about() {
-        console.log(`The patient's name is ${this.firstName} ${this.lastName}. The year of birth is ${this.yearOfBirth}. Their allergy(s) is ${this.allergy}. The patient ${this.isAdult()}. They have visited the clinic ${this.noOfVisit} times and their check in status is ${this.inClinic}.`);
+class Rectangle {
+    #height = 0;
+    #width;
+    constructor(height, width) {
+        this.#height = height;
+        this.#width = width;
     }
 }
 
-const patientOne = new MedicalRecord("Francine", "Poh", 1990, "Hay Fever");
+const rec = new Rectangle(10, 15);
+console.log(rec); // Rectangle {}
 
-patientOne.checkIn();
-patientOne.checkOut();
 
-patientOne.about();
 
-// enables you to provide any custom initialization that must be done before any other methods can be called on an instantiated object.
+// Private fields are accessible on the class constructor from inside the class declaration itself. 
+// They are used for declaration of field names as well as for accessing a field's value.
 
-class user {
-    constructor(firstName, lastName) {
-        this.firstName = firstName;
-        this.lastName – lastName;
-        this.getName = function () {
-            return `User’s name: ${this.firstName} ${this.lastName}`;
-        }
+// It is a syntax error to refer to # names from out of scope. 
+// It is also a syntax error to refer to private fields that were not declared before they were called, 
+// or to attempt to remove declared fields with delete.
+
+class ClassWithPrivateField {
+    #privateField;
+
+    constructor() {
+        this.#privateField = 42;
+        delete this.#privateField;   // Syntax error
+        this.#undeclaredField = 444; // Syntax error
     }
 }
 
-const userProfile01 = new User(“Francine”, “Poh”);
-console.log(userProfile01); // User {firstName: “Francine”, lastName: “Poh”}
-console.log(userProfile01.getName()); // User’s name: Francine Poh
 
-example
 
-class Person {
-    constructor(name) {
-        this.name = name;
-    }
+// Like public fields, private fields are added at construction time in a base class, or at the point where super() is invoked in a subclass.
 
-    introduce() {
-        console.log(`Hello, my name is ${this.name}`);
+class ClassWithPrivateField {
+    #privateField;
+
+    constructor() {
+        this.#privateField = 42;
     }
 }
 
-const otto = new Person('Otto');
-otto.introduce(); // “Hello, my name is Otto”
+class SubClass extends ClassWithPrivateField {
+    #subPrivateField;
 
-// If your class is a derived class, the default constructor calls the parent constructor, passing along any arguments that were provided
+    constructor() {
+        super();
+        this.#subPrivateField = 23;
+    }
+}
 
-// Class types
+const subbo = new SubClass(); // SubClass {#privateField: 42, #subPrivateField: 23}
+console.log(subbo); // SubClass {}
 
-// Public: These members of the class and available to everyone that can access the (owner) class instance.
 
-// Private: These members are only accessible within the class that instantiated the object.
 
-// Protected: This keyword allows a little more access than private members but a lot less than the public. A protected member is accessible within the class (similar to private) and any object that inherits from it. A protected value is shared across all layers of the prototype chain. It is not accessible by anybody else.
+// ----------------------------- > PRIVATE >> Private Static
 
-// Private class features
+// Like their public equivalent, private static methods are called on the class itself, not instances of the class. 
+// Like private static fields, they are only accessible from inside the class declaration.
 
-// Class fields are public by default, but private class members can be created by using a hash # prefix.
+class ClassWithPrivateStaticMethod {
+    static #privateStaticMethod() {
+        return 42;
+    }
 
-// Example, with how to get and set private properties
+    static publicStaticMethod1() {
+        return ClassWithPrivateStaticMethod.#privateStaticMethod();
+    }
+
+    static publicStaticMethod2() {
+        return this.#privateStaticMethod();
+    }
+}
+
+console.log(ClassWithPrivateStaticMethod.publicStaticMethod1() === 42); // true
+console.log(ClassWithPrivateStaticMethod.publicStaticMethod2() === 42); // true
+
+
+
+// The same restriction previously mentioned for private static fields holds for private static methods, and similarly can lead to unexpected behavior when using this. 
+// when we try to call Derived.publicStaticMethod2(), this refers to the Derived class (not the Base class) and so causes a TypeError.
+
+class Base {
+    static #privateStaticMethod() {
+        return 42;
+    }
+    static publicStaticMethod1() {
+        return Base.#privateStaticMethod();
+    }
+    static publicStaticMethod2() {
+        return this.#privateStaticMethod();
+    }
+}
+
+class Derived extends Base { }
+
+console.log(Derived.publicStaticMethod1()); // 42
+console.log(Derived.publicStaticMethod2()); // TypeError: Cannot read private member #privateStaticMethod from an object whose class did not declare it
+
+
+
+// ----------------------------- > PRIVATE >> Get And Set Private Properties
 
 class Person {
     #firstName; // set private property
@@ -487,19 +589,25 @@ class Person {
 
 const newPerson = new Person("Francine");
 
-console.log(newPerson.firstName); // undefined
+console.log(newPerson); // Person {}
 
-// methods that get and set
+// methods that emulates get and set
 console.log(newPerson.getfirstName()); // Francine
+
 newPerson.setfirstName("Werner");
 console.log(newPerson.getfirstName()); // Werner
 
+newPerson.setfirstName("Francine"); // resetting for the below functions
+
 // get and set functions
 console.log(newPerson.getName); // Francine
+
 newPerson.setName = "Werner";
 console.log(newPerson.getName); // Werner
 
-// Another example with private functions
+
+
+// // ----------------------------- > PRIVATE >> Private Functions
 
 class PaymentGateway {
     #connectToBank() {
@@ -530,149 +638,34 @@ newPayment.pay();
 // Processing Payment...
 // Transaction Complete!
 
-Syntax
 
-class ClassWithPrivateField {
-    #privateField;
-}
 
-class ClassWithPrivateMethod {
-    #privateMethod() {
-        return 'hello world';
-    }
-}
 
-class ClassWithPrivateStaticField {
-    static #PRIVATE_STATIC_FIELD;
-}
 
-class ClassWithPrivateStaticMethod {
-    static #privateStaticMethod() {
-        return 'hello world';
-    }
-}
 
-// Private instance fields
 
-// Private instance fields are declared with # names (pronounced "hash names"), 
-// identifiers prefixed with #. 
-// The # is a part of the name itself. 
-// Private fields are accessible on the class constructor from inside the class declaration itself. 
-// They are used for declaration of field names as well as for accessing a field's value.
 
-// It is a syntax error to refer to # names from out of scope. 
-// It is also a syntax error to refer to private fields that were not declared before they were called, or to attempt to remove declared fields with delete.
 
-class ClassWithPrivateField {
-    #privateField;
 
-    constructor() {
-        this.#privateField = 42;
-        delete this.#privateField;   // Syntax error
-        this.#undeclaredField = 444; // Syntax error
-    }
-}
 
-const instance = new ClassWithPrivateField()
-instance.#privateField === 42;   // Syntax error
 
-// Like public fields, private fields are added at construction time in a base class, or at the point where super() is invoked in a subclass.
 
-class ClassWithPrivateField {
-    #privateField;
 
-    constructor() {
-        this.#privateField = 42;
-    }
-}
 
-class SubClass extends ClassWithPrivateField {
-    #subPrivateField;
 
-    constructor() {
-        super();
-        this.#subPrivateField = 23;
-    }
-}
 
-new SubClass(); // SubClass {#privateField: 42, #subPrivateField: 23}
 
-// Private static fields
 
-// Private static fields are added to the class constructor at class evaluation time. The limitation of static variables being called by only static methods still holds.
 
-class ClassWithPrivateStaticField {
-    static #PRIVATE_STATIC_FIELD;
 
-    static publicStaticMethod() {
-        ClassWithPrivateStaticField.#PRIVATE_STATIC_FIELD = 42;
-        return ClassWithPrivateStaticField.#PRIVATE_STATIC_FIELD;
-    }
-}
 
-console.log(ClassWithPrivateStaticField.publicStaticMethod() === 42);
-// true
 
-// Private methods
 
-// Private instance methods - methods available on class instances whose access is restricted in the same manner as private instance fields.
 
-class ClassWithPrivateMethod {
-    #privateMethod() {
-        return 'hello world';
-    }
 
-    getPrivateMessage() {
-        return this.#privateMethod();
-    }
-}
 
-const instance = new ClassWithPrivateMethod();
-console.log(instance.getPrivateMessage()); // hello world
 
-// Private instance methods may be generator, async, or async generator functions. Private getters and setters are also possible, although not in generator, async, or async generator forms.
 
-// Private static methods
-
-// Like their public equivalent, private static methods are called on the class itself, not instances of the class. Like private static fields, they are only accessible from inside the class declaration.
-
-class ClassWithPrivateStaticMethod {
-    static #privateStaticMethod() {
-        return 42;
-    }
-
-    static publicStaticMethod1() {
-        return ClassWithPrivateStaticMethod.#privateStaticMethod();
-    }
-
-    static publicStaticMethod2() {
-        return this.#privateStaticMethod();
-    }
-}
-
-console.log(ClassWithPrivateStaticMethod.publicStaticMethod1() === 42); // true
-console.log(ClassWithPrivateStaticMethod.publicStaticMethod2() === 42); // true
-
-// The same restriction previously mentioned for private static fields holds for private static methods, and similarly can lead to unexpected behavior when using this. 
-
-// when we try to call Derived.publicStaticMethod2(), this refers to the Derived class (not the Base class) and so causes a TypeError.
-
-class Base {
-    static #privateStaticMethod() {
-        return 42;
-    }
-    static publicStaticMethod1() {
-        return Base.#privateStaticMethod();
-    }
-    static publicStaticMethod2() {
-        return this.#privateStaticMethod();
-    }
-}
-
-class Derived extends Base { }
-
-console.log(Derived.publicStaticMethod1()); // 42
-console.log(Derived.publicStaticMethod2()); // TypeError: Cannot read private member #privateStaticMethod from an object whose class did not declare it
 
 // extends - used in class declarations or class expressions to create a class that is a child of another class.
 // indicates that a class is inherited from another class
