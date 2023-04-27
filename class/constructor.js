@@ -185,6 +185,8 @@ try {
 // The super keyword is used invoke a superclass's constructor.
 // The super(...args) expression is valid in class constructors.
 
+// used to access and call functions on an object's parent
+
 
 
 // In the constructor body of a derived class (with extends), 
@@ -222,6 +224,51 @@ const firstFooBar = new FooBar('foo', 1);
 console.log(firstFooBar.name); // foo
 
 console.log(firstFooBar.getFullName()); // foo-1
+
+
+
+// ----------------------------- > SUPER >> Calling Methods of Super Class
+
+// The super keyword can also be used to call corresponding methods of super class.
+
+class Cat {
+    constructor(name) {
+        this.name = name;
+    }
+
+    speak() {
+        console.log(`${this.name} makes a noise.`);
+    }
+}
+
+class Lion extends Cat {
+    speak() {
+        super.speak();
+        console.log(`${this.name} roars.`);
+    }
+}
+
+const l = new Lion("Fuzzy");
+l.speak();
+// Fuzzy makes a noise.
+// Fuzzy roars.
+
+
+
+// Super-calling static methods
+
+class Rectangle {
+    static logNbSides() {
+        return 'I have 4 sides';
+    }
+}
+
+class Square extends Rectangle {
+    static logDescription() {
+        return super.logNbSides() + ' which are all equal';
+    }
+}
+Square.logDescription(); // 'I have 4 sides which are all equal'
 
 
 

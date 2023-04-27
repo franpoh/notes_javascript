@@ -1,5 +1,24 @@
 /* 
 Table of Contents
+
+> CLASS
+> CLASS EXPRESSION AND DECLARATION
+> BODY
+> PUBLIC
+>> This and Super
+>> Accessing Fields
+>> Adding Fields
+> STATIC
+>> Initializing
+>> This and Super
+>> Calling Static Members From Another Static Method
+>> Calling Static Members From A Class Constructor And Other Methods
+> PRIVATE
+>> Private Static
+>> Get And Set Private Properties
+>> Private Functions
+> EXTENDS
+> EVALUATION ORDER
 */
 
 
@@ -239,7 +258,7 @@ d.process(); // "Allowed"
 
 
 
-// ----------------------------- > FIELD DECLARATIONS -----------------------------
+// ----------------------------- > PUBLIC -----------------------------
 
 // Both static and instance public fields are writable, enumerable, and configurable properties. 
 // As such, unlike their private counterparts, they participate in prototype inheritance.
@@ -273,6 +292,97 @@ console.log(rec); // Rectangle { height: 10, width: 5, colour: 'blue' }
 
 const rec1 = new Rectangle();
 console.log(rec1); // Rectangle { height: undefined, width: undefined, colour: 'blue' }
+
+
+
+// ----------------------------- > PUBLIC >> This and Super
+
+// In the field initializer, 
+// this refers to the class instance under construction, 
+// and super refers to the prototype property of the base class, which contains the base class's instance methods, but not its instance fields.
+
+class Base {
+    baseField = "base field";
+    anotherBaseField = this.baseField;
+    baseMethod() {
+        return "base method output";
+    }
+}
+
+class Derived extends Base {
+    subField = super.baseMethod();
+}
+
+const base = new Base();
+const sub = new Derived();
+
+console.log(base.anotherBaseField); // "base field"
+console.log(sub.subField); // "base method output"
+
+
+
+// The field initializer expression is evaluated each time a new instance is created. 
+// (Because the this value is different for each instance, the initializer expression can access instance-specific properties.)
+
+class C {
+    obj = {};
+}
+
+const instance1 = new C();
+const instance2 = new C();
+console.log(instance1.obj === instance2.obj); // false
+
+
+
+// ----------------------------- > PUBLIC >> Accessing Fields
+
+// Because instance fields of a class are added before the respective constructor runs, 
+// you can access the fields' values within the constructor. 
+
+// However, because instance fields of a derived class are defined after super() returns, 
+// the base class's constructor does not have access to the derived class's fields.
+
+class Base {
+    constructor() {
+        console.log("Base constructor:", this.field);
+    }
+}
+
+class Derived extends Base {
+    field = 1;
+    constructor() {
+        super();
+        console.log("Derived constructor:", this.field);
+        this.field = 2;
+    }
+}
+
+const instance = new Derived();
+// Base constructor: undefined
+// Derived constructor: 1
+
+console.log(instance.field); // 2
+
+
+
+// ----------------------------- > PUBLIC >> Adding Fields
+
+// Fields are added one-by-one. 
+// Field initializers can refer to field values above it, but not below it. 
+
+// All instance and static methods are added beforehand and can be accessed, 
+// although calling them may not behave as expected if they refer to fields below the one being initialized.
+
+class C {
+    a = 1;
+    b = this.c;
+    c = this.a + 1;
+    d = this.c + 1;
+}
+
+const insta = new C();
+console.log(insta.d); // 3
+console.log(insta.b); // undefined
 
 
 
@@ -640,38 +750,45 @@ newPayment.pay();
 
 
 
+// ----------------------------- > EXTENDS -----------------------------
 
+// The extends keyword is used in class declarations or class expressions to create a class as a child of another constructor (either a class or a function).
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// extends - used in class declarations or class expressions to create a class that is a child of another class.
 // indicates that a class is inherited from another class
+
 // Does not inherit private properties
 
-// example of extends and super
+
+
+// Example
+
+// Create a class named "Model" which will inherit the methods from the "Car" class
+
+class Car {
+    constructor(brand) {
+        this.carname = brand;
+    }
+    present() {
+        return 'I have a ' + this.carname;
+    }
+}
+
+class Model extends Car {
+    constructor(brand, mod) {
+        super(brand);
+        this.model = mod; // Referring to this before calling super() will throw an error.
+    }
+    show() {
+        return this.present() + ', it is a ' + this.model;
+    }
+}
+
+let mycar = new Model("Ford", "Mustang");
+document.getElementById("demo").innerHTML = mycar.show(); // I have a Ford, it is a Mustang
+
+
+
+// Example
 
 class Vehicle {
     constructor(carPlateNo, type, noOfWheels = 4) {
@@ -711,7 +828,9 @@ console.log(newTruck.about());
 const reliantRobin = new Car("83AN", "Reliant Robin")
 console.log(reliantRobin.inspect()); // This vehicle is a Reliant Robin (83AN) and it has 3 wheels.
 
-// Another example
+
+
+// Example
 
 class BaseSignal {
     constructor(transmitter) {
@@ -770,334 +889,43 @@ signalTwo.send(); // "Send aircon signal"
 const signalThree = new DoorSignal('door');
 signalThree.send(); // "Send door signal"
 
-// Syntax
-
-class ChildClass extends ParentClass { // ... }
-
-// Create a class named "Model" which will inherit the methods from the "Car" class
-
-class Car {
-    constructor(brand) {
-        this.carname = brand;
-    }
-    present() {
-        return 'I have a ' + this.carname;
-    }
-}
-
-class Model extends Car {
-    constructor(brand, mod) {
-        super(brand);
-        this.model = mod; // Referring to this before calling super() will throw an error.
-    }
-    show() {
-        return this.present() + ', it is a ' + this.model;
-    }
-}
-
-let mycar = new Model("Ford", "Mustang");
-document.getElementById("demo").innerHTML = mycar.show(); // I have a Ford, it is a Mustang
-}
-
-// Super - used to access and call functions on an object's parent
-// When used in a constructor, the super keyword appears alone and must be used before the this keyword is used. 
-// can also be used to call functions on a parent object.
-// Deleting super properties will throw an error
-// super.prop cannot overwrite non-writable properties
-
-// Syntax
-
-super([arguments]); // calls the parent constructor.
-super.functionOnParent([arguments]);
-
-// Using super in classes
-
-// Here super() is called to avoid duplicating the constructor parts' that are common between Rectangle and Square.
-
-class Rectangle {
-    constructor(height, width) {
-        this.name = 'Rectangle';
-        this.height = height;
-        this.width = width;
-    }
-    sayName() {
-        console.log('Hi, I am a ', this.name + '.');
-    }
-    get area() {
-        return this.height * this.width;
-    }
-    set area(value) {
-        this._area = value;
-    }
-}
-
-class Square extends Rectangle {
-    constructor(length) {
-        this.height; // ReferenceError, super needs to be called first!
-
-        // Here, it calls the parent class's constructor with lengths provided for the Rectangle's width and height
-        super(length, length);
-
-        // Note: In derived classes, super() must be called before you can use 'this'. Leaving this out will cause a reference error.
-        this.name = 'Square';
-    }
-}
-
-// Super-calling static methods
-
-class Rectangle {
-    static logNbSides() {
-        return 'I have 4 sides';
-    }
-}
-
-class Square extends Rectangle {
-    static logDescription() {
-        return super.logNbSides() + ' which are all equal';
-    }
-}
-Square.logDescription(); // 'I have 4 sides which are all equal'
-
-// Using super.prop in object literals
-
-var obj1 = {
-    method1() {
-        console.log('method 1');
-    }
-}
-
-var obj2 = {
-    method2() {
-        super.method1(); // calls the first object's method
-    }
-}
 
-// we are able to set the prototype of obj2 to obj1 with Object.setPrototypeOf(), so that super is able to find method1 on obj1.
-Object.setPrototypeOf(obj2, obj1);
-obj2.method2(); // logs "method 1"
 
-// Call - calls a function with a given this value and arguments provided individually.
-// allows for a function/method belonging to one object to be assigned and called for a different object.
-// call() provides a new value of this to the function/method. With call(), you can write a method once and then inherit it in another object, without having to rewrite the method for the new object.
+// ----------------------------- > EVALUATION ORDER -----------------------------
 
-// Note: While the syntax of this function is almost identical to that of apply(), the fundamental difference is that call() accepts an argument list, while apply() accepts a single array of arguments.
+// When a class declaration or class expression is evaluated, its various components are evaluated in the following order:
 
-// Syntax 
+// The extends clause, if present, is first evaluated. 
+// It must evaluate to a valid constructor function or null, or a TypeError is thrown.
 
-call()
-call(thisArg)
-call(thisArg, arg1)
-call(thisArg, arg1, arg2)
-call(thisArg, arg1, //...// , argN)
+// The constructor method is extracted, substituted with a default implementation if constructor is not present. 
+// However, because the constructor definition is only a method definition, this step is not observable.
 
-    // Using call to chain constructors for an object
+// The class elements' property keys are evaluated in the order of declaration. 
+// If the property key is computed, the computed expression is evaluated, with the this value is set to the this value surrounding the class (not the class itself). 
+// None of the property values are evaluated yet.
 
-    // chain constructors for an object
-    // the constructor for the Product object is defined with two parameters: name and price.
-    // Two other functions, Food and Toy, invoke Product, passing this, name, and price. 
-    // Product initializes the properties name and price, both specialized functions define the category.
+// Methods and accessors are installed in the order of declaration. 
+// Instance methods and accessors are installed on the prototype property of the current class, 
+// and static methods and accessors are installed on the class itself. 
+// Private instance methods and accessors are saved to be installed on the instance directly later. 
+// This step is not observable.
 
-    function Product(name, price) {
-        this.name = name;
-        this.price = price;
-    }
+// The class is now initialized with the prototype specified by extends and implementation specified by constructor. 
+// For all steps above, if an evaluated expression tries to access the name of the class, a ReferenceError is thrown because the class is not initialized yet.
 
-function Food(name, price) {
-        Product.call(this, name, price);
-        this.category = 'food';
-    }
 
-function Toy(name, price) {
-        Product.call(this, name, price);
-        this.category = 'toy';
-    }
 
-const cheese = new Food('feta', 5);
-const fun = new Toy('robot', 40);
+// The class elements' values are evaluated in the order of declaration:
 
-console.log(cheese); // Food {name: 'feta', price: 5, category: 'food'}
+// For each instance field (public or private), its initializer expression is saved. 
+// The initializer is evaluated during instance creation, at the start of the constructor (for base classes) or immediately before the super() call returns (for derived classes).
 
-console.log(fun); // Toy {name: 'robot', price: 40, category: 'toy'}
+// For each static field (public or private), 
+// its initializer is evaluated with this set to the class itself, and the property is created on the class.
 
-// Using call to invoke an anonymous function
+// Static initialization blocks are evaluated with this set to the class itself.
 
-// create an anonymous function and use call to invoke it on every object in an array.
-// add a print function to every object, which is able to print the correct index of the object in the array.
 
-const animals = [
-    { species: 'Lion', name: 'King' },
-    { species: 'Whale', name: 'Fail' }
-];
 
-for (let i = 0; i < animals.length; i++) {
-    (function (i) {
-        this.print = function () {
-            console.log(`#i ${this.species}: ${this.name}`);
-        }
-        this.print();
-    }).call(animals[i], i); // first is array position, second is the # number
-}
-
-// #0 Lion: King
-// #1 Whale: Fail
-
-// Using call to invoke a function and without specifying the first argument
-
-// invoking the display function without passing the first argument will bind the value of this to the global object.
-
-var sData = 'Wisen';
-
-function display() {
-    console.log(this.sData);
-}
-
-display.call();  // Wisen
-
-// Example with Call, Bind and Apply
-
-// A simplistic object with its very own "this".
-var obj = {
-    num: 100
-}
-
-// A simple traditional function to operate on "this"
-var add = function (a, b, c) {
-    return this.num + a + b + c;
-}
-
-// call
-var result = add.call(obj, 1, 2, 3) // establishing the scope as "obj"
-console.log(result) // result 106
-
-// apply
-const arr = [1, 2, 3]
-var result = add.apply(obj, arr) // establishing the scope as "obj"
-console.log(result) // result 106
-
-// bind
-var result = add.bind(obj) // establishing the scope as "obj"
-console.log(result(1, 2, 3)) // result 106
-
-// Apply - calls a function with a given this value, and arguments provided as an array (or an array-like object).
-
-Syntax
-
-apply(thisArg)
-apply(thisArg, argsArray)
-
-example
-
-const numbers = [5, 6, 2, 3, 7];
-
-const max = Math.max.apply(null, numbers);
-
-console.log(max); // expected output: 7
-
-const min = Math.min.apply(null, numbers);
-
-console.log(min); // expected output: 2
-
-// thisArg - The value of this provided for the call to func.
-// You use an arguments array instead of a list of arguments (parameters). 
-// can use an array literal eg func.apply(this, ['eat', 'bananas'])
-// an Array object eg func.apply(this, new Array('eat', 'bananas')).
-
-// ArgsArray - An array-like object, specifying the arguments with which func should be called, or null or undefined if no arguments should be provided to the function.
-// can also use arguments
-
-// arguments is a local variable of a function.
-// can be used for all unspecified arguments of the called object.
-// do not have to know the arguments of the called object when you use the apply method.
-// can use arguments to pass all the arguments to the called object.
-// called object is then responsible for handling the arguments.
-
-// Using apply to append an array to another
-
-// When you don’t want to use:
-// Push - add that array as a single element, instead of adding the elements individually. So you end up with an array inside an array.
-// Concat - does not append to the existing array—it instead creates and returns a new array.
-
-// For appending to the existing array
-
-const array = ['a', 'b'];
-const elements = [0, 1, 2];
-array.push.apply(array, elements);
-console.info(array); // ["a", "b", 0, 1, 2]
-
-// Bind - creates a new bound function, which is an exotic function object that wraps the original function object. Calling the bound function generally results in the execution of its wrapped function.
-
-Syntax
-
-bind(thisArg)
-bind(thisArg, arg1)
-bind(thisArg, arg1, arg2)
-bind(thisArg, arg1, ..., argN)
-
-// thisArg - The value to be passed as the this parameter to the target function func when the bound function is called. 
-// The value is ignored if the bound function is constructed using the new operator. 
-// When using bind to create a function (supplied as a callback) inside a setTimeout, any primitive value passed as thisArg is converted to object. I
-// f no arguments are provided to bind , or if the thisArg is null or undefined, the this of the executing scope is treated as the thisArg for the new function.
-
-// arg1, arg2, ...argN - Arguments to prepend to arguments provided to the bound function when invoking func.
-
-// Creating a bound function
-
-// The simplest use of bind() is to make a function that, no matter how it is called, is called with a particular this value.
-
-// A common mistake is to extract a method from an object, then to later call that function and expect it to use the original object as its this (e.g., by using the method in callback-based code).
-
-// Without special care, however, the original object is usually lost. Creating a bound function from the function, using the original object, neatly solves this problem:
-
-this.x = 9; // 'this' refers to global 'window' object here in a browser
-
-const module = {
-    x: 81,
-    getX: function () { return this.x; }
-};
-
-module.getX(); // returns 81
-
-const retrieveX = module.getX;
-retrieveX(); // returns 9; the function gets invoked at the global scope
-
-// Create a new function with 'this' bound to module 
-// New programmers might confuse the global variable 'x' with module's property 'x'
-
-const boundGetX = retrieveX.bind(module);
-boundGetX(); // returns 81
-
-// another example
-
-class Car {
-    constructor() {
-        // Bind sayBye but not sayHi to show the difference
-        this.sayBye = this.sayBye.bind(this);
-    }
-    sayHi() {
-        console.log(`Hello from ${this.name}`);
-    }
-    sayBye() {
-        console.log(`Bye from ${this.name}`);
-    }
-    get name() {
-        return 'Ferrari';
-    }
-}
-
-class Bird {
-    get name() {
-        return 'Tweety';
-    }
-}
-
-const car = new Car();
-const bird = new Bird();
-
-// The value of 'this' in methods depends on their caller
-car.sayHi(); // Hello from Ferrari
-bird.sayHi = car.sayHi;
-bird.sayHi(); // Hello from Tweety
-
-// For bound methods, 'this' doesn't depend on the caller
-bird.sayBye = car.sayBye;
-bird.sayBye();  // Bye from Ferrari
+// The class is now fully initialized and can be used as a constructor function.

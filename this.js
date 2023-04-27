@@ -646,6 +646,13 @@ console.log(boundGetX()); // 42
 
 // The call() method calls the function with a given this value and arguments provided individually.
 
+// call() provides a new value of this to the function/method. 
+// With call(), you can write a method once and then inherit it in another object, without having to rewrite the method for the new object.
+
+// Note: While the syntax of this function is almost identical to that of apply(), 
+// the fundamental difference is that call() accepts an argument list, 
+// while apply() accepts a single array of arguments.
+
 
 
 // Example
