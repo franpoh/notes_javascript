@@ -9,6 +9,12 @@ Table of Contents
 
 
 
+// This is constructor specific to class
+
+// For constructor functions that create new objects, see object.js > Constructor
+
+
+
 // ----------------------------- > CONSTRUCTOR -----------------------------
 
 // The constructor method is a special method of a class for creating and initializing an object instance of that class.

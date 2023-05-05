@@ -35,6 +35,8 @@ function checkGuess() {
 
 // When we want to run the code, we type the name of the function followed by the parentheses.
 
+// Functions that are part of objects are called methods
+
 
 
 <button>Press me</button>

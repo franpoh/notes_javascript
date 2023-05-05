@@ -33,52 +33,6 @@ cats.map((cat) => { console.log(cat) });
 
 
 
-// ----------------------------- > WHILE -----------------------------
-
-// While loop - While the condition is truthy, the code from the loop body is executed.
-
-let i = 0;
-while (i < 3) { // shows 0, then 1, then 2
-    console.log(i);
-    i++;
-}
-
-// Any expression or variable can be a loop condition, not just comparisons: the condition is evaluated and converted to a boolean by while.
-
-// For instance, a shorter way to write while (i != 0) is while (i):
-
-i = 3;
-while (i) { // when i becomes 0, the condition becomes falsy, and the loop stops
-    console.log(i);
-    i--;
-}
-
-// If the loop body has a single statement, we can omit the curly braces {…}:
-
-i = 3;
-while (i) alert(i--);
-
-
-
-// ----------------------------- > BASICS >> Do... While
-
-// “do…while” loop - The condition check can be moved below the loop body using the do..while syntax
-// 	should only be used when you want the body of the loop to execute at least once regardless of the condition being truthy. Usually, ‘while’ is preferred
-
-do {
-    // loop body
-} while (condition);
-
-i = 0;
-do {
-    console.log(i);
-    i++;
-} while (i < 3);
-
-// this loop will print out 1 to 20 in console
-
-
-
 // ----------------------------- > FOR -----------------------------
 
 // for loop
@@ -387,7 +341,7 @@ for (let i = 0; i < 10; i++) {
 
 
 
-// ----------------------------- > FOR >> Continue / Break Escaping Multiple Nested Loop
+// ----------------------------- > FOR >> Continue / Break Escaping Multiple Nested Loop with Labels
 
 // A label is the only way for break/continue to escape a / multiple nested loop(s)
 // You can use a label to identify a statement, and later refer to it using a break or continue statement
@@ -548,3 +502,118 @@ for (let i = 0; i < cats.length; i++) {
 }
 
 console.log(myFavoriteCats); // "My cats are called Pete, Biggles, and Jasmine."
+
+
+
+// ----------------------------- > WHILE -----------------------------
+
+initializer // initializer variable is set before the loop
+
+while (condition) { // Check condition
+
+    // code to run
+
+    final - expression // final-expression is included inside the loop after the code to run
+}
+
+
+
+// While the condition is truthy, the code from the loop body is executed.
+
+let i = 0;
+
+while (i < 3) { // shows 0, then 1, then 2
+    console.log(i);
+    i++;
+}
+
+
+
+// Any expression or variable can be a loop condition, not just comparisons: the condition is evaluated and converted to a boolean by while.
+
+// For instance, a shorter way to write while (i != 0) is while (i):
+
+i = 3;
+
+while (i) { // when i becomes 0, the condition becomes falsy, and the loop stops
+    console.log(i);
+    i--;
+}
+
+
+
+// If the loop body has a single statement, we can omit the curly braces {…}:
+
+i = 3;
+while (i) alert(i--);
+
+
+
+// Example
+
+const kitties = ['Pete', 'Biggles', 'Jasmine'];
+
+let myFavoriteKitties = 'My kitties are called ';
+
+i = 0;
+
+while (i < kitties.length) {
+    if (i === kitties.length - 1) {
+        myFavoriteKitties += `and ${kitties[i]}.`;
+    } else {
+        myFavoriteKitties += `${kitties[i]}, `;
+    }
+
+    i++;
+}
+
+console.log(myFavoriteKitties);     // "My kitties are called Pete, Biggles, and Jasmine."
+
+
+
+// ----------------------------- > WHILE >> Do... While
+
+initializer // initializer variable is set before the loop
+
+do {
+
+    // code to run
+
+    final - expression // final-expression is included inside the loop after the code to run
+
+} while (condition) // Check condition
+
+
+
+// The condition check can be moved below the loop body using the do..while syntax
+// should only be used when you want the body of the loop to execute at least once regardless of the condition being truthy. 
+// Usually, ‘while’ is preferred
+
+i = 0;
+
+do {
+    console.log(i); // 0 1 2
+    i++;
+} while (i < 3);
+
+
+
+// Example
+
+const katten = ['Pete', 'Biggles', 'Jasmine'];
+
+let mijnKatten = 'My katten are called ';
+
+i = 0;
+
+do {
+    if (i === katten.length - 1) {
+        mijnKatten += `and ${katten[i]}.`;
+    } else {
+        mijnKatten += `${katten[i]}, `;
+    }
+
+    i++;
+} while (i < katten.length);
+
+console.log(mijnKatten);     // "My katten are called Pete, Biggles, and Jasmine."
