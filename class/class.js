@@ -30,6 +30,12 @@ Table of Contents
 
 
 
+// Difference between class and constructor:
+// a class is like a blueprint and defines the framework that other objects can inherit
+// a constructor is something that actually creates the object in the program
+
+
+
 // Example as seen in constructor.js
 
 // A base class is defined using the new reserved 'class' keyword

@@ -60,6 +60,8 @@ valueOf
 // That prototype object has a prototype of its own, and so on until an object is reached with null as its prototype.
 // By definition, null has no prototype, and acts as the final link in this prototype chain.
 
+// With prototyping, each level of the hierarchy is represented by a separate object, and they are linked together via the __proto__ property.
+
 
 
 // When you try to access a property of an object: 
