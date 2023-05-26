@@ -1,17 +1,19 @@
-// Table of Contents
+/* 
+Table of Contents
 
-// > BASICS
-// > USES
-// > HOW TO OOP
-// > STRUCTURE OF OBJECT-ORIENTED PROGRAMMING
-// > MAIN PRINCIPLES OF OOP
-// >> Inheritance
-// >> Encapsulation
-// >> Abstraction
-// >> Polymorphism
-// > BENEFITS OF OOP
-// > CRITICISM OF OOP
-// > JAVASCRIPT AND OOP
+> BASICS
+> USES
+> HOW TO OOP
+> STRUCTURE OF OBJECT-ORIENTED PROGRAMMING
+> MAIN PRINCIPLES OF OOP
+>> Inheritance
+>> Encapsulation
+>> Abstraction
+>> Polymorphism
+> BENEFITS OF OOP
+> CRITICISM OF OOP
+> JAVASCRIPT AND OOP 
+*/
 
 
 
@@ -82,16 +84,16 @@ employee.getWage();
 
 // ----------------------------- > STRUCTURE OF OBJECT-ORIENTED PROGRAMMING -----------------------------
 
-// Classes 
+// ----- Classes 
 // are user-defined data types that act as the blueprint for individual objects, attributes and methods.
 
-// Objects 
+// ----- Objects 
 // instances of a class created with specifically defined data. 
 
-// Methods 
+// ----- Methods 
 // functions that are defined inside a class that describe the behaviors of an object. 
 
-// Attributes 
+// ----- Attributes 
 // defined in the class template and represent the state of an object. 
 // Objects will have data stored in the attributes field. 
 // Class attributes belong to the class itself.

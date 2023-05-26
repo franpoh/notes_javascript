@@ -1,6 +1,19 @@
 /* 
 Table of Contents
 
+> EXAMPLES
+> FOR
+>> Any Part Of For Can Be Skipped
+>> For... In
+>> For... In >>> Array
+>> For... Of
+>> Break
+>> Continue
+>> Continue / Break Cannot Be Used With Conditional Operator ?
+>> Continue / Break Escaping Multiple Nested Loop with Labels
+> WHEN TO USE FOR... IN VS FOR... OF
+> WHILE
+>> Do... While
 */
 
 

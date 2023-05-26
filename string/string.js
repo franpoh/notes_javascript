@@ -1,10 +1,12 @@
-// Table of Contents
+/* 
+Table of Contents
 
-// > CONCATENATE STRINGS USING + OPERATOR
-// > TOSTRING
-// > TEMPLATE LITERAL
-// >> ${ } Construct 
-// >> Split A Traditional String Over Multiple Lines
+> CONCATENATE STRINGS USING + OPERATOR
+> TOSTRING
+> TEMPLATE LITERAL
+>> ${ } Construct 
+>> Split A Traditional String Over Multiple Lines 
+*/
 
 
 

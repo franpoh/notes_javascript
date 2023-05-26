@@ -1,13 +1,15 @@
-// Table of Contents
+/* 
+Table of Contents
 
-// > SPREAD ...
-// >> Syntax
-// >> In Function Calls
-// >> In Calling Constructors
-// >> In Array Literals
-// >>> A Better Way To Combine Arrays
-// >> Spread In Object Literals
-// > REST ...
+> SPREAD ...
+>> Syntax
+>> In Function Calls
+>> In Calling Constructors
+>> In Array Literals
+>>> A Better Way To Combine Arrays
+>> Spread In Object Literals
+> REST ... 
+*/
 
 
 

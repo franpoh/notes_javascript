@@ -161,7 +161,7 @@ obj.whatsThis(); // 'Custom'; this in the function is set to obj
 
 // ----------------------------- > FUNCTION >> Strict / Non-strict
 
-// Strict Mode
+// ----- Strict Mode
 // JavaScript strict mode does not allow default binding.
 // So, when used in a function, in strict mode, this is undefined
 
@@ -176,7 +176,7 @@ console.log(myFunction()); // undefined
 
 
 
-// Default - Non-Strict - In a JavaScript function, the owner of the function is the default binding for this.
+// ----- Default - Non-Strict - In a JavaScript function, the owner of the function is the default binding for this.
 // In non-strict mode, a special process called this substitution ensures that the value of this is always an object.
 
 // If a function is called with this set to undefined or null, this gets substituted with globalThis.

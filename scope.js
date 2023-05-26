@@ -1,10 +1,12 @@
-// Table of Contents
-// > SCOPE
-// > LET / CONST
-// > VAR
-// > UNDECLARED VARIABLES 
-// > CLOSURE
+/* 
+Table of Contents
 
+> SCOPE
+> LET / CONST
+> VAR
+> UNDECLARED VARIABLES 
+> CLOSURE
+*/
 
 
 // ----------------------------- > SCOPE -----------------------------

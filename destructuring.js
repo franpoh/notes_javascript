@@ -460,7 +460,6 @@ const [avery, benoit] = objt; // TypeError: obj is not iterable
 
 
 
-// FIXME: Research Generators
 // Iterables are only iterated until all bindings are assigned.
 
 const num = {
@@ -471,11 +470,11 @@ const num = {
         }
     },
 };
+
 const [t, u] = num; // 0 1
 
 
 
-// FIXME: Research Generators
 // The rest binding is eagerly evaluated and creates a new array, instead of using the old iterable.
 
 const obje = {
@@ -486,6 +485,7 @@ const obje = {
         }
     },
 };
+
 const [i, j, ...theRest] = obje; // 0 1 2 3
 console.log(theRest); // [2, 3] 
 

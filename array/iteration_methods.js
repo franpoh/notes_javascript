@@ -1,15 +1,17 @@
-// Table of Contents
+/* 
+Table of Contents
 
-// > ARRAY.FOREACH
-// > ARRAY.MAP
-// > ARRAY.FILTER
-// > ARRAY.REDUCE
-// > ARRAY.REDUCERIGHT
-// > ARRAY.EVERY
-// > ARRAY.SOME
-// > ARRAY.INCLUDES
-// > ARRAY.FIND
-// > ARRAY.KEYS
+> ARRAY.FOREACH
+> ARRAY.MAP
+> ARRAY.FILTER
+> ARRAY.REDUCE
+> ARRAY.REDUCERIGHT
+> ARRAY.EVERY
+> ARRAY.SOME
+> ARRAY.INCLUDES
+> ARRAY.FIND
+> ARRAY.KEYS 
+*/
 
 
 
@@ -357,9 +359,9 @@ function myFunction(value, index, array) {
 console.log(first); // 25
 
 // Note that the function takes 3 arguments:
-// 	The item value
-// 	The item index
-// 	The array itself
+// The item value
+// The item index
+// The array itself
 
 
 

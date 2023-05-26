@@ -13,10 +13,6 @@ Table of Contents
 
 
 
-// This is copied from the repo Cheatsheet >  1_sheet.js
-
-
-
 // ----------------------------- > EXAMPLE -----------------------------
 
 // Create object literal in browser console:
