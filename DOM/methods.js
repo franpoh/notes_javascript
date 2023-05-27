@@ -1,7 +1,6 @@
 /* 
 Table of Contents
 
-> DOMCONTENTLOADED
 > DOCUMENT.CREATEELEMENT() 
 > GET ELEMENTS
 >> document.getElementById() 
@@ -29,16 +28,6 @@ Table of Contents
 >> Display
 >> Text Fade Transition Example
 */
-
-
-// ----------------------------- > DOMCONTENTLOADED -----------------------------
-
-// event listener, listens for the browser's "DOMContentLoaded" event, which signifies that the HTML body is completely loaded and parsed. 
-// The JavaScript inside this block will not run until after that event is fired
-
-document.addEventListener("DOMContentLoaded", function () {
-    // ...
-});
 
 
 
