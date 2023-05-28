@@ -1,0 +1,93 @@
+/* CURRENTLY UNDER CONSTRUCTION */
+
+/* 
+Table of Contents
+*/
+
+
+
+// callback hell is when people try to write JavaScript in a way where execution happens visually from top to bottom.
+
+// Instead of immediately returning some result like most functions, functions that use callbacks take some time to produce a result. 
+// The word 'asynchronous', aka 'async' just means 'takes some time' or 'happens in the future, not right now'
+
+// The most important aspect of avoiding callback hell is moving functions out of the way so that the programs flow can be more easily understood without newcomers having to wade through all the detail of the functions to get to the meat of what the program is trying to do.
+
+// You can start by moving the functions to the bottom of the file, then graduate to moving them into another file that you load in using a relative require like require('./photo-helpers.js') and then finally move them into a standalone module like require('image-resize').
+
+// How do I fix callback hell?
+
+// 1. Keep your code shallow
+// don’t stack too much code into a single object
+// Don't nest functions. Give them names and place them at the top level of your program
+// Use function hoisting to your advantage to move functions 'below the fold'
+
+// 2. Modularize
+// Write small modules that each do one thing, and assemble them into other modules that do a bigger thing. You can't get into callback hell if you don't go there.
+
+// Here is a new file called formuploader.js that contains our two functions from before:
+
+module.exports.submit = formSubmit
+
+function formSubmit (submitEvent) {
+var name = document.querySelector('input').value
+request({
+uri: "http://example.com/upload",
+body: name,
+method: "POST"
+}, postResponse)
+}
+
+function postResponse (err, response, body) {
+var statusMessage = document.querySelector('.status')
+if (err) return statusMessage.value = err
+statusMessage.value = body
+}
+
+// The module.exports bit is an example of the node.js module system which works in node, Electron and the browser using browserify. I quite like this style of modules because it works everywhere, is very simple to understand and doesn't require complex configuration files or scripts.
+
+// Now that we have formuploader.js (and it is loaded in the page as a script tag after being browserified) we just need to require it and use it! 
+
+// Here is how our application specific code looks now:
+
+var formUploader = require('formuploader')
+document.querySelector('form').onsubmit = formUploader.submit
+
+// Now our application is only two lines of code and has the following benefits:
+// easier for new developers to understand
+// they won't get bogged down by having to read through all of the formuploader functions
+// formuploader can get used in other places without duplicating code and can easily be shared on github or npm
+
+// Here are some rules of thumb when creating a module:
+
+// Start by moving repeatedly used code into a function
+
+// When your function (or a group of functions related to the same theme) get big enough, move them into another file and expose them using module.exports. You can load this using a relative require
+// If you have some code that can be used across multiple projects give it it's own readme, tests and package.json and publish it to github and npm. 
+
+// A good module is small and focuses on one problem
+
+// Individual files in a module should not be longer than around 150 lines of JavaScript
+
+// A module shouldn't have more than one level of nested folders full of JavaScript files. If it does, it is probably doing too many things
+
+// If it takes more than a few minutes to understand what is happening, it probably isn't a very good module.
+
+// 3. Handle every single error
+// make your code stable
+// this is primarily for platform errors caused by things like invalid file permissions, hard drive failure, no network connection etc.
+
+// With callbacks the most popular way to handle errors is the Node.js style where the first argument to the callback is always reserved for an error.
+
+var fs = require('fs')
+
+fs.readFile('/Does/not/exist', handleFile)
+
+function handleFile (error, file) {
+if (error) return console.error('Uhoh, there was an error', error)
+// otherwise, continue on and use `file` in your code
+}
+
+// Having the first argument be the error is a simple convention that encourages you to remember to handle your errors.
+
+// Code linters can also be configured to help you remember to handle callback errors. The simplest one to use is called standard. All you have to do is run $ standard in your code folder and it will show you every callback in your code with an unhandled error.
