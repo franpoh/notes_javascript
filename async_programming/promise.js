@@ -4,12 +4,290 @@
 Table of Contents
 */
 
-// ----------------------------- Promise -----------------------------
 
-// A Promise is a proxy for a value not necessarily known when the promise is created. 
-// It allows you to associate handlers with an asynchronous action's eventual success value or failure reason. 
-// This lets asynchronous methods return values like synchronous methods: 
-// instead of immediately returning the final value, the asynchronous method returns a promise to supply the value at some point in the future.
+
+// Asynchronous programming is a technique that enables your program to start a potentially long-running task 
+// and still be able to be responsive to other events while that task runs, rather than having to wait until that task has finished. 
+// Once that task has finished, your program is presented with the result.
+
+
+
+// Many functions provided by browsers, especially the most interesting ones, can potentially take a long time, and therefore, are asynchronous. For example:
+
+// Making HTTP requests using fetch() (send a request message to a remote server, and it sends us back a response)
+// Accessing a user's camera or microphone using getUserMedia()
+// Asking a user to select files using showOpenFilePicker()
+
+
+
+// ----------------------------- > SYNCHRONOUS PROGRAMMING -----------------------------
+
+// With synchronous programming, the browser effectively steps through the program one line at a time, in the order we wrote it. 
+// At each point, the browser waits for the line to finish its work before going on to the next line. 
+// It has to do this because each line depends on the work done in the preceding lines.
+
+// The basic problem with long-running synchronous functions is that while the function is running, 
+// our program is completely unresponsive: you can't type anything, click anything, or do anything else.
+
+
+
+// ----------------------------- > EVENT HANDLERS -----------------------------
+
+// Event handlers are really a form of asynchronous programming: 
+// you provide a function (the event handler) that will be called, not right away, but whenever the event happens. 
+
+// If "the event" is "the asynchronous operation has completed", 
+// then that event could be used to notify the caller about the result of an asynchronous function call.
+
+
+
+// For example, the XMLHttpRequest API enables you to make HTTP requests to a remote server using JavaScript. 
+// Since this can take a long time, it's an asynchronous API, 
+// and you get notified about the progress and eventual completion of a request by attaching event listeners to the XMLHttpRequest object.
+
+
+document.querySelector("#button").addEventListener("click", () => { // 1. Click the button to start the HTTP request process
+
+    log.textContent = ""; // Empty text block for displaying status updates
+
+    const xhr = new XMLHttpRequest(); // 2A. Create new HTTP request
+
+    xhr.addEventListener("loadend", () => { // 3A. listening for loadend event, which is fired when a request has completed
+        log.textContent = `${log.textContent}Finished with status: ${xhr.status}`; // 3B. updates log.textContent 'Finished with status: 200'
+    });
+
+    xhr.open( // 2B. Starts a new request...
+        "GET", // ... to get data...
+        "https://raw.githubusercontent.com/mdn/content/main/files/en-us/_wikihistory.json" // ... from server
+    );
+
+    xhr.send(); // 2C. sends the request to get data from server, to the server
+
+    log.textContent = `${log.textContent}Started XHR request\n`; // 2D. updates log.textContent 'Started XHR request' 
+
+});
+
+// 'Started XHR request'
+// 'Finished with status: 200'
+
+// 1. Press button to send a request. 
+// 2A, 2B, 2C. We create a new XMLHttpRequest and listen for its loadend event (As seen in 3A)
+// 2D. Meanwhile, we log "Started XHR request"
+// 3A, 3B. When the loadend event is fired, the handler logs a "Finished!" message along with the status code.
+
+// Note Step 2D, when we are able to log 'Started XHR request' while the request itself is running
+// this shows that our program can continue to run while the request is going on, and our event handler will be called when the request is complete.
+
+
+
+// ----------------------------- > CALLBACK -----------------------------
+
+// An event handler is a particular type of callback. 
+// A callback is just a function that's passed into another function, with the expectation that the callback will be called at the appropriate time. 
+// As we just saw, callbacks used to be the main way asynchronous functions were implemented in JavaScript.
+
+// However, callback-based code can get hard to understand when the callback itself has to call functions that accept a callback. 
+// This is a common situation if you need to perform some operation that breaks down into a series of asynchronous functions.
+
+
+
+// ----- Synchronous Example
+// A straightforward single operation that's split into three steps, where each step depends on the last step
+
+function doStep1(init) {
+    return init + 1;
+}
+
+function doStep2(init) {
+    return init + 2;
+}
+
+function doStep3(init) {
+    return init + 3;
+}
+
+function doOperation() {
+    let result = 0;
+    result = doStep1(result);
+    result = doStep2(result);
+    result = doStep3(result);
+    console.log(`result: ${result}`);
+}
+
+doOperation(); // result: 6
+
+
+
+// ----- Callback Example
+// We rewrite the previous example using callbacks
+
+function doStep1(init, callback) {
+    const result = init + 1;
+    callback(result);
+}
+
+function doStep2(init, callback) {
+    const result = init + 2;
+    callback(result);
+}
+
+function doStep3(init, callback) {
+    const result = init + 3;
+    callback(result);
+}
+
+function doOperation() {
+    doStep1(0, (result1) => {
+        doStep2(result1, (result2) => {
+            doStep3(result2, (result3) => {
+                console.log(`result: ${result3}`);
+            });
+        });
+    });
+}
+
+doOperation(); // result: 6
+
+
+
+// Because we have to call callbacks inside callbacks, 
+// we get a deeply nested doOperation() function, which is much harder to read and debug. 
+// This is sometimes called "callback hell" or the "pyramid of doom" (because the indentation looks like a pyramid on its side).
+
+// When we nest callbacks like this, it can also get very hard to handle errors: 
+// often you have to handle errors at each level of the "pyramid", instead of having error handling only once at the top level.
+
+// For these reasons, most modern asynchronous APIs don't use callbacks. 
+// Instead, the foundation of asynchronous programming in JavaScript is the Promise
+
+
+
+// ----------------------------- > CALLBACK >> Callback Hell
+
+// callback hell is when people try to write JavaScript in a way where execution happens visually from top to bottom.
+
+// The most important aspect of avoiding callback hell is moving functions out of the way 
+// so that the program flow can be more easily understood 
+// without newcomers having to wade through all the detail of the functions to get to the meat of what the program is trying to do.
+
+
+
+// You can start by separating out a long function into different components
+
+// ----- Instead of this:
+
+function submitForm() {
+    /* Long code for sending form details to database */
+    /* Long code for navigating to user account page */
+    /* Long code for displaying a welcome message */
+}
+
+// ----- Do this:
+
+function submitForm() {
+    /* Long code for sending form details to database */
+}
+
+function navigateUser() {
+    /* Long code for navigating to user account page */
+}
+
+function displayWelcomeMsg() {
+    /* Long code for displaying a welcome message */
+}
+
+function submissionDone() {
+    submitForm();
+    navigateUser();
+    displayWelcomeMsg();
+}
+
+
+
+// You can then export individual functions into standalone files, and import them to your selected file for use (See Modularization repo)
+
+// Another advantage is that these individual functions can be reused elsewhere if needed
+
+
+
+// don’t stack too much code into a single object
+
+// Don't nest functions. Give them names and place them at the top level of your program
+
+// A good module is small and focuses on one problem
+
+// Individual files in a module should not be longer than around 150 lines of JavaScript
+
+// If it takes more than a few minutes to understand what is happening, it probably isn't a very good module.
+
+// Handle every single error and make your code stable
+
+
+
+// ----------------------------- > PROMISE -----------------------------
+
+// Promises are the foundation of asynchronous programming in modern JavaScript.
+
+// A promise is an object returned by an asynchronous function, which represents the current state of the operation. 
+// At the time the promise is returned to the caller, the operation often isn't finished, 
+// but the promise object provides methods to handle the eventual success or failure of the operation.
+
+
+
+// With the use of callbacks to implement asynchronous functions, 
+// you call the asynchronous function, passing in your callback function. 
+// The function returns immediately and calls your callback when the operation is finished.
+
+// A promise is a returned object to which you attach callbacks, instead of passing callbacks into a function
+// The Promise object represents the eventual completion (or failure) of an asynchronous operation and its resulting value.
+
+
+
+// Imagine a function, submitForm(), 
+// which asynchronously submits a form when given user details, and two callback functions: 
+// one called if the form submission is successful, and the other called if an error occurs.
+
+function successCallback(result) {
+  console.log(`Form Submitted`);
+}
+
+function failureCallback(error) {
+  console.error(`Error Submitting Form`);
+}
+
+submitForm(userDetails, successCallback, failureCallback);
+
+// If createAudioFileAsync() were rewritten to return a promise, you would attach your callbacks to it instead:
+
+submitForm(userDetails).then(successCallback, failureCallback);
+
+
+
+// A Promise is in one of these states:
+
+// pending: initial state, neither fulfilled nor rejected.
+// fulfilled: meaning that the operation was completed successfully.
+// rejected: meaning that the operation failed.
+
+// The eventual state of a pending promise can either be fulfilled with a value or rejected with a reason (error). 
+// When either of these options occur, the associated handlers queued up by a promise's then method are called. 
+// If the promise has already been fulfilled or rejected when a corresponding handler is attached, the handler will be called, 
+// so there is no *race condition between an asynchronous operation completing and its handlers being attached.
+
+// * Race Condition: A race condition occurs when two threads access a shared variable at the same time
+
+// A promise is said to be settled if it is either fulfilled or rejected, but not pending.
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/promises.png
+
+
+
+
+
+
+
+
+
 
 // You don't "declare" promises. new Promise creates a promise and calls the executor function you pass it. You do that when you want the work the executor does to be started (right then), not later.
 
@@ -32,7 +310,7 @@ thePromise.then(
     function (error) { /* code if some error */ }
 );
 
-// Example
+// ----- Example
 
 let p = new Promise((resolve, reject) => {
     let a = 1 + 2;
@@ -49,7 +327,7 @@ p.then((message) => { // anything inside .then will run for 'resolve'
     console.log('Promise unresolved, ' + message);
 }) // Promise unresolved, Failed
 
-// Example of a promise inside a function
+// ----- Example of a promise inside a function
 
 function watchTutorialPromise() {
     let userLeft = false
@@ -77,7 +355,7 @@ watchTutorialPromise().then(message => {
     console.log(error.name + ' ' + error.message)
 })
 
-// Example of Promise with then and also async
+// ----- Example of Promise with then and also async
 
 class Database {
     #data = [
@@ -224,7 +502,7 @@ async function start() { // "async" keyword is declared with the function
 
 start();
 
-// another example
+// another 
 
 function handle(isError) {
     return new Promise((resolve, reject) => {
@@ -247,7 +525,7 @@ async function test() {
 
 test();
 
-// more example
+// ----- More Example
 
 function pay(isSuccess) {
     return new Promise((resolve) => {
@@ -294,7 +572,7 @@ async function start() {
 
 start(); // isSuccess false
 
-// Even more examples
+// ----- Even More Examples
 
 const messages = [
     {
@@ -343,14 +621,14 @@ function send(to, message) {
 
 // Waiting for a Timeout
 
-// Example Using Callback
+// ----- Example Using Callback
 setTimeout(function () { myFunction("I love You !!!"); }, 3000);
 
 function myFunction(value) {
     document.getElementById("demo").innerHTML = value;
 }
 
-// Example Using Promise
+// ----- Example Using Promise
 let mijnPromise = new Promise(function (myResolve, myReject) {
     setTimeout(function () { myResolve("I love You !!"); }, 3000);
 });
@@ -434,7 +712,9 @@ Promise.all([promise1, promise2, promise3]).then((values) => {
     console.log(values);
 }); // expected output: Array [3, 42, "foo"]
 
-// Another example
+
+
+// ----- Another Example
 
 const recordVideoOne = new Promise((resolve, reject) => {
     resolve('Video 1 Recorded')

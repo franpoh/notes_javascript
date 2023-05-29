@@ -47,7 +47,7 @@ document.body.appendChild(btn); // Append <button> to <body>
 
 
 
-// Example of now to do almost the same thing using different interfaces
+// ----- Example of now to do almost the same thing using different interfaces
 
 var para = document.createElement("P"); // Create a <p> element
 para.innerText = "This is a paragraph"; // Insert text
@@ -200,7 +200,7 @@ document.body.appendChild(para); // Append <p> to <body>
 
 
 
-// list example
+// ----- List Example
 
 var node = document.createElement("LI"); // Create a <li> node
 var textnode = document.createTextNode("Water"); // Create a text node

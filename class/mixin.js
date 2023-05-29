@@ -11,7 +11,7 @@
 
 
 
-// Basic Example
+// ----- Basic Example
 
 let greetingMixin = {
     sayHi() {

@@ -40,7 +40,7 @@ class Rectangle {
 
 
 
-// Example as seen in class.js
+// ----- Example as seen in class.js
 
 // A base class is defined using the new reserved 'class' keyword
 class Polygon {

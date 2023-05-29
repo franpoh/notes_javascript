@@ -179,7 +179,7 @@ for (variable in array) {
 
 
 
-// Example
+// ----- Example
 
 const food = ["banana", "orange", "pineapple"];
 
@@ -193,7 +193,7 @@ for (let x in food) {
 
 
 
-// Example
+// ----- Example
 
 const foodie = { yellow: "banana", orange: "orange", brown: "pineapple" };
 
@@ -207,7 +207,7 @@ for (let x in foodie) {
 
 
 
-// Example
+// ----- Example
 
 let user = {
     name: "John",
@@ -222,7 +222,7 @@ for (let key in user) {
 
 
 
-// Example
+// ----- Example
 
 cats = ['Leopard', 'Serval', 'Jaguar', 'Tiger', 'Caracal', 'Lion'];
 
@@ -562,7 +562,7 @@ while (i) alert(i--);
 
 
 
-// Example
+// ----- Example
 
 const kitties = ['Pete', 'Biggles', 'Jasmine'];
 
@@ -611,7 +611,7 @@ do {
 
 
 
-// Example
+// ----- Example
 
 const katten = ['Pete', 'Biggles', 'Jasmine'];
 

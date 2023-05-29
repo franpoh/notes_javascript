@@ -62,7 +62,7 @@ function myFunction() {
 
 
 
-// Example 1
+// ----- Example 1
 
 const add = (function () { // add is assigned to the return value of a self-invoking function
     let counter = 0;
@@ -80,7 +80,7 @@ add(); // the counter is now 3
 
 
 
-// Example 2
+// ----- Example 2
 
 function outer() {
     let animal = "Tiger";
@@ -102,7 +102,7 @@ console.log(result); // Rabbit
 
 
 
-// Example 3
+// ----- Example 3
 
 function outerFunc(a) {
     function innerFunc(b) {

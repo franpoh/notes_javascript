@@ -83,7 +83,7 @@ list[1] // uses the typical array syntax to fetch the second item in the list
 
 
 
-// Example: Table Object
+// ----- Example: Table Object
 
 // implements a specialized HTMLTableElement interface, which includes such methods as createCaption and insertRow. 
 // But since it's also an HTML element, table implements the Element interface described in the DOM Element Reference chapter. 

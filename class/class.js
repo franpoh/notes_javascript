@@ -36,7 +36,7 @@ Table of Contents
 
 
 
-// Example as seen in constructor.js
+// ----- Example as seen in constructor.js
 
 // A base class is defined using the new reserved 'class' keyword
 class Polygon {
@@ -176,7 +176,7 @@ const Rectangle = class Rectangle2 {
 
 
 
-// Example For Private And Static Uses
+// ----- Example For Private And Static Uses
 
 class Permission {
     // These are static constants that show what are the possible values when checking permission.
@@ -766,7 +766,7 @@ newPayment.pay();
 
 
 
-// Example
+// ----- Example
 
 // Create a class named "Model" which will inherit the methods from the "Car" class
 
@@ -794,7 +794,7 @@ document.getElementById("demo").innerHTML = mycar.show(); // I have a Ford, it i
 
 
 
-// Example
+// ----- Example
 
 class Vehicle {
     constructor(carPlateNo, type, noOfWheels = 4) {
@@ -836,7 +836,7 @@ console.log(reliantRobin.inspect()); // This vehicle is a Reliant Robin (83AN) a
 
 
 
-// Example
+// ----- Example
 
 class BaseSignal {
     constructor(transmitter) {

@@ -106,7 +106,7 @@ console.log(genYield.next()); // { value: 'snack', done: false }
 
 
 
-// Another example with a yield expression that increments 
+// ----- Another example with a yield expression that increments 
 
 function* idMaker() {
     let index = 0;

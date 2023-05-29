@@ -693,7 +693,7 @@ arr.forEach(saySquared) // 1 2 3 4
 
 
 
-// Another Example 
+// ----- Another Example 
 
 function sayIndexAndValue(value, index) {
     console.log(`Index ${index} contains: ${value}.`)
@@ -795,7 +795,7 @@ func1(1, 2, 3);
 
 
 
-// Another Example
+// ----- Another Example
 
 function myFunction() {
     console.log(arguments);

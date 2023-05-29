@@ -23,7 +23,7 @@ switch (expr) { // expr - An expression whose result is matched against each cas
 
 
 
-// Example
+// ----- Example
 
 let animal;
 
@@ -47,7 +47,7 @@ console.log(animal); // grizzly bear
 
 
 
-// Example with let declared without being defined
+// ----- Example with let declared without being defined
 
 var Animal = 'Giraffe';
 

@@ -264,7 +264,7 @@ console.log(boundFoo() === globalObject); // true
 
 
 
-// NOTE: Example
+// ----- NOTE: Example
 
 const obj = {
     getThisGetter() {
@@ -603,7 +603,7 @@ console.log(add.apply(o, [10, 20])); // 34
 
 
 
-// Example
+// ----- Example
 
 function f() {
     return this.a;
@@ -620,7 +620,7 @@ console.log(o.a, o.f(), o.gg(), o.hh()); // 37,37, azerty, azerty
 
 
 
-// Example
+// ----- Example
 
 const burger = {
     x: 42,
@@ -655,7 +655,7 @@ console.log(boundGetX()); // 42
 
 
 
-// Example
+// ----- Example
 
 function Product(name, price) {
     this.name = name;
@@ -675,7 +675,7 @@ console.log(dutch.category); // food
 
 
 
-// Example
+// ----- Example
 
 const person3 = {
     fullName: function () {
@@ -690,7 +690,7 @@ person3.fullName.call(person4);  // John Doe
 
 
 
-// Example
+// ----- Example
 
 function add(c, d) {
     return this.a + this.b + c + d;
@@ -710,7 +710,7 @@ console.log(add.call(o, 5, 7)); // 16
 
 
 
-// Example
+// ----- Example
 
 const numbers = [5, 6, 2, 3, 7];
 
@@ -724,7 +724,7 @@ console.log(min); // 2
 
 
 
-// Example
+// ----- Example
 
 function add(c, d) {
     return this.a + this.b + c + d;
