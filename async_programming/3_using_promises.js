@@ -6,67 +6,14 @@ Table of Contents
 
 
 
-// ----------------------------- > WHAT IS A PROMISE -----------------------------
-
-// Promises are the foundation of asynchronous programming in modern JavaScript.
-
-// A promise is an object returned by an asynchronous function, which represents the current state of the operation. 
-// At the time the promise is returned to the caller, the operation often isn't finished, 
-// but the promise object provides methods to handle the eventual success or failure of the operation.
-
-
-
-// ----------------------------- > WHAT IS A PROMISE >> States
-
-// A Promise is in one of these states:
-
-// ----- Pending
-// Initial state, neither fulfilled nor rejected. 
-// Result is undefined.
-
-// ----- Fulfilled 
-// Meaning that the operation was completed successfully. 
-// Result is a value.
-
-// ----- Rejected
-// Meaning that the operation failed. 
-// Result is an error object. 
-
-
-
-// The eventual state of a pending promise can either be fulfilled with a value or rejected with a reason (error). 
-// When either of these options occur, the associated handlers queued up by a promise's then method are called. 
-
-myPromise.then(
-    // below are the 'associated handlers'
-    function (value) { /* code for handling successful operation */ },
-    function (error) { /* code for handling failed operation */ }
-);
-
-
-
-// If the promise has already been fulfilled or rejected when a corresponding handler is attached, 
-// the handler will be called, 
-// so there is no *race condition between an asynchronous operation completing and its handlers being attached.
-
-// * Race Condition: A race condition occurs when two threads access a shared variable at the same time
-
-
-
-// A promise is said to be settled if it is either fulfilled or rejected, but not pending.
-
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/promises.png
-
-
-
-// ----------------------------- > USING PROMISES -----------------------------
-
 // A Promise is an object representing the eventual completion or failure of an asynchronous operation. 
-// NOTE: Since most people are consumers of already-created promises, this section will explain consumption of returned promises before explaining how to create them.
+
+// NOTE: Since most people are consumers of already-created promises, 
+// this section will explain consumption of returned promises before explaining how to create them.
 
 
 
-// ----------------------------- > USING PROMISES >> Difference Between Callback And Promise 
+// ----------------------------- > DIFFERENCE BETWEEN CALLBACK AND PROMISE -----------------------------
 
 // With the use of callbacks to implement asynchronous functions, 
 // you call the asynchronous function, passing in your callback function. 
@@ -93,33 +40,100 @@ submitForm(userDetails, successCallback, failureCallback);
 
 // If submitForm() were rewritten to return a promise, you would attach your callbacks to it instead:
 
-submitForm(userDetails).then(successCallback, failureCallback); // note the rewritten function with 'function(parameter).then(successFunction, failureFunction)'
+submitForm(userDetails) // this returns a promise
+    // attaching callbacks to the promise 
+    .then(successCallback)
+    .catch(failureCallback);
 
 
-
-// ----------------------------- > USING PROMISES >> Chaining
+// ----------------------------- > CHAINING -----------------------------
 
 // A common need is to execute two or more asynchronous operations back to back, 
 // where each subsequent operation starts when the previous operation succeeds, with the result from the previous step. 
 
 
 
+// ----- Callback Example
+
 // In the old days, doing several asynchronous operations in a row would lead to the classic callback pyramid of doom:
 
-doSomething(function (result) {
-    doSomethingElse(result, function (newResult) {
-        doThirdThing(newResult, function (finalResult) {
-            console.log(`Got the final result: ${finalResult}`);
-        }, failureCallback);
-    }, failureCallback);
-}, failureCallback);
+// We will demonstrate the callback example with XMLHttpRequest, which is a callback-based API
+// Run this in browser console as XMLHttpRequest only works in browsers
+
+const req = new XMLHttpRequest();
+
+function doStep1(req1, callback) {
+    console.log('Started Request');
+    req1.open("GET", "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json");
+    req1.send();
+    callback(req1);
+}
+
+function doStep2(req2, callback) {
+    console.log('Request Pending');
+    callback(req2);
+}
+
+function doStep3(req3, callback) {
+    // listening for loadend event, which is fired when a request has completed
+    req3.addEventListener("loadend", () => {
+        callback(req3);
+    });
+}
+
+function doOperation() {
+    doStep1(req, (res1) => {
+        doStep2(res1, (res2) => {
+            doStep3(res2, (res3) => {
+                console.log(`Finished with status: ${res3.status}`);
+            });
+        });
+    });
+}
+
+doOperation();
+
+// Started Request
+// Request Pending
+// Finished with status: 200
 
 
+
+// ----- Promise Example
 
 // With promises, we accomplish this by creating a promise chain. 
 
 // The API design of promises makes this great, 
 // because callbacks are attached to the returned promise object, instead of being passed into a function.
+
+
+
+// We will demonstrate the promise example with Fetch, which is a promise-based API
+
+// This is just a very simple promise that returns a URL for demonstrating how .then works
+// We'll learn about creating our own promises a bit later
+var fetchPromise = new Promise((resolve) => {
+    resolve("https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json")
+});
+
+fetchPromise
+    .then((res1) => { // equivalent to doStep1
+        console.log('Started Request');
+        return fetch(res1)
+    })
+    .then((res2) => { // equivalent to doStep2
+        console.log('Request Pending');
+        return res2;
+    })
+    .then((res3) => { // equivalent to doStep3's callback. doStep3's loadend event listener is not needed here. 
+        console.log(`Finished with status: ${res3.status}`);
+    })
+
+// Started Request
+// Request Pending
+// Finished with status: 200
+
+
 
 // Here's the magic: the then() function returns a new promise, different from the original:
 
@@ -139,45 +153,102 @@ const secondPromise = promise.then(successCallback, failureCallback);
 // and 'catch(failureCallback)' is short for 'then(null, failureCallback)' — 
 // so if your error handling code is the same for all steps, you can attach it to the end of the chain:
 
-doSomething()
-    .then(function (result) {
-        return doSomethingElse(result);
+
+
+var fetchPromise = fetch(
+    "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json"
+);
+
+fetchPromise
+    .then(function (result1) { // Step 1
+        console.log('Response received with status ', result1.status);
+        return result1;
     })
-    .then(function (newResult) {
-        return doThirdThing(newResult);
+    .then(function (result2) { // Step 2
+        let res = result2.json(); // json() used to parse the JSON response to a Javascript object
+        console.log('Res as of now: ', res); // Promise { <state>: "pending" } ...
+        return res;
     })
-    .then(function (finalResult) {
-        console.log(`Got the final result: ${finalResult}`);
+    .then(function (result3) { // Step 3
+        console.log('Res when passed to the next .then: ', result3); // Array(12) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ]
+        console.log('First item in the array: ', result3[0]);
     })
-    .catch(failureCallback);
+    .catch(function (error) {
+        console.log(`Operation Failed: ${error}`);
+    });
+
+// Response received with status 200
+// Res as of now: Promise { <state>: "pending" } ...
+// Res when passed to the next .then: Array(12) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ]
+// First item in the array: Object { name: "baked beans", price: 0.4, image: "beans.jpg", type: "vegetables" } ...
 
 
 
-// You might see this expressed with arrow functions instead:
+// NOTE: A short side note here about how a seemingly same item (res) has 2 different values depending on where it is
 
-doSomething()
-    .then((result) => doSomethingElse(result))
-    .then((newResult) => doThirdThing(newResult))
-    .then((finalResult) => {
-        console.log(`Got the final result: ${finalResult}`);
+// Definition of Response: json() method by MDN: 
+// The json() method of the Response interface takes a Response stream and reads it to completion. 
+// It returns a promise which resolves with the result of parsing the body text as JSON, with the result being a Javascript object
+
+// Because we are dealing with json() - which is asynchronous - there is no waiting around for responses. Code continues to execute.
+
+// therefore, in Step 2
+// instead of waiting for waiting for result2.json() to resolve, the console.log logs a promise that is pending
+
+// The promise will resolve in Step 3, and the console.log will log an array
+// thus we can now access the value of the item that we fetched from the server
+
+
+
+// NOTE: For the following examples, please note that with arrow functions, '() => x' is short for '() => { return x; }'
+
+// The above example expressed with arrow functions instead:
+
+
+var fetchPromise = fetch(
+    "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json"
+);
+
+fetchPromise
+    .then((result1) => {
+        console.log('Response received with status ', result1.status);
+        return result1;
     })
-    .catch(failureCallback);
+    .then((result2) => {
+        let res = result2.json();
+        console.log('Res as of now: ', res);
+        return res;
+    })
+    .then((result3) => {
+        console.log('Res when passed to the next .then: ', result3);
+        console.log('First item in the array: ', result3[0]);
+    })
+    .catch((error) => {
+        console.log(`Operation Failed: ${error}`);
+    });
 
 
+
+// ----------------------------- > CHAINING >> Always Return Results
 
 // NOTE: Important: Always return results, otherwise callbacks won't catch the result of a previous promise 
 // If the previous handler started a promise but did not return it, 
 // there's no way to track its settlement anymore, and the promise is said to be "floating".
 
-doSomething()
-    .then((url) => {
-        // I forgot to return this
-        fetch(url);
+var fetchPromise = fetch(
+    "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json"
+);
+
+fetchPromise
+    .then((result1) => {
+        let res = result1.json();
+        // Commented out the return statement
+        // return res;
     })
-    .then((result) => {
-        // result is undefined, because nothing is returned from the previous handler.
+    .then((result2) => {
+        console.log('First item in the array: ', result2[0].name); // TypeError: Cannot read properties of undefined (reading '0')
         // There's no way to know the return value of the fetch() call anymore, or whether it succeeded at all.
-    });
+    })
 
 
 
@@ -186,9 +257,13 @@ doSomething()
 
 var listOfIngredients = [];
 
-doSomething()
-    .then((url) => {
-        // I forgot to return this
+var fetchPromise = new Promise((resolve) => {
+    resolve("https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json")
+});
+
+fetchPromise
+    .then((url) => { // note the curly brackets, before an explicit return is needed
+        // Note the lack of a return statement
         fetch(url)
             .then((res) => res.json())
             .then((data) => {
@@ -196,16 +271,21 @@ doSomething()
             });
     })
     .then(() => {
-        console.log(listOfIngredients);
-        // Always [], because the fetch request hasn't completed yet.
+        console.log(listOfIngredients); // Always [], because the fetch request hasn't completed yet.
     });
+
+
 
 // Therefore, as a rule of thumb, whenever your operation encounters a promise, return it and defer its handling to the next then handler.
 
 var listOfIngredients = [];
 
-doSomething()
-    .then((url) =>
+var fetchPromise = new Promise((resolve) => {
+    resolve("https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json")
+});
+
+fetchPromise
+    .then((url) => // note the lack of curly brackets, making the return implicit
         fetch(url)
             .then((res) => res.json())
             .then((data) => {
@@ -218,7 +298,14 @@ doSomething()
 
 // OR
 
-doSomething()
+var listOfIngredients = [];
+
+var fetchPromise = new Promise((resolve) => {
+    resolve("https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json")
+});
+
+fetchPromise
+    // note the lack of curly brackets, making the return implicit
     .then((url) => fetch(url))
     .then((res) => res.json())
     .then((data) => {
@@ -229,6 +316,71 @@ doSomething()
     });
 
 
+
+// ----------------------------- > CHAINING >> Nesting
+
+// In the two examples above, 
+// the first one has one promise chain nested in the return value of another then() handler, 
+// while the second one uses an entirely flat chain. 
+
+// Simple promise chains are best kept flat without nesting, as nesting can be a result of careless composition.
+
+
+
+// Nesting is a control structure to limit the scope of catch statements. 
+// Specifically, a nested catch only catches failures in its scope and below, not errors higher up in the chain outside the nested scope. 
+// When used correctly, this gives greater precision in error recovery:
+
+
+
+// Created promises for purpose of demonstrating nesting catch - no need to pay too much attention
+
+const whatNum = new Promise((resolve, reject) => {
+    const num = Math.floor(Math.random() * 10) + 1;
+    num >= 5 ? resolve(num) : reject(num);
+
+});
+
+function fiveOrNot(num) {
+    return new Promise((resolve, reject) => num > 5 ? resolve(num) : reject(num))
+}
+
+function sixOrNot(num) {
+    return new Promise((resolve, reject) => num > 6 ? resolve(num) : reject(num))
+}
+
+function add10(num) {
+    let res = num + 10;
+    console.log(`Added 10 to the number: ${res}`);
+    return res;
+}
+
+function errorMsg(num) {
+    num === 5 || num === 6 ? console.log(`Equal to 5 or 6: ${num}`) : console.log(`Less than 5: ${num}`);
+    return num;
+}
+
+// Pay attention to this part - the nesting .then and .catch
+
+whatNum
+    .then((result) =>
+        fiveOrNot(result)
+            .then((optionalResult) => sixOrNot(optionalResult))
+            .catch((optionalError) => errorMsg(optionalError))
+    ) // Ignore if optional stuff fails; proceed.
+    .then((finalResult) => { 
+        add10(finalResult);
+    })
+    .catch((error) => errorMsg(error));
+
+// Note that the optional steps here are nested — 
+// with the nesting caused not by the indentation, but by the placement of the outer ( and ) parentheses around the steps.
+
+// The inner error - silencing catch handler only catches failures from fiveOrNot() and sixOrNot(), 
+// after which the code resumes with whatNum().
+
+// Importantly, if whatNum() fails, its error is caught by the final(outer) catch only, 
+// and does not get swallowed by the inner catch handler.
 
 
 
