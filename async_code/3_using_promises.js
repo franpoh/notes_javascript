@@ -81,14 +81,18 @@ function doStep3(req3, callback) {
     });
 }
 
+function errorHandler() {
+    console.log(`An error has occured`);
+}
+
 function doOperation() {
     doStep1(req, (res1) => {
         doStep2(res1, (res2) => {
             doStep3(res2, (res3) => {
                 console.log(`Finished with status: ${res3.status}`);
-            });
-        });
-    });
+            }, errorHandler);
+        }, errorHandler);
+    }, errorHandler);
 }
 
 doOperation();
@@ -127,6 +131,9 @@ fetchPromise
     })
     .then((res3) => { // equivalent to doStep3's callback. doStep3's loadend event listener is not needed here. 
         console.log(`Finished with status: ${res3.status}`);
+    })
+    .catch(() => {
+        console.log(`An error has occured`);
     })
 
 // Started Request
@@ -336,16 +343,16 @@ fetchPromise
 // Created promises for purpose of demonstrating nesting catch - no need to pay too much attention
 
 const whatNum = new Promise((resolve, reject) => {
-    const num = Math.floor(Math.random() * 10) + 1;
+    const num = Math.floor(Math.random() * 10) + 1; // Generate a number 1-10
     num >= 5 ? resolve(num) : reject(num);
 
 });
 
-function fiveOrNot(num) {
+function fiveIsError(num) {
     return new Promise((resolve, reject) => num > 5 ? resolve(num) : reject(num))
 }
 
-function sixOrNot(num) {
+function sixIsError(num) {
     return new Promise((resolve, reject) => num > 6 ? resolve(num) : reject(num))
 }
 
@@ -356,7 +363,7 @@ function add10(num) {
 }
 
 function errorMsg(num) {
-    num === 5 || num === 6 ? console.log(`Equal to 5 or 6: ${num}`) : console.log(`Less than 5: ${num}`);
+    num === 6 || num === 5 ? console.log(`Error: Equal to ${num}`) : console.log(`Error: ${num} is less than 5`);
     return num;
 }
 
@@ -364,11 +371,11 @@ function errorMsg(num) {
 
 whatNum
     .then((result) =>
-        fiveOrNot(result)
-            .then((optionalResult) => sixOrNot(optionalResult))
+        fiveIsError(result)
+            .then((optionalResult) => sixIsError(optionalResult))
             .catch((optionalError) => errorMsg(optionalError))
     ) // Ignore if optional stuff fails; proceed.
-    .then((finalResult) => { 
+    .then((finalResult) => {
         add10(finalResult);
     })
     .catch((error) => errorMsg(error));
@@ -376,11 +383,150 @@ whatNum
 // Note that the optional steps here are nested — 
 // with the nesting caused not by the indentation, but by the placement of the outer ( and ) parentheses around the steps.
 
-// The inner error - silencing catch handler only catches failures from fiveOrNot() and sixOrNot(), 
+// The inner error-silencing catch handler only catches failures from fiveIsError() and sixIsError(), 
 // after which the code resumes with whatNum().
 
 // Importantly, if whatNum() fails, its error is caught by the final(outer) catch only, 
 // and does not get swallowed by the inner catch handler.
+
+
+
+// ----------------------------- > CHAINING >> Chaining After A Catch
+
+// It's possible to chain after a failure, i.e. a catch, 
+// which is useful to accomplish new actions even after an action failed in the chain.
+
+new Promise((resolve, reject) => {
+    console.log("Initial");
+    resolve();
+})
+    .then(() => {
+        throw new Error("Something failed");
+        console.log("Do this");
+    })
+    .catch(() => {
+        console.error("Do that");
+    })
+    .then(() => {
+        console.log("Do this, no matter what happened before");
+    });
+
+// This will output the following text:
+
+// Initial
+// Do that
+// Do this, no matter what happened before
+
+
+
+// ----------------------------- > CHAINING >> Common Mistakes
+
+// Here are some common mistakes to watch out for when composing promise chains. 
+
+// ----- Bad example - Spot 3 mistakes
+
+doSomething()
+    .then(function (result) {
+        // Forgot to return promise from inner chain + unnecessary nesting
+        doSomethingElse(result).then((newResult) => doThirdThing(newResult));
+    })
+    .then(() => doFourthThing());
+// Forgot to terminate chain with a catch!
+
+
+
+// The first mistake is to not chain things together properly. 
+// This happens when we create a new promise but forget to return it. 
+// As a consequence, the chain is broken — or rather, we have two independent chains racing. 
+
+// This means doFourthThing() won't wait for doSomethingElse() or doThirdThing() to finish, and will run concurrently with them — which is likely unintended. 
+// Separate chains also have separate error handling, leading to uncaught errors.
+
+
+
+// The second mistake is to nest unnecessarily, enabling the first mistake. 
+// Nesting also limits the scope of inner error handlers, which — if unintended — can lead to uncaught errors. 
+
+// A variant of this is the promise constructor anti-pattern, 
+// which combines nesting with redundant use of the promise constructor to wrap code that already uses promises.
+
+
+
+// The third mistake is forgetting to terminate chains with catch. 
+// Unterminated promise chains lead to uncaught promise rejections in most browsers. 
+// See error handling below.
+
+
+
+// A good rule of thumb is to always either return or terminate promise chains, 
+// and as soon as you get a new promise, return it immediately, to flatten things:
+
+doSomething()
+    .then(function (result) {
+        // If using a full function expression: return the promise
+        return doSomethingElse(result);
+    })
+    // If using arrow functions: omit the braces and implicitly return the result
+    .then((newResult) => doThirdThing(newResult))
+    // Even if the previous chained promise returns a result, the next one doesn't necessarily have to use it. 
+    // You can pass a handler that doesn't consume any result.
+    .then((/* result ignored */) => doFourthThing())
+    // Always end the promise chain with a catch handler to avoid any unhandled rejections!
+    .catch((error) => console.error(error));
+
+// Note that () => x is short for () => { return x; }.
+
+// Now we have a single deterministic chain with proper error handling.
+
+// Using async/await addresses most, if not all of these problems — the tradeoff being that it may be easy to forget the await keyword.
+// We will take a look at async/await later
+
+
+
+// ----------------------------- > ERROR HANDLING -----------------------------
+
+// You might recall seeing errorHandler three times in the pyramid of doom earlier (----- Callback Example), 
+// compared to only once at the end of the promise chain
+
+function doOperation() {
+    doStep1(req, (res1) => {
+        doStep2(res1, (res2) => {
+            doStep3(res2, (res3) => {
+                console.log(`Finished with status: ${res3.status}`);
+            }, errorHandler);
+        }, errorHandler);
+    }, errorHandler);
+}
+
+// If there's an exception, the browser will look down the chain for .catch() handlers or onRejected. 
+// This is very much modeled after how synchronous code works:
+
+try {
+  const result = syncDoSomething();
+  const newResult = syncDoSomethingElse(result);
+  const finalResult = syncDoThirdThing(newResult);
+  console.log(`Got the final result: ${finalResult}`);
+} catch (error) {
+  failureCallback(error);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

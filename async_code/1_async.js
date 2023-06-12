@@ -48,15 +48,14 @@ Table of Contents
 // Since this can take a long time, it's an asynchronous API, 
 // and you get notified about the progress and eventual completion of a request by attaching event listeners to the XMLHttpRequest object.
 
+// Run this in browser console as XMLHttpRequest only works in browsers
 
-document.querySelector("#button").addEventListener("click", () => { // 1. Click the button to start the HTTP request process
-
-    log.textContent = ""; // Empty text block for displaying status updates
+function callToServer() { // 1. Start the HTTP request process
 
     const xhr = new XMLHttpRequest(); // 2A. Create new HTTP request
 
     xhr.addEventListener("loadend", () => { // 3A. listening for loadend event, which is fired when a request has completed
-        log.textContent = `${log.textContent}Finished with status: ${xhr.status}`; // 3B. updates log.textContent 'Finished with status: 200'
+        console.log(`Finished with status: ${xhr.status}`); // 3B. updates log.textContent 'Finished with status: 200'
     });
 
     xhr.open( // 2B. Starts a new request...
@@ -66,14 +65,16 @@ document.querySelector("#button").addEventListener("click", () => { // 1. Click 
 
     xhr.send(); // 2C. sends the request to get data from server, to the server
 
-    log.textContent = `${log.textContent}Started XHR request\n`; // 2D. updates log.textContent 'Started XHR request' 
+    console.log(`Started XHR request`); // 2D. updates log.textContent 'Started XHR request' 
 
-});
+};
+
+callToServer();
 
 // 'Started XHR request'
 // 'Finished with status: 200'
 
-// 1. Press button to send a request. 
+// 1. Run the function to send a request. 
 // 2A, 2B, 2C. We create a new XMLHttpRequest and listen for its loadend event (As seen in 3A)
 // 2D. Meanwhile, we log "Started XHR request"
 // 3A, 3B. When the loadend event is fired, the handler logs a "Finished!" message along with the status code.
