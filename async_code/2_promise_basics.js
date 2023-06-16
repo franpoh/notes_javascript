@@ -69,6 +69,13 @@ console.log("Started request…");
 // The eventual state of a pending promise can either be fulfilled with a value or rejected with a reason (error). 
 // When either of these options occur, the associated handlers queued up by a promise's then method are called. 
 
+// Note that what "succeeded" or "failed" means here is up to the API in question: 
+// for example, the Fetch API considers a request successful if the server returned an error like 404 Not Found, 
+// but not if a network error prevented the request being sent.
+
+// Sometimes, we use the term settled to cover both fulfilled and rejected.
+// A promise is resolved if it is settled, or if it has been "locked in" to follow the state of another promise.
+
 
 
 // ----- Typical Promise Syntax

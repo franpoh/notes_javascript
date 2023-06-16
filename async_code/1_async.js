@@ -9,6 +9,10 @@ Table of Contents
 
 
 
+// NOTE: I think before starting on asynchronous code, you should take a look at try_catch.js 
+
+
+
 // Asynchronous programming is a technique that enables your program to start a potentially long-running task 
 // and still be able to be responsive to other events while that task runs, rather than having to wait until that task has finished. 
 // Once that task has finished, your program is presented with the result.
