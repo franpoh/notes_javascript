@@ -230,7 +230,9 @@ const numbersC = [45, 4, 9, 16, 25];
 let sumC = numbersC.reduce(myFunction);
 
 function myFunction(total, value, index, array) {
-    return total + value;
+    let num = total + value;
+    console.log(num);
+    return num;
 } 
 
 console.log(sumC); // 99
@@ -247,10 +249,16 @@ function myFunction(total, value) {
     return total + value;
 }
 
+// The first time that the callback is run there is no "return value of the previous calculation".
+// If supplied, an initial value may be used in its place. 
+
+// Otherwise the array element at index 0 is used as the initial value 
+// and iteration starts from the next element (index 1 instead of index 0). 
+
 // The reduce() method can accept an initial value:
 
 const numbersD = [45, 4, 9, 16, 25];
-let sumD = numbersD.reduce(myFunction, 100);
+let sumD = numbersD.reduce(myFunction, 100); // 100 is the initial value
 
 function myFunction(total, value) {
     return total + value;
