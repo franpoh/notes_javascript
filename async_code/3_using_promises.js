@@ -619,7 +619,7 @@ process.on("unhandledRejection", (reason, promise) => {
 
 
 
-// ----------------------------- // > RUNNING PROMISES CONCURRENTLY -----------------------------
+// ----------------------------- > COMBINING MULTIPLE PROMISES -----------------------------
 
 // There are four composition tools for running asynchronous operations concurrently: 
 
@@ -630,11 +630,13 @@ process.on("unhandledRejection", (reason, promise) => {
 
 
 
+// ----------------------------- > COMBINING MULTIPLE PROMISES >> Concurrent Composition Examples
+
 // We can start operations at the same time and wait for them all to finish like this:
 
-function prom1() { return Promise.resolve('Promise 1') };
-function prom2() { return Promise.resolve('Promise 2') };
-function prom3() { return Promise.resolve('Promise 3') };
+var prom1 = () => Promise.resolve('Promise 1');
+var prom2 = () => Promise.resolve('Promise 2');
+var prom3 = () => Promise.resolve('Promise 3');
 
 Promise.all([prom1(), prom2(), prom3()]).then((values) => {
     console.log(values);
@@ -647,9 +649,9 @@ Promise.all([prom1(), prom2(), prom3()]).then((values) => {
 // If one of the promises in the array rejects, 
 // Promise.all() immediately rejects the returned promise and aborts the other operations. 
 
-function prom1() { return Promise.resolve('Promise 1') };
-function prom2() { return Promise.reject('Promise 2') }; // added a reject here to stimulate an error
-function prom3() { return Promise.resolve('Promise 3') };
+var prom1 = () => Promise.resolve('Promise 1');
+var prom2 = () => Promise.reject('Promise 2'); // added a reject here to stimulate an error
+var prom3 = () => Promise.resolve('Promise 3');
 
 Promise.all([prom1(), prom2(), prom3()]).then((values) => {
     console.log(values);
@@ -664,49 +666,65 @@ Promise.all([prom1(), prom2(), prom3()]).then((values) => {
 // This may cause unexpected state or behavior. 
 // Promise.allSettled() is another composition tool that ensures all operations are complete before resolving.
 
-
-
 // These methods all run promises concurrently — 
 // a sequence of promises are started simultaneously and do not wait for each other. 
 
+
+
+// ----------------------------- > COMBINING MULTIPLE PROMISES >> Sequential Composition Examples
+
 // Sequential composition is possible using some clever JavaScript:
 
-function prom1() {
-    console.log('Prom 1');
-    return Promise.resolve('Promise 1')
-};
+var prom1 = () => Promise.resolve(console.log('Promise 1'));
+var prom2 = () => Promise.resolve(console.log('Promise 2'));
+var prom3 = () => Promise.resolve(console.log('Promise 3'));
 
-function prom2() {
-    console.log('Prom 2');
-    return Promise.resolve('Promise 2')
-};
+// For further explanation, see > COMBINING MULTIPLE PROMISES >> Sequential Composition Examples >>> Using Array.Reduce For Sequential Composition
+[prom1, prom2, prom3]
+    .reduce((p, f) => p.then(f), Promise.resolve())
 
-function prom3() {
-    console.log('Prom 3');
-    return Promise.resolve('Promise 3')
-};
-
-// [prom1, prom2, prom3]
-//     .reduce((p, f) => p.then(f), Promise.resolve())
-//     .then((values) => {
-//         console.log(values);
-//     });
+// Promise 1
+// Promise 2
+// Promise 3
 
 
-// A short NOTE: Why Promise.resolve() is needed as an initial value in the reduce function 
+
+// In this example, we reduce an array of asynchronous functions down to a promise chain. 
+// The code above is equivalent to:
+
+var prom1 = () => Promise.resolve(console.log('Promise 1'));
+var prom2 = () => Promise.resolve(console.log('Promise 2'));
+var prom3 = () => Promise.resolve(console.log('Promise 3'));
+
+Promise.resolve()
+    .then(prom1)
+    .then(prom2)
+    .then(prom3)
+
+// Promise 1
+// Promise 2
+// Promise 3
+
+
+
+// ----------------------------- > COMBINING MULTIPLE PROMISES >> Sequential Composition Examples >>> Using Array.Reduce For Sequential Composition
+
+// NOTE: Why Promise.resolve() is needed as an initial value in the reduce function 
+
 // For an explanation on initial value, see array/iteration_method.js > ARRAY.REDUCE
 
 
 
-// Promise.resolve() being used as the initial value in the reduce function
+// Promise.resolve() is being used as the initial value in the reduce function
 
 // In the below example, the Promise.resolve() initial value is removed
 
+var prom1 = () => Promise.resolve(console.log('Promise 1'));
+var prom2 = () => Promise.resolve(console.log('Promise 2'));
+var prom3 = () => Promise.resolve(console.log('Promise 3'));
+
 [prom1, prom2, prom3]
-    .reduce((p, f) => p.then(f))
-    .then((values) => {
-        console.log(values);
-    });
+    .reduce((p, f) => p.then(f));
 
 // TypeError: p.then is not a function
 
@@ -716,75 +734,76 @@ function prom3() {
 
 // The below example shows clearly that the function runs properly when prom1 is called by adding ()
 
+var prom1 = () => Promise.resolve(console.log('Promise 1'));
+var prom2 = () => Promise.resolve(console.log('Promise 2'));
+var prom3 = () => Promise.resolve(console.log('Promise 3'));
+
 [prom1(), prom2, prom3]
-    .reduce((p, f) => p.then(f))
-    .then((values) => {
-        console.log(values);
-    });
+    .reduce((p, f) => p.then(f));
 
-// Prom 1
-// Prom 2
-// Prom 3
+// Promise 1
+// Promise 2
 // Promise 3
 
 
 
-
-// In this example, we reduce an array of asynchronous functions down to a promise chain. 
-// The code above is equivalent to:
-
-function prom1() {
-    console.log('Prom 1');
-    return Promise.resolve('Promise 1')
-};
-
-function prom2() {
-    console.log('Prom 2');
-    return Promise.resolve('Promise 2')
-};
-
-function prom3() {
-    console.log('Prom 3');
-    return Promise.resolve('Promise 3')
-};
-
-Promise.resolve()
-    .then(prom1)
-    .then(prom2)
-    .then(prom3)
-    .then((values) => {
-        console.log(values);
-    });
-
-// Prom 1
-// Prom 2
-// Prom 3
-// Promise 3
+// The easiest and most convenient way to handle the issue is to add Promise.resolve() as an initial value
+// giving the first loop of 'p.then' a return promise (but no return resolve/reject value) to work with 
+// before moving on to the promises in the array
 
 
+
+// ----------------------------- > COMBINING MULTIPLE PROMISES >> Sequential Composition Examples >>> Reusable Compose Function
 
 // This can be made into a reusable compose function, which is common in functional programming:
 
-const applyAsync = (acc, val) => acc.then(val);
+var prom1 = () => Promise.resolve(console.log('Promise 1'));
+var prom2 = () => Promise.resolve(console.log('Promise 2'));
+var prom3 = () => Promise.resolve(console.log('Promise 3'));
+
+const applyAsync = (p, f) => p.then(f);
 
 const composeAsync =
     (...funcs) =>
         (x) =>
-            funcs.reduce(applyAsync, Promise.resolve(x));
+            funcs.reduce(applyAsync, Promise.resolve(console.log(x)));
+
 
 // The composeAsync() function accepts any number of functions as arguments 
 // and returns a new function that accepts an initial value to be passed through the composition pipeline:
 
-const transformData = composeAsync(func1, func2, func3);
-const result3 = transformData(data);
+const transformData = composeAsync(prom1, prom2, prom3);
+
+transformData('Promise 0');
+
+// Promise 0
+// Promise 1
+// Promise 2
+// Promise 3
+
+
+
+// ----------------------------- > COMBINING MULTIPLE PROMISES >> Sequential Composition Examples >>> Async / Await
 
 // Sequential composition can also be done more succinctly with async / await:
 
-let result;
-for (const f of [func1, func2, func3]) {
-    result = await f(result);
+var prom1 = () => Promise.resolve(console.log('Promise 1'));
+var prom2 = () => Promise.resolve(console.log('Promise 2'));
+var prom3 = () => Promise.resolve(console.log('Promise 3'));
+
+async function promSeq() {
+    for (const p of [prom1, prom2, prom3]) {
+        await p();
+    }
 }
-/* use last result (i.e. result3) */
+
+promSeq();
+
+// Promise 1
+// Promise 2
+// Promise 3
+
+
 
 // However, before you compose promises sequentially, consider if it's really necessary — 
 // it's always better to run promises concurrently so that they don't unnecessarily block each other 
@@ -792,10 +811,7 @@ for (const f of [func1, func2, func3]) {
 
 
 
-
-
-
-
+// ----------------------------- > COMBINING MULTIPLE PROMISES >> Promise.all()
 
 
 
