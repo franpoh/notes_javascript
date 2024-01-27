@@ -138,6 +138,14 @@ const { d, e } = objj;
 console.log(d); // 1
 console.log(e); // 2
 
+// Experiment
+
+const objjj = { d: 1, e: 2 };
+const { m, n } = objjj;
+
+console.log(m); // undefined    
+console.log(n); // undefined
+
 
 
 // NOTE: Destructuring patterns with other syntaxes
@@ -158,12 +166,19 @@ console.log(e); // 2
 
 // ----------------------------- > BINDING AND ASSIGNMENT >> Binding
 
+// NOTE:
+// In programming, a binding is an association of an identifier with a value. 
+// Not all bindings are variables — for example, function parameters and the binding created by the catch (e) block are not "variables" in the strict sense. 
+// In addition, some bindings are implicitly created by the language — for example, this and new.target in JavaScript.
+
+
+
 // In binding patterns, the pattern starts with a declaration keyword (var, let, or const). 
 // Then, each individual property must either be bound to a variable or further destructured.
 
 const objA = { apple: 1, banana: { cherry: 2 } };
 
-// Two variables are bound: apple and d
+// Two variables are bound: apple and date
 // banana and cherry remains undefined
 const {
     apple,
@@ -172,6 +187,8 @@ const {
 
 console.log(apple); // 1
 console.log(date); // 2
+console.log(banana); // Error: not defined
+console.log(cherry); // Error : not defined
 
 
 
@@ -181,7 +198,7 @@ console.log(date); // 2
 
 const objB = { avocado: 1, brinjal: { carrot: 2 } };
 
-const { avocado } = objB; // a is constant
+const { avocado } = objB; // avocado is constant
 
 let {
     brinjal: { carrot: daikon },
@@ -210,7 +227,7 @@ const objNo = { a: 1, b: 2 };
 
 ({ a: no[0], b: no[1] } = objNo);
 
-// The properties `a` and `b` are assigned to properties of `numbers`
+// The properties `a` and `b` of objNo are assigned to properties of `no`
 console.log(no[0]); // 1
 console.log(no[1]); // 2
 
@@ -271,7 +288,7 @@ console.log(caper); // null
 // The default value can be any expression. It will only be evaluated when necessary.
 
 const { bay = console.log("hey") } = { bay: 2 };
-console.log(bay); // 2 - Does not log "hey", because `b` is defined and there's no need to evaluate the default value.
+console.log(bay); // 2 - Does not log "hey", because `bay` is defined and there's no need to evaluate the default value.
 
 
 
