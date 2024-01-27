@@ -51,7 +51,7 @@ Table of Contents
 
 function myFunction() {
     a = 4;
-} 
+}
 // no declaration keyword (let, const, var) means that a will always be accessible globally
 
 
@@ -66,13 +66,16 @@ function myFunction() {
 
 const add = (function () { // add is assigned to the return value of a self-invoking function
     let counter = 0;
-    return function () { counter += 1; return counter }
+    return function () {
+        counter += 1;
+        console.log(counter)
+    }
 })(); // self-invoking function only runs once, sets counter to zero (0), returns a function expression.
 // this way, add becomes a function
 
-add();
-add();
-add(); // the counter is now 3
+add(); // 1
+add(); // 2
+add(); // 3
 
 // add becomes a function that can access the counter in the parent scope. 
 // This is called a closure. It makes it possible for a function to have "private" variables. 
@@ -98,7 +101,10 @@ let returnedFunc = outer();
 console.log(returnedFunc); // [Function: inner]
 
 const result = returnedFunc();
-console.log(result); // Rabbit
+console.log(`result = ${result}`); // Rabbit
+
+const result1 = outer()();
+console.log(`result1 = ${result1}`); // Rabbit
 
 
 

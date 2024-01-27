@@ -61,13 +61,13 @@ console.log(numberStore); // [ 0, 1, 2, 12 ]
 
 // ----------------------------- > SPREAD ... >> Syntax
 
-// // For function calls:
+// For function calls:
 myFunction(...iterableObj); // pass all elements of iterableObj as arguments to function myFunction
 
-// // For array literals or strings:
+// For array literals or strings:
 [...iterableObj, '4', 'five', 6]; // combine two arrays by inserting all elements from iterableObj
 
-// // For object literals
+// For object literals
 let objClone = { ...obj }; // pass all key:value pairs from an object 
 
 

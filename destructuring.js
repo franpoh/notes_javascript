@@ -100,6 +100,7 @@ console.log(b); // 20
 console.log(a); // 10
 console.log(b); // 20
 console.log(rest); // {c: 30, d: 40}
+console.log(c); // c is not defined
 
 
 

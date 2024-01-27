@@ -45,11 +45,7 @@ function checkGuess() {
 
 
 
-<button>Press me</button>
-
-const button = document.querySelector('button');
-
-button.onclick = function () {
+function clickButton() {
     let name = prompt('What is your name?');
     alert('Hello ' + name + ', nice to see you!');
 }
@@ -176,16 +172,16 @@ var notHoisted = function () {
 // This name is then local only to the function body (scope).
 
 let math = {
-    'factit': function factorial(n) {
+    'iteration': function subtract(n) {
         console.log(n)
         if (n <= 1) {
             return 1;
         }
-        return n * factorial(n - 1);
+        return subtract(n - 1);
     }
 };
 
-math.factit(3) // 3; 2; 1;
+math.iteration(3) // 3; 2; 1;
 
 
 

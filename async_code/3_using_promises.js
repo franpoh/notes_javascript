@@ -133,7 +133,7 @@ fetchPromise
         console.log(`Finished with status: ${res3.status}`);
     })
     .catch(() => {
-        console.log(`An error has occured`);
+        console.log(`An error has occurred`);
     })
 
 // Started Request
@@ -609,6 +609,8 @@ process.on("unhandledRejection", (reason, promise) => {
 
 
 
+// NOTE: 
+
 // For Node.js, to prevent the error from being logged to the console (the default action that would otherwise occur), 
 // adding that process.on() listener is all that's necessary; 
 // there's no need for an equivalent of the browser runtime's preventDefault() method.
@@ -811,10 +813,173 @@ promSeq();
 
 
 
-// ----------------------------- > COMBINING MULTIPLE PROMISES >> Promise.all()
+// ----------------------------- > PROMISE.ALL() -----------------------------
+
+// The Promise.all() method is one of the promise concurrency methods. 
+
+// It can be useful for aggregating the results of multiple promises. 
+// It is typically used when there are multiple related asynchronous tasks that the overall code relies on to work successfully 
+// — all of whom we want to fulfill before the code execution continues.
 
 
 
+// Promise.all() will reject immediately upon any of the input promises rejecting. 
+
+// In comparison, the promise returned by Promise.allSettled() will wait for all input promises to complete, regardless of whether or not one rejects.
+// NOTE: Use allSettled() if you need the final result of every promise in the input iterable.
+
+
+
+// The Promise.all() static method takes an iterable of promises as input and returns a single Promise. 
+
+// This returned promise fulfills when all of the input's promises fulfill (including when an empty iterable is passed), with an array of the fulfillment values. 
+// It rejects when any of the input's promises rejects, with this first rejection reason.
+
+var prom1 = () => Promise.resolve('Promise 1');
+var prom2 = () => Promise.resolve('Promise 2'); // resolve Promise 2
+// var prom2 = () => Promise.reject('Promise 2'); // reject Promise 2 to stimulate error
+var prom3 = () => Promise.resolve('Promise 3');
+
+Promise.all([prom1(), prom2(), prom3()]) // An iterable (such as an Array) of promises.
+    .then((values) => {
+        console.log(values); // [ 'Promise 1', 'Promise 2', 'Promise 3' ]
+    })
+    .catch((error) => {
+        console.log(`An error has occurred: ${error}`); // An error has occurred: Promise 2
+    })
+
+
+
+// The return value is a Promise that is:
+
+// Already fulfilled, if the iterable passed is empty.
+
+// Asynchronously fulfilled, when all the promises in the given iterable fulfill. 
+// The fulfillment value is an array of fulfillment values, in the order of the promises passed, regardless of completion order. 
+// If the iterable passed is non-empty but contains no pending promises, the returned promise is still asynchronously (instead of synchronously) fulfilled.
+
+// Asynchronously rejected, when any of the promises in the given iterable rejects. 
+// The rejection reason is the rejection reason of the first promise that was rejected.
+
+
+
+// ----- Example
+
+// Promise.all waits for all fulfillments (or the first rejection).
+// in the order of the promises passed, regardless of completion order
+
+var p1 = Promise.resolve(3);
+
+var p2 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve("foo");
+    }, 1000); // delayed for 1 second
+});
+
+var p3 = 1337;
+
+Promise.all([p1, p2, p3]).then((values) => {
+    console.log(values); // [ 3, 'foo', 1337 ]
+});
+
+
+
+// ----- Example
+
+// If the iterable contains non-promise values, they will be ignored, 
+// but still counted in the returned promise array value (if the promise is fulfilled)
+
+var p = Promise.all([1, 2, 3]); // All values are non-promises, so the returned promise gets fulfilled
+
+var p2 = Promise.all([1, 2, 3, Promise.resolve(444)]); // The only input promise is already fulfilled, so the returned promise gets fulfilled
+
+var p3 = Promise.all([1, 2, 3, Promise.reject(555)]) // One (and the only) input promise is rejected, so the returned promise gets rejected
+    .catch((error) => {
+        return error;
+    });
+
+
+setTimeout(() => { // Using setTimeout, we can execute code after the queue is empty
+    console.log(p);
+    console.log(p2);
+    console.log(p3);
+});
+
+// Promise { [ 1, 2, 3 ] }
+// Promise { [ 1, 2, 3, 444 ] }
+// Promise { 555 }
+
+
+
+// ----------------------------- > PROMISE.ALL() >> Asynchronicity Or Synchronicity Of Promise.all
+
+// This following example demonstrates the asynchronicity of Promise.all when a non-empty iterable is passed:
+
+// Passing an array of promises that are already resolved, to trigger Promise.all as soon as possible
+var resolvedPromisesArray = [Promise.resolve(33), Promise.resolve(44)];
+
+var p = Promise.all(resolvedPromisesArray);
+
+// Immediately logging the value of p
+console.log(p);
+
+// Using setTimeout, we can execute code after the queue is empty
+setTimeout(() => {
+    console.log("the queue is now empty");
+    console.log(p);
+});
+
+// Promise { <pending> }
+// the queue is now empty
+// Promise { [ 33, 44 ] }
+
+
+
+// The same thing happens if Promise.all rejects:
+
+var mixedPromisesArray = [Promise.resolve(33), Promise.reject(44)];
+
+var p = Promise.all(mixedPromisesArray)
+    .catch((error) => {
+        return error;
+    });
+
+console.log(p);
+
+setTimeout(() => {
+    console.log("the queue is now empty");
+    console.log(p);
+});
+
+// Promise { <pending> }
+// the queue is now empty
+// Promise { 44 }
+
+
+
+// Promise.all resolves synchronously if and only if the iterable passed is empty:
+
+var p = Promise.all([]); // Will be immediately resolved
+
+var p2 = Promise.all([1337, "hi"]); // Non-promise values are ignored, but the evaluation is done asynchronously
+
+console.log(p);
+
+console.log(p2);
+
+setTimeout(() => {
+    console.log("the queue is now empty");
+    console.log(p2);
+});
+
+// Promise { [] }
+// Promise { <pending> }
+// the queue is now empty
+// Promise { [ 1337, 'hi' ] }
+
+
+
+// ----------------------------- > PROMISE.ALL() >> Using Promise.all() With Async Functions
 
 
 

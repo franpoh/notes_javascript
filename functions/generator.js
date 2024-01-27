@@ -152,7 +152,7 @@ function* generator(i) {
 const genNother = generator(10);
 
 // Calling a generator function does not execute its body immediately; a generator object for the function is returned instead. 
-console.log(genNother);
+console.log(genNother); // Object [Generator] {}
 
 // the first call of next executes from the start of the function until the first yield statement
 // generator() console.log("Testing") & yield i
@@ -290,19 +290,30 @@ function* generatorA() {
 const genA = generatorA();
 
 // NOTE: No log at this step: the first value sent through `next` is lost
-console.log(genA.next('duck')); // { value: 1, done: false }
+console.log(genA.next('duck')); 
+// { value: 1, done: false }
 
-console.log(genA.next('turkey')); // Test 1 turkey / Test 1 Done / { value: 2, done: false }
-console.log(genA.next('chicken')); // Test 2 / Test 3 chicken / Test 3 Done { value: undefined, done: true }
+console.log(genA.next('turkey')); 
+// Test 1 turkey 
+// Test 1 Done 
+// { value: 2, done: false }
+
+console.log(genA.next('chicken')); 
+// Test 2 
+// Test 3 chicken 
+// Test 3 Done 
+// { value: undefined, done: true }
 
 
+
+// -----------------------------
 
 // NOTE: Here is the same example as above, but with step-by-step comments
 // Click on the arrows on the left to drop down comments
 
 function* generatorB() {
 
-    /* A. 1st next() ----- console.log(gen0.next('duck'));
+    /* A. 1st next() ----- console.log(genB.next('duck'));
 
     generator() runs until it reaches the yield expression (the 1 in yield 1;)
     yield keyword pauses generator()
@@ -311,7 +322,7 @@ function* generatorB() {
     therefore generator() is paused BEFORE evaluating the value of the yield expression 
     */
 
-    /* C. 2nd next() ----- console.log(gen0.next('turkey'));
+    /* C. 2nd next() ----- console.log(genB.next('turkey'));
 
     generator() starts again
     the value of the first yield expression is computed/replaced with the value of the argument given to next() on this call (See D) 
@@ -335,7 +346,7 @@ function* generatorB() {
 
     const value = yield 2; // H. 2nd next() ----- returns '{ value: 2, done: false }'
 
-    /* I. 3rd next() ----- console.log(gen0.next('chicken'));
+    /* I. 3rd next() ----- console.log(genB.next('chicken'));
 
     generator() starts again
     */
@@ -369,10 +380,73 @@ function* generatorB() {
 const genB = generatorB();
 
 // No log at this step: the first value sent through `next` is lost
-console.log(genB.next('duck')); // { value: 1, done: false }
+console.log(genB.next('duck')); 
+// { value: 1, done: false }
 
-console.log(genB.next('turkey')); // Test 1 turkey / Test 1 Done / { value: 2, done: false }
-console.log(genB.next('chicken')); // Test 2 / Test 3 chicken / Test 3 Done { value: undefined, done: true }
+console.log(genB.next('turkey')); 
+// Test 1 turkey 
+// Test 1 Done 
+// { value: 2, done: false }
+
+console.log(genB.next('chicken')); 
+// Test 2 
+// Test 3 chicken 
+// Test 3 Done 
+// { value: undefined, done: true }
+
+
+
+// -----------------------------
+
+// More experiments
+
+function* generatorD() {
+    console.log(yield 1);
+    console.log(yield 2);
+}
+
+const genD = generatorD();
+
+console.log(genD.next('duck')); 
+// { value: 1, done: false }
+
+console.log(genD.next('turkey')); 
+// turkey
+// { value: 2, done: false }
+
+console.log(genD.next('chicken')); 
+// chicken
+// { value: undefined, done: true }
+
+
+
+// -----
+
+function* generatorC() {
+    yield 1;
+    yield 2;
+}
+
+const genC = generatorC();
+
+console.log(genC.next('duck')); // { value: 1, done: false }
+console.log(genC.next('turkey')); // { value: 2, done: false }
+console.log(genC.next('chicken')); // { value: undefined, done: true }
+
+
+
+// -----
+
+function* generatorE() {
+    console.log(yield 1);
+    console.log(yield 2);
+}
+
+const genE = generatorE();
+
+genE.next('duck'); 
+genE.next('turkey'); // turkey
+genE.next('chicken'); // chicken
 
 
 

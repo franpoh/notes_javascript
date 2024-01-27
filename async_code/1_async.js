@@ -218,6 +218,8 @@ function submissionDone() {
 
 
 
+// NOTE: 
+
 // don’t stack too much code into a single object
 
 // Don't nest functions. Give them names and place them at the top level of your program
