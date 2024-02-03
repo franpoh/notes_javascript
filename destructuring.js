@@ -70,6 +70,20 @@ console.log(green); // three
 
 
 
+let [...everythingElse] = ['carrot', 'potato', 'onion']; // using rest syntax
+
+console.log(everythingElse); // [ 'carrot', 'potato', 'onion' ]
+console.log(everythingElse[1]); // potato
+
+
+
+let { ...anythingElse } = { veg1: 'carrot', veg2: 'potato', veg3: 'onion' };
+
+console.log(anythingElse); // { veg1: 'carrot', veg2: 'potato', veg3: 'onion' }
+console.log(anythingElse.veg2); // potato
+
+
+
 // In an array destructuring from an array of length N specified on the right-hand side of the assignment
 // if the number of variables specified on the left-hand side of the assignment is greater than N
 // only the first N variables are assigned values. 
@@ -113,6 +127,33 @@ const { id, isVerified } = person;
 
 console.log(id); // 42
 console.log(isVerified); // true
+
+
+
+// This variable name assignment will not work
+
+const anotherPerson = {
+    id: 42,
+    isVerified: true,
+};
+
+const { firstProp, secondProp } = anotherPerson;
+console.log(firstProp); // undefined
+console.log(secondProp); // undefined
+
+
+
+// This variable name assignment will work
+// see > EXAMPLES >> Assigning To New Variable Names
+
+const otherPerson = {
+    id: 42,
+    isVerified: true,
+};
+
+const { id: oneProp, isVerified: twoProp } = otherPerson; // value of id/isVerified is being assigned to new variable names oneProp/twoProp
+console.log(oneProp); // 42
+console.log(twoProp); // true
 
 
 
@@ -413,13 +454,13 @@ console.log(angelica, bellflower, cornflower, dandelion, elder, frangipani); // 
 // On the other hand, object destructuring can only have an identifier as the rest property.
 
 /* 
-const { a, ...{ b } } = { a: 1, b: 2 }; 
+const { appel, ...{ banaan } } = { a: 1, b: 2 }; 
 */
 // SyntaxError: `...` must be followed by an identifier in declaration contexts
 
 /* 
-let a, b;
-({ a, ...{ b } } = { a: 1, b: 2 }); 
+let aardappel, bitterballen;
+({ aardappel, ...{ bitterballen } } = { a: 1, b: 2 }); 
 */
 // SyntaxError: `...` must be followed by an assignable reference in assignment contexts
 
@@ -474,7 +515,7 @@ console.log(andy, ben); // [1, 2] [3, 4]
 // Non-iterables cannot be destructured as arrays.
 
 const objt = { 0: "a", 1: "b", length: 2 };
-const [avery, benoit] = objt; // TypeError: obj is not iterable
+const [avery, benoit] = objt; // TypeError: objt is not iterable
 
 
 
@@ -490,6 +531,7 @@ const num = {
 };
 
 const [t, u] = num; // 0 1
+console.log(`t: ${t}, u: ${u}`); // t: 0, u: 1
 
 
 
@@ -519,6 +561,7 @@ const dip = { p: 'olive', q: 'pistolet' };
 const { p: oil, q: bread } = dip;
 
 console.log(oil); // olive
+console.log(bread); // pistolet
 console.log(p); // error: p is not defined
 
 
@@ -527,9 +570,6 @@ const { v: three, u: four } = { v: 3, u: 4 };
 
 console.log(three); // 3
 console.log(v); // error: v is not defined
-
-
-
 
 
 
@@ -543,6 +583,7 @@ const { earth: human = 'beige', mars: martians = 'green' } = { earth: 'multi-col
 
 console.log(human); // multi-coloured
 console.log(martians); // green
+console.log(earth); // earth is not defined
 
 
 
@@ -563,6 +604,9 @@ const user = {
         lastName: 'Doe'
     }
 };
+
+const { id: nric } = user;
+console.log(nric); // 42
 
 
 
@@ -616,7 +660,7 @@ drawChart(); // big { x: 0, y: 0 } 25
 // In the function signature for drawChart above, 
 // the destructured left-hand side has a default value of an empty object = {}.
 
-// You could have also written the function without that default. 
+// NOTE: You could have also written the function without that default. 
 // However, if you leave out that default value, the function will look for at least one argument to be supplied when invoked, 
 // whereas in its current form, you can call drawChart() without supplying any parameters. 
 // Otherwise, you need to at least supply an empty object literal.
