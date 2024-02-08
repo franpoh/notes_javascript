@@ -62,6 +62,28 @@ person[id] = 140353;
 
 
 
+// ----- Use symbols when your requirement is one of these:
+
+// Enum: To allow you to define constants with semantic names and unique values.
+
+const directions = {
+    UP: Symbol('UP'),
+    DOWN: Symbol('DOWN'),
+    LEFT: Symbol('LEFT'),
+    RIGHT: Symbol('RIGHT')
+};
+
+// Name Clashes: when you wanted to prevent collisions with keys in objects
+
+// Privacy: when you don’t want your object properties to be enumerable
+
+// Protocols: To define how an object can be iterated.
+// Imagine, for instance, a library like dragula defining a protocol through Symbol.for(dragula.moves).
+// You can add a method on that Symbol to any DOM element.
+// If a DOM element follows the protocol, then dragula could call the el[Symbol.for('dragula.moves')]() user-defined method to assert whether the element can be moved.
+
+
+
 // ----------------------------- > ALWAYS UNIQUE -----------------------------
 
 // If you create two symbols with the same description they will have different values.
@@ -177,8 +199,8 @@ let sym = Symbol.for("name");
 let sym2 = Symbol.for("id");
 
 // get name by symbol
-alert( Symbol.keyFor(sym) ); // name
-alert( Symbol.keyFor(sym2) ); // id
+alert(Symbol.keyFor(sym)); // name
+alert(Symbol.keyFor(sym2)); // id
 
 // The Symbol.keyFor internally uses the global symbol registry to look up the key for the symbol. 
 // So it doesn’t work for non-global symbols. If the symbol is not global, it won’t be able to find it and returns undefined.
@@ -190,10 +212,10 @@ alert( Symbol.keyFor(sym2) ); // id
 let globalSymbol = Symbol.for("name");
 let localSymbol = Symbol("name");
 
-alert( Symbol.keyFor(globalSymbol) ); // name, global symbol
-alert( Symbol.keyFor(localSymbol) ); // undefined, not global
+alert(Symbol.keyFor(globalSymbol)); // name, global symbol
+alert(Symbol.keyFor(localSymbol)); // undefined, not global
 
-alert( localSymbol.description ); // name
+alert(localSymbol.description); // name
 
 
 

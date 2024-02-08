@@ -290,6 +290,8 @@ class Rectangle {
     }
 }
 
+console.log(Rectangle.height); // undefined
+
 const rec = new Rectangle(10, 15);
 console.log(rec); // Rectangle { height: 10, width: 15, colour: 'blue' }
 
@@ -599,9 +601,14 @@ class ClassWithPrivateField {
     #privateField;
 
     constructor() {
+
         this.#privateField = 42;
-        delete this.#privateField;   // Syntax error
-        this.#undeclaredField = 444; // Syntax error
+
+        delete this.#privateField;   // SyntaxError: Private fields can not be deleted
+
+        // uncomment below to show error
+        // this.#undeclaredField = 444; // SyntaxError: Private field '#undeclaredField' must be declared in an enclosing class
+
     }
 }
 
@@ -663,7 +670,8 @@ class Base {
         return 42;
     }
     static publicStaticMethod1() {
-        return Base.#privateStaticMethod();
+        // uncomment below to show error
+        // return Base.#privateStaticMethod(); 
     }
     static publicStaticMethod2() {
         return this.#privateStaticMethod();
@@ -901,33 +909,33 @@ signalThree.send(); // "Send door signal"
 
 // When a class declaration or class expression is evaluated, its various components are evaluated in the following order:
 
-// The extends clause, if present, is first evaluated. 
+// The extends clause, if present, is first evaluated.
 // It must evaluate to a valid constructor function or null, or a TypeError is thrown.
 
-// The constructor method is extracted, substituted with a default implementation if constructor is not present. 
+// The constructor method is extracted, substituted with a default implementation if constructor is not present.
 // However, because the constructor definition is only a method definition, this step is not observable.
 
-// The class elements' property keys are evaluated in the order of declaration. 
-// If the property key is computed, the computed expression is evaluated, with the this value is set to the this value surrounding the class (not the class itself). 
+// The class elements' property keys are evaluated in the order of declaration.
+// If the property key is computed, the computed expression is evaluated, with the this value is set to the this value surrounding the class (not the class itself).
 // None of the property values are evaluated yet.
 
-// Methods and accessors are installed in the order of declaration. 
-// Instance methods and accessors are installed on the prototype property of the current class, 
-// and static methods and accessors are installed on the class itself. 
-// Private instance methods and accessors are saved to be installed on the instance directly later. 
+// Methods and accessors are installed in the order of declaration.
+// Instance methods and accessors are installed on the prototype property of the current class,
+// and static methods and accessors are installed on the class itself.
+// Private instance methods and accessors are saved to be installed on the instance directly later.
 // This step is not observable.
 
-// The class is now initialized with the prototype specified by extends and implementation specified by constructor. 
+// The class is now initialized with the prototype specified by extends and implementation specified by constructor.
 // For all steps above, if an evaluated expression tries to access the name of the class, a ReferenceError is thrown because the class is not initialized yet.
 
 
 
 // The class elements' values are evaluated in the order of declaration:
 
-// For each instance field (public or private), its initializer expression is saved. 
+// For each instance field (public or private), its initializer expression is saved.
 // The initializer is evaluated during instance creation, at the start of the constructor (for base classes) or immediately before the super() call returns (for derived classes).
 
-// For each static field (public or private), 
+// For each static field (public or private),
 // its initializer is evaluated with this set to the class itself, and the property is created on the class.
 
 // Static initialization blocks are evaluated with this set to the class itself.
