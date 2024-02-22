@@ -139,7 +139,7 @@ console.log(lettering); // Set(3) { '1', '2', '3' }
 // A map does not contain any keys by default. It only contains what is explicitly put into it.
 // An Object has a prototype, so it contains default keys that could collide with your own keys if you're not careful. 
 
-// A Map is safe to use with user-provided keys and values.
+// NOTE: A Map is safe to use with user-provided keys and values.
 // Setting user-provided key-value pairs on an Object may allow an attacker to override the object's prototype, which can lead to object injection attacks
 
 // A Map's keys can be any value (including functions, objects, or any primitive). 

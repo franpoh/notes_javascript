@@ -180,15 +180,15 @@ console.log(personCopy.name.last)
 // ----- Example
 
 let band = {
-    name: "Rammstein",
-    nationality: "German",
-    genre: "Neue Deutsche Härte",
-    members: 6,
-    formed: 1994,
+    name: "The Offspring",
+    nationality: "American",
+    genre: "Skate Punk",
+    members: 5,
+    formed: 1984,
     split: false,
     albums: { // sub-namespace
-        name: ["Herzeleid", "Sehnsucht"],
-        released: [1995, 1997],
+        name: ["Smash", "Ixnay on the Hombre"],
+        released: [1994, 1997],
     }
 }
 
@@ -472,6 +472,8 @@ console.log(wiener); // { firstName: 'Werner', lastName: 'Marschall' }
 // getName function didn't appear in the above console.log(wiener) but was able to call it anyway
 // It should be because it looked up the prototype chain and got it from sausage
 console.log(wiener.getName()); // User's name: Werner Marschall
+
+
 
 // We use the Object.create() method to:
 // instantiate the new 'wiener' object

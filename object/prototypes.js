@@ -174,7 +174,7 @@ function Person(name) {
     this.name = name;
 }
 
-// We then put the methods defined in personPrototype onto the Person function's prototype property
+// We then put the methods defined in personProto onto the Person function's prototype property
 
 Object.assign(Person.prototype, personProto);
 // or
