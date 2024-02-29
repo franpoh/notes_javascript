@@ -83,14 +83,14 @@ for (let i = 0; i < 3; i++) { // shows 0, then 1, then 2
 
 
 
-// Here, the “counter” variable i is declared right in the loop. 
+// Here, the “counter” variable p is declared right in the loop. 
 // This is called an “inline” variable declaration. 
 // Such variables are visible only inside the loop.
 
 for (let p = 0; p < 3; p++) {
     console.log(p); // 0, 1, 2
 }
-console.log(parseFloat); // error, no such variable
+console.log(p); // ReferenceError: p is not defined
 
 
 
@@ -293,10 +293,12 @@ for (const value of iterable) {
 
 const contacts = ['Chris:2232322', 'Sarah:3453456', 'Bill:7654322', 'Mary:9998769', 'Dianne:9384975'];
 
-let searchName = ""; // change search term here to name or blank
+let searchName = "chris"; // change search term here to name or blank
 
 for (const contact of contacts) {
-    const splitContact = contact.split(':');
+
+    const splitContact = contact.split(':'); // [ 'Chris', '2232322' ]
+
     if (splitContact[0].toLowerCase() === searchName) {
         console.log(`${splitContact[0]}'s number is ${splitContact[1]}.`);
         break;
@@ -392,8 +394,12 @@ label: for (let i = 0; i < 3; i++) {
 // The first for statement is labeled "loop1"
 loop1: for (let i = 0; i < 3; i++) {
 
+    console.log('hi from loop 1');
+
     // The second for statement is labeled "loop2"
     loop2: for (let j = 0; j < 3; j++) {
+
+        console.log('hi from loop 2');
 
         if (i === 1 && j === 1) {
             continue loop1;
@@ -404,12 +410,23 @@ loop1: for (let i = 0; i < 3; i++) {
 }
 
 // Logs:
+// hi from loop 1
+// hi from loop 2
 // i = 0, j = 0
+// hi from loop 2
 // i = 0, j = 1
+// hi from loop 2
 // i = 0, j = 2
+// hi from loop 1
+// hi from loop 2
 // i = 1, j = 0
+// hi from loop 2
+// hi from loop 1
+// hi from loop 2
 // i = 2, j = 0
+// hi from loop 2
 // i = 2, j = 1
+// hi from loop 2
 // i = 2, j = 2
 
 // Notice how it skips both "i = 1, j = 1" and "i = 1, j = 2".
@@ -423,8 +440,12 @@ let k, j;
 // The first for statement is labeled "loop1"
 loop1: for (k = 0; k < 3; k++) {
 
+    console.log('hi from loop 1');
+
     // The second for statement is labeled "loop2"
     loop2: for (j = 0; j < 3; j++) {
+
+        console.log('hi from loop 2');
 
         if (k === 1 && j === 1) {
             break loop1;
@@ -435,10 +456,17 @@ loop1: for (k = 0; k < 3; k++) {
 }
 
 // Logs:
+// hi from loop 1
+// hi from loop 2
 // k = 0, j = 0
+// hi from loop 2
 // k = 0, j = 1
+// hi from loop 2
 // k = 0, j = 2
+// hi from loop 1
+// hi from loop 2
 // k = 1, j = 0
+// hi from loop 2
 
 // Notice the difference with the previous continue example: 
 // when break loop1 is encountered, the execution of the outer loop is terminated, so there are no further logs beyond "i = 1, j = 0"; 
@@ -558,7 +586,7 @@ while (i) { // when i becomes 0, the condition becomes falsy, and the loop stops
 // If the loop body has a single statement, we can omit the curly braces {…}:
 
 i = 3;
-while (i) alert(i--);
+while (i) console.log(i--);
 
 
 
@@ -580,7 +608,7 @@ while (i < kitties.length) {
     i++;
 }
 
-console.log(myFavoriteKitties);     // "My kitties are called Pete, Biggles, and Jasmine."
+console.log(myFavoriteKitties); // "My kitties are called Pete, Biggles, and Jasmine."
 
 
 

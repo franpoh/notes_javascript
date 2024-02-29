@@ -268,7 +268,8 @@ console.log(42 ?? 0); // 42
 // It is not possible to combine both the AND(&&) and OR operators(||) directly with ??. A SyntaxError will be thrown in such cases.
 // However, providing parenthesis to explicitly indicate precedence is correct:
 
-(null || undefined) ?? "foo"; // returns "foo"
+console.log(null || undefined); // undefined
+console.log((null || undefined) ?? "foo"); // foo
 
 
 
@@ -284,7 +285,7 @@ console.log(z ??= y); // y is not defined
 
 
 // No assignment is performed if the left-hand side is not nullish, due to short-circuiting of the nullish coalescing operator. 
-// For example, the following does not throw an error, despite x being const
+// For example, the following does not throw an error, despite w being const
 
 const w = 1;
 console.log(w ??= 2); // 1
@@ -332,7 +333,7 @@ console.log("-a: ", a = -a); // -10
 
 
 
-// When applied to non - numeric value, performs the same conversion as the Number() function.
+// When applied to non-numeric value, performs the same conversion as the Number() function.
 
 a = '10';
 console.log(+a); // 10

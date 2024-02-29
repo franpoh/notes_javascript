@@ -98,7 +98,7 @@ console.log("After calling Pass By Reference Function:", objB); // After calling
 // Changing the argument inside the function doesn’t affect the variable passed from outside the function.
 
 
-const num = 10;
+let num = 10;
 
 function callByValue(no) {
     // We can see very obviously here that only the value of the variable was passed in, not the variable itself
@@ -113,3 +113,10 @@ console.log("num: ", num); // num: 10 - no change occurs
 
 
 // NOTE: Javascript always pass by value so changing the value of the variable never changes the original primitive 
+
+
+
+let cyp = 10;
+
+cyp = 100; // directly changing the value of a variable
+console.log(`cyp: ${cyp}`); // cyp: 100

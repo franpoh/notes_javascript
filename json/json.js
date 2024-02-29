@@ -9,7 +9,7 @@ Table of Contents
 
 // JavaScript Object Notation (JSON) is a standard text-based format for representing structured data based on JavaScript object syntax. 
 
-//  Even though it closely resembles JavaScript object literal syntax, 
+// Even though it closely resembles JavaScript object literal syntax, 
 // it can be used independently from JavaScript, 
 // and many programming environments feature the ability to read (parse) and generate JSON. 
 

@@ -73,7 +73,7 @@ employee.getWage();
 
 // ----------------------------- > HOW TO OOP -----------------------------
 
-// The first step in OOP is to collect all of the objects a programmer wants to manipulate and identify how they relate to each other -- an exercise known as data modeling.
+// NOTE: The first step in OOP is to collect all of the objects a programmer wants to manipulate and identify how they relate to each other -- an exercise known as data modeling.
 // Objects can range from physical entities, such as a human being who is described by properties like name and address, to small computer programs, such as widgets.
 
 // Once an object is known, it is labeled with a class of objects that defines the kind of data it contains and any logic sequences that can manipulate it. 

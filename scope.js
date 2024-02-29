@@ -50,9 +50,14 @@ Table of Contents
 // If you assign a value to a variable that has not been declared, it will automatically become a global variable, even if the value is assigned inside a function.
 
 function myFunction() {
-    a = 4;
+    a = 'Not declared';
+    let b = 'Declared';
 }
+
 // no declaration keyword (let, const, var) means that a will always be accessible globally
+myFunction();
+console.log(a); // Not declared
+console.log(b); // ReferenceError: b is not defined
 
 
 
