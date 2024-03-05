@@ -40,6 +40,7 @@ Table of Contents
 
 // A base class is defined using the new reserved 'class' keyword
 class Polygon {
+
     // ..and an (optional) custom class constructor. 
     // If one is not supplied, a default constructor is used instead:
     // constructor() { }
@@ -60,19 +61,26 @@ class Polygon {
 }
 
 let p = new Polygon(300, 400);
+
 p.sayName(); // Hi, I am a  Polygon.
+
 console.log('The width of this polygon is ' + p.width); // The width of this polygon is 400
+
+
 
 // Classes support extending other classes, but can also extend other objects. 
 // Whatever you extend must be a constructor.
 
-// Let's extend the Polygon class to create a new derived class called Square.
+// ----- Let's extend the Polygon class to create a new derived class called Square.
 class Square extends Polygon {
+
     constructor(length) {
+
         // The reserved 'super' keyword is for making super-constructor calls and allows access to parent methods.
         // Here, it will call the parent class' constructor with lengths provided for the Polygon's width and height
         super(length, length);
         // Note: In derived classes, super() must be called before you can use 'this'. Leaving this out will cause a reference error.
+
         this.name = 'Square';
     }
 
@@ -90,6 +98,7 @@ class Square extends Polygon {
 let s = new Square(5);
 
 s.sayName(); // Hi, I am a  Square.
+
 console.log('The area of this square is ' + s.area); // The area of this square is 25
 
 
@@ -284,22 +293,26 @@ class Rectangle {
     height = 20;
     width;
     colour = 'blue';
-    constructor(height, width) {
+    name;
+    constructor(height, width, name = 'weird square') {
         this.height = height;
         this.width = width;
+        this.name = name;
     }
 }
 
 console.log(Rectangle.height); // undefined
 
-const rec = new Rectangle(10, 15);
-console.log(rec); // Rectangle { height: 10, width: 15, colour: 'blue' }
-
-rec.width = 5;
-console.log(rec); // Rectangle { height: 10, width: 5, colour: 'blue' }
-
 const rec1 = new Rectangle();
-console.log(rec1); // Rectangle { height: undefined, width: undefined, colour: 'blue' }
+console.log(rec1); // Rectangle { height: undefined, width: undefined, colour: 'blue', name: 'weird square' }
+
+const rec2 = new Rectangle(10, 15);
+console.log(rec2); // Rectangle { height: 10, width: 15, colour: 'blue', name: 'weird square' }
+
+rec2.width = 5;
+rec2.colour = 'red';
+rec2.name = 'long box';
+console.log(rec2); // Rectangle { height: 10, width: 5, colour: 'red', name: 'long box' }
 
 
 
@@ -347,7 +360,7 @@ console.log(instance1.obj === instance2.obj); // false
 // Because instance fields of a class are added before the respective constructor runs, 
 // you can access the fields' values within the constructor. 
 
-// However, because instance fields of a derived class are defined after super() returns, 
+// NOTE: However, because instance fields of a derived class are defined after super() returns, 
 // the base class's constructor does not have access to the derived class's fields.
 
 class Base {
@@ -403,19 +416,32 @@ console.log(insta.b); // undefined
 // Static methods are often utility functions, such as functions to create or clone objects, 
 // whereas static properties are useful for caches, fixed-configuration, or any other data you don't need to be replicated across instances.
 
-class Car {
-    constructor(brand) {
-        this.carname = brand;
+class ClassWithStaticMethod {
+    normalProperty = 'aValue';
+    static staticProperty = 'someValue';
+    static staticMethod() {
+        return 'static method has been called.';
     }
-    static hello() {  // static method
-        return "Hello!!";
+    static {
+        console.log('Class static initialization block called');
     }
 }
 
-mycar = new Car("Ford");
+// 'Class static initialization block called' is logged with every console.log (or if multiple console.log, only the first one)
 
-console.log(Car.hello()); // Hello! 
-console.log(mycar.hello()); // error, because referencing object rather than class
+console.log(ClassWithStaticMethod); // [class ClassWithStaticMethod] { staticProperty: 'someValue' }
+console.log(ClassWithStaticMethod.staticProperty); // someValue
+console.log(ClassWithStaticMethod.staticMethod()); // ClassWithStaticMethod.staticMethod: static method has been called.
+
+// Public instance fields are added to the instance either at construction time in the base class (before the constructor body runs), or just after super() returns in a subclass.
+console.log(ClassWithStaticMethod.normalProperty); // undefined
+
+const staticClone = new ClassWithStaticMethod();
+
+console.log(staticClone); // ClassWithStaticMethod { normalProperty: 'aValue' }
+console.log(staticClone.staticProperty); // undefined
+console.log(staticClone.staticMethod()); // TypeError: staticClone.staticMethod is not a function
+console.log(staticClone.normalProperty); // aValue
 
 
 
@@ -496,11 +522,13 @@ class ClassWithStaticField {
 }
 
 class SubClassWithStaticField extends ClassWithStaticField {
-    static subStaticField = super.baseStaticMethod();
+    static subStaticField = super.baseStaticField;
+    static subStaticMethod = super.baseStaticMethod();
 }
 
-console.log(ClassWithStaticField.anotherBaseStaticField); // "base static field"
-console.log(SubClassWithStaticField.subStaticField); // "base static method output"
+console.log(ClassWithStaticField.anotherBaseStaticField); // base static field
+console.log(SubClassWithStaticField.subStaticField); // base static field
+console.log(SubClassWithStaticField.subStaticMethod); // base static method output
 
 
 
@@ -607,7 +635,7 @@ class ClassWithPrivateField {
         delete this.#privateField;   // SyntaxError: Private fields can not be deleted
 
         // uncomment below to show error
-        // this.#undeclaredField = 444; // SyntaxError: Private field '#undeclaredField' must be declared in an enclosing class
+        // this.#undeclaredField = 444; // NOTE: SyntaxError: Private field '#undeclaredField' must be declared in an enclosing class
 
     }
 }
@@ -633,8 +661,9 @@ class SubClass extends ClassWithPrivateField {
     }
 }
 
-const subbo = new SubClass(); // SubClass {#privateField: 42, #subPrivateField: 23}
+const subbo = new SubClass();
 console.log(subbo); // SubClass {}
+// in browser console.log: SubClass {#privateField: 42, #subPrivateField: 23}
 
 
 
@@ -657,31 +686,33 @@ class ClassWithPrivateStaticMethod {
     }
 }
 
-console.log(ClassWithPrivateStaticMethod.publicStaticMethod1() === 42); // true
-console.log(ClassWithPrivateStaticMethod.publicStaticMethod2() === 42); // true
+console.log(ClassWithPrivateStaticMethod.publicStaticMethod1()); // 42
+console.log(ClassWithPrivateStaticMethod.publicStaticMethod2()); // 42
 
 
 
 // The same restriction previously mentioned for private static fields holds for private static methods, and similarly can lead to unexpected behavior when using this. 
 // when we try to call Derived.publicStaticMethod2(), this refers to the Derived class (not the Base class) and so causes a TypeError.
 
-class Base {
+
+class Origin {
     static #privateStaticMethod() {
         return 42;
     }
+
     static publicStaticMethod1() {
-        // uncomment below to show error
-        // return Base.#privateStaticMethod(); 
+        return Origin.#privateStaticMethod();
     }
+
     static publicStaticMethod2() {
         return this.#privateStaticMethod();
     }
 }
 
-class Derived extends Base { }
+class Derived extends Origin { };
 
 console.log(Derived.publicStaticMethod1()); // 42
-console.log(Derived.publicStaticMethod2()); // TypeError: Cannot read private member #privateStaticMethod from an object whose class did not declare it
+console.log(Derived.publicStaticMethod2()); // TypeError: Receiver must be class Origin. Cannot read private member #privateStaticMethod from an object whose class did not declare it
 
 
 
@@ -721,13 +752,11 @@ console.log(newPerson.getfirstName()); // Francine
 newPerson.setfirstName("Werner");
 console.log(newPerson.getfirstName()); // Werner
 
-newPerson.setfirstName("Francine"); // resetting for the below functions
-
 // get and set functions
-console.log(newPerson.getName); // Francine
-
-newPerson.setName = "Werner";
 console.log(newPerson.getName); // Werner
+
+newPerson.setName = "Francine";
+console.log(newPerson.getName); // Francine
 
 
 
@@ -798,7 +827,7 @@ class Model extends Car {
 }
 
 let mycar = new Model("Ford", "Mustang");
-document.getElementById("demo").innerHTML = mycar.show(); // I have a Ford, it is a Mustang
+console.log(mycar.show()); // I have a Ford, it is a Mustang
 
 
 
@@ -834,7 +863,7 @@ class Car extends Vehicle {
     }
 }
 
-// ... this will only work if the default value is inserted there. Which may not be correct?
+// ... 'this' will only work if the default value is inserted there. Which may not be correct?
 const newTruck = new Truck("PG-86-HT", "Toyota Hilux", this, 100);
 console.log(newTruck.about());
 // This vehicle is a Toyota Hilux (PG-86-HT) and it has 4 wheels. It weighs 100kg.

@@ -1,5 +1,11 @@
 /* 
 Table of Contents
+
+> SYMBOL.ITERATOR
+>> Iteration Protocols
+>>> The Iterable Protocol
+>>> The Iterator Protocol
+>>> Examples
 */
 
 // In addition to user-defined symbols, JavaScript has some built-in symbols: Well-known Symbols
@@ -27,7 +33,7 @@ Table of Contents
 
 
 
-// ----------------------------- > Symbol.iterator -----------------------------
+// ----------------------------- > SYMBOL.ITERATOR -----------------------------
 
 // The Symbol.iterator static data property represents the well-known symbol @@iterator. 
 // The iterable protocol looks up this symbol for the method that returns the iterator for an object. 
@@ -92,13 +98,13 @@ console.log(...iterable2) // foo bar
 
 
 
-// ----------------------------- > Symbol.iterator >> Iteration Protocols
+// ----------------------------- > SYMBOL.ITERATOR >> Iteration Protocols
 
 // Iteration protocols aren't new built-ins or syntax, but protocols. These protocols can be implemented by any object by following some conventions.
 
 
 
-// ----------------------------- > Symbol.iterator >> Iteration Protocols >>> The Iterable Protocol
+// ----------------------------- > SYMBOL.ITERATOR >> Iteration Protocols >>> The Iterable Protocol
 
 // The iterable protocol allows JavaScript objects to define or customize their iteration behavior, such as what values are looped over in a for...of construct. 
 // Some built-in types are built-in iterables with a default iteration behavior, such as Array or Map, while other types (such as Object) are not.
@@ -123,7 +129,7 @@ console.log(...iterable2) // foo bar
 
 
 
-// ----------------------------- > Symbol.iterator >> Iteration Protocols >>> The Iterator Protocol
+// ----------------------------- > SYMBOL.ITERATOR >> Iteration Protocols >>> The Iterator Protocol
 
 // The iterator protocol defines a standard way to produce a sequence of values (either finite or infinite), and potentially a return value when all values have been generated.
 // FRANCINE NOTE: The methods mentioned correspond with the generator function methods
@@ -186,7 +192,7 @@ console.log(...iterable2) // foo bar
 
 
 
-// ----------------------------- > Symbol.iterator >> Iteration Protocols >>> Examples
+// ----------------------------- > SYMBOL.ITERATOR >> Iteration Protocols >>> Examples
 
 // It is very easy to make an iterator also iterable: just implement an [@@iterator]() method that returns 'this'.
 

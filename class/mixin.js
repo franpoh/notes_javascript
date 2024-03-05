@@ -11,6 +11,11 @@
 
 
 
+// NOTE: React actually removed mixin usage from their library as they consider it harmful. Lsit of reasons include:
+// Mixins introduce implicit dependencies 
+
+
+
 // ----- Basic Example
 
 let greetingMixin = {
