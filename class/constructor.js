@@ -31,70 +31,9 @@ Table of Contents
 // A class method called constructor cannot be a getter, setter, async, or generator.
 // A class cannot have more than one constructor method.
 
-class Rectangle {
-    constructor(height, width) {
-        this.height = height;
-        this.width = width;
-    }
-}
 
 
-
-// ----- Example as seen in class.js
-
-// A base class is defined using the new reserved 'class' keyword
-class Polygon {
-    // ..and an (optional) custom class constructor. 
-    // If one is not supplied, a default constructor is used instead:
-    // constructor() { }
-    constructor(height, width) {
-        this.name = 'Polygon';
-        this.height = height;
-        this.width = width;
-    }
-
-    sayName() {
-        console.log('Hi, I am a ', this.name + '.');
-    }
-
-    sayHistory() {
-        console.log('"Polygon" is derived from the Greek polus (many) ' +
-            'and gonia (angle).');
-    }
-}
-
-let p = new Polygon(300, 400);
-p.sayName(); // Hi, I am a  Polygon.
-console.log('The width of this polygon is ' + p.width); // The width of this polygon is 400
-
-// Classes support extending other classes, but can also extend other objects. 
-// Whatever you extend must be a constructor.
-
-// Let's extend the Polygon class to create a new derived class called Square.
-class Square extends Polygon {
-    constructor(length) {
-        // The reserved 'super' keyword is for making super-constructor calls and allows access to parent methods.
-        // Here, it will call the parent class' constructor with lengths provided for the Polygon's width and height
-        super(length, length);
-        // Note: In derived classes, super() must be called before you can use 'this'. Leaving this out will cause a reference error.
-        this.name = 'Square';
-    }
-
-    // Getter/setter methods are supported in classes,
-    // similar to their ES5 equivalents
-    get area() {
-        return this.height * this.width;
-    }
-
-    set area(value) {
-        this.area = value;
-    }
-}
-
-let s = new Square(5);
-
-s.sayName(); // Hi, I am a  Square.
-console.log('The area of this square is ' + s.area); // The area of this square is 25
+// NOTE: See example in class.js > CLASS
 
 
 
@@ -204,32 +143,57 @@ try {
 
 
 
-class Foo {
+class Naam {
+    checkNaam = 'Check from Naam.';
+
     constructor(name) {
         this.name = name;
     }
 
-    getNameSeparator() {
-        return '-';
+    get getFirstName() {
+        return this.name;
     }
 }
 
-class FooBar extends Foo {
-    constructor(name, index) {
-        super(name);
-        this.index = index;
+class VoorenAchternaam extends Naam {
+    checkVoorenAchternaam = 'Check from VoorenAchternaam.';
+
+    constructor(name, surname) {
+        super(name); // if you don't add super, you will still inherit all public fields, methods and constructor from prototype
+        this.surname = surname; // but 'this' will throw an error. Try commenting out the 'super' line to try
+        // if 'super' is commented out: ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
     }
 
-    getFullName() {
-        return this.name + super.getNameSeparator() + this.index;
+    get getFullName() {
+        return `${this.name} ${this.surname}`;
+    }
+
+    set setFirstName(name) {
+        this.name = name;
+        return console.log(`First name has been reset to ${this.name}.`);
     }
 }
 
-const firstFooBar = new FooBar('foo', 1);
+const myName = new VoorenAchternaam('Francine', 'Poh');
 
-console.log(firstFooBar.name); // foo
+console.log(myName);
+/* 
+VoorenAchternaam {
+    checkNaam: 'Check from Naam.',
+    name: 'Francine',
+    checkVoorenAchternaam: 'Check from VoorenAchternaam',
+    surname: 'Poh'
+}
+*/
 
-console.log(firstFooBar.getFullName()); // foo-1
+console.log(myName.checkNaam); // Check from Naam.
+console.log(myName.checkVoorenAchternaam); // Check from VoorenAchternaam.
+
+console.log(myName.getFirstName); // Francine
+console.log(myName.getFullName); // Francine Poh
+
+myName.setFirstName = 'Werner'; // First name has been reset to Werner.
+console.log(myName.getFullName); // Werner Poh
 
 
 
@@ -314,4 +278,3 @@ console.log(newInstance instanceof Rectangle); // false
 
 // However, because super() calls Rectangle as constructor, the name property of newInstance is initialized with the logic in Rectangle
 console.log(newInstance.name); // Rectangle
-

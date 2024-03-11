@@ -36,70 +36,145 @@ Table of Contents
 
 
 
-// ----- Example as seen in constructor.js
+// ----- Example with empty body
+
+// As you can see in the below example, a class doesn't require instance fields, methods or a custom constructor, they are optional
+
+class Empty { }
+
+const what = new Empty;
+console.log(what.constructor); // Empty {}
+
+// If a constructor is not supplied, a default constructor is used instead: constructor() { }
+// Even though the object looks empty, it actually has a constructor in it
+
+
+
+// ----- Example with just instance field
+
+class Bovine {
+    sound = 'moo'; // this is an instance field. In this case, a public instance field
+}
+
+const cow = new Animal;
+console.log(cow.sound); // moo
+
+
+
+// ----- Example with just a custom constructor
+
+class Canine {
+    constructor(sound) { // an (optional) custom class constructor. 
+        this.sound = sound;
+    }
+}
+
+const dog = new Canine('woof');
+console.log(dog.sound); // woof
+
+
+
+// ----- Example with just method
+
+class Porcine {
+    description() {
+        return 'It goes oink.'
+    }
+}
+
+const pig = new Porcine();
+console.log(pig.description()); // It goes oink.
+
+
+
+// ----- Example with instance field, constructor and method
+
+class Feline {
+    breed = 'siamese';
+
+    constructor(sound) {
+        this.sound = sound;
+    }
+
+    description() {
+        return `This cat is a ${this.breed} and it goes ${this.sound}.`
+    }
+}
+
+const cat = new Feline('MEOW');
+console.log(cat.description()); // This cat is a siamese and it goes MEOW.
+
+
+
+// ----- Example with Derived Class
 
 // A base class is defined using the new reserved 'class' keyword
-class Polygon {
+class Naam {
 
-    // ..and an (optional) custom class constructor. 
-    // If one is not supplied, a default constructor is used instead:
-    // constructor() { }
-    constructor(height, width) {
-        this.name = 'Polygon';
-        this.height = height;
-        this.width = width;
+    checkNaam = 'Check from Naam.';
+
+    constructor(name) {
+        this.name = name;
     }
 
-    sayName() {
-        console.log('Hi, I am a ', this.name + '.');
-    }
-
-    sayHistory() {
-        console.log('"Polygon" is derived from the Greek polus (many) ' +
-            'and gonia (angle).');
+    get getFirstName() {
+        return this.name;
     }
 }
 
-let p = new Polygon(300, 400);
-
-p.sayName(); // Hi, I am a  Polygon.
-
-console.log('The width of this polygon is ' + p.width); // The width of this polygon is 400
+const hisName = new Naam('Werner');
+console.log(hisName); // Naam { checkNaam: 'Check from Naam.', name: 'Werner' }
+console.log(hisName.getFirstName); // Werner
 
 
 
-// Classes support extending other classes, but can also extend other objects. 
-// Whatever you extend must be a constructor.
+// THe 'extends' keyword is used in class declarations or class expressions to create a new class (child class) that inherits properties and methods from an existing class (parent class)
 
-// ----- Let's extend the Polygon class to create a new derived class called Square.
-class Square extends Polygon {
+// Let's extend the Naam class to create a new derived class called VoorenAchternaam.
 
-    constructor(length) {
+class VoorenAchternaam extends Naam {
+    checkVoorenAchternaam = 'Check from VoorenAchternaam.';
 
+    constructor(name, surname) {
         // The reserved 'super' keyword is for making super-constructor calls and allows access to parent methods.
-        // Here, it will call the parent class' constructor with lengths provided for the Polygon's width and height
-        super(length, length);
-        // Note: In derived classes, super() must be called before you can use 'this'. Leaving this out will cause a reference error.
-
-        this.name = 'Square';
+        // Here, it will call the parent class' constructor with a 'name' argument, for the Naam's name property
+        super(name); // In derived classes, super() must be called before you can use 'this'. Leaving this out will cause a reference error.
+        this.surname = surname;
     }
 
-    // Getter/setter methods are supported in classes,
-    // similar to their ES5 equivalents
-    get area() {
-        return this.height * this.width;
+    // Getter/setter methods are supported in classes
+    get getFullName() {
+        return `${this.name} ${this.surname}`;
     }
 
-    set area(value) {
-        this.area = value;
+    set setFirstName(name) {
+        this.name = name;
+        return console.log(`First name has been reset to ${this.name}.`);
     }
 }
 
-let s = new Square(5);
+const myName = new VoorenAchternaam('Francine', 'Poh');
 
-s.sayName(); // Hi, I am a  Square.
+// Below, you can see how myName, from derived class VoorenAchternaam, has inherited everything from both Naam and VoorenAchternaam
 
-console.log('The area of this square is ' + s.area); // The area of this square is 25
+console.log(myName);
+/* 
+VoorenAchternaam {
+    checkNaam: 'Check from Naam.',
+    name: 'Francine',
+    checkVoorenAchternaam: 'Check from VoorenAchternaam',
+    surname: 'Poh'
+}
+*/
+
+console.log(myName.checkNaam); // Check from Naam.
+console.log(myName.checkVoorenAchternaam); // Check from VoorenAchternaam.
+
+console.log(myName.getFirstName); // Francine
+console.log(myName.getFullName); // Francine Poh
+
+myName.setFirstName = 'Fran'; // First name has been reset to Fran.
+console.log(myName.getFullName); // Fran Poh
 
 
 
@@ -795,9 +870,8 @@ newPayment.pay();
 
 // ----------------------------- > EXTENDS -----------------------------
 
-// The extends keyword is used in class declarations or class expressions to create a class as a child of another constructor (either a class or a function).
-
-// indicates that a class is inherited from another class
+// the extends keyword is used in class declarations or class expressions to create a new class (child class) that inherits properties and methods from an existing class (parent class). 
+// The concept of inheritance in JavaScript is based on prototypes, and the extends keyword allows you to create this prototype chain between classes.
 
 // Does not inherit private properties
 
@@ -828,6 +902,20 @@ class Model extends Car {
 
 let mycar = new Model("Ford", "Mustang");
 console.log(mycar.show()); // I have a Ford, it is a Mustang
+
+
+
+// ----- Error Example
+
+// the class (or function, in the case of constructor functions) that you extend must be a valid constructor function.
+
+const notAConstructor = {
+    name: 'Not a constructor'
+};
+
+class InvalidExtension extends notAConstructor {
+    // TypeError: Class extends value #<Object> is not a constructor or null
+}
 
 
 
