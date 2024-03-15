@@ -6,6 +6,10 @@
 
 
 
+// NOTE: See oop.js in Cheatsheet > coding for Object-Oriented Programming. Pay attention to > COMPOSITION OVER INHERITANCE
+
+
+
 // ----------------------------- toLocaleTimeString()
 
 // Get the time portion of a date as a string, using locale conventions:
