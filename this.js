@@ -100,14 +100,14 @@ function getThis() {
     return this;
 }
 
+const obj0 = { name: "obj0" };
 const obj1 = { name: "obj1" };
-const obj2 = { name: "obj2" };
 
+obj0.getThis = getThis;
 obj1.getThis = getThis;
-obj2.getThis = getThis;
 
+console.log(obj0.getThis()); // { name: 'obj0', getThis: [Function: getThis] }
 console.log(obj1.getThis()); // { name: 'obj1', getThis: [Function: getThis] }
-console.log(obj2.getThis()); // { name: 'obj2', getThis: [Function: getThis] }
 
 // Note how the function is the same, but based on how it's invoked, the value of this is different. 
 // This is analogous to how function parameters work.
@@ -119,12 +119,22 @@ console.log(obj2.getThis()); // { name: 'obj2', getThis: [Function: getThis] }
 // The value of this is not the object that has the function as an own property, but the object that is used to call the function. 
 // You can prove this by calling a method of an object up in the prototype chain.
 
+const obj2 = {
+    name: "obj2",
+    getThis() {
+        return this;
+    },
+};
+
 const obj3 = {
-    __proto__: obj1,
+    __proto__: obj2,
     name: "obj3",
 };
 
 console.log(obj3.getThis()); // { name: 'obj3' }
+// getThis method not shown in object as it belongs to obj3's prototype, obj2
+
+
 
 // The value of this always changes based on how a function is called, even when the function was defined on an object at creation:
 
@@ -176,7 +186,9 @@ console.log(myFunction()); // undefined
 
 
 
-// ----- Default - Non-Strict - In a JavaScript function, the owner of the function is the default binding for this.
+// ----- Default - Non-Strict
+
+// In a JavaScript function, the owner of the function is the default binding for this.
 // In non-strict mode, a special process called this substitution ensures that the value of this is always an object.
 
 // If a function is called with this set to undefined or null, this gets substituted with globalThis.
@@ -213,7 +225,12 @@ function logThis() {
 // *thisArg — An object to which the this keyword can refer in the callbackfn function. 
 // If thisArg is omitted, undefined is used as the this value.
 
-[1, 2, 3].forEach(logThis, { name: "obj" }); // { name: 'obj' }, { name: 'obj' }, { name: 'obj' }
+function logThis() {
+    "use strict";
+    console.log(this);
+}
+
+[1, 2, 3].forEach(logThis, "This"); // This, This, This
 
 
 
@@ -242,11 +259,11 @@ console.log(foo() === globalObject); // true
 
 
 
-// arrow functions create a closure over the this value of its surrounding scope, which means arrow functions behave as if they are "auto-bound" — 
-// no matter how it's invoked, this is set to what it was when the function was created (in the example above, the global object). 
-// in short, the value of this is set to what it was when it was created and will noit change
+// arrow functions create a closure over the 'this' value of its surrounding scope, which means arrow functions behave as if they are "auto-bound" — 
+// no matter how it's invoked, 'this' is set to what it was when the function was created (in the example above, the global object). 
+// in short, the value of 'this' is set to what it was when it was created and will not change
 
-// The same applies to arrow functions created inside other functions: their this remains that of the enclosing lexical context.
+// The same applies to arrow functions created inside other functions: their 'this' remains that of the enclosing lexical context.
 
 
 
@@ -268,37 +285,37 @@ console.log(boundFoo() === globalObject); // true
 
 const obj = {
     getThisGetter() {
-        const getter = () => this; // this is permanently bound to the this of its enclosing function
+        const getter = () => this; // this is permanently bound to the 'this' of its enclosing function
         return getter;
     },
 };
 
-// The value of this inside getThisGetter can be set in the call, which in turn sets the return value of the returned function.
+// The value of 'this' inside getThisGetter can be set in the call, which in turn sets the return value of the returned function.
 
 
 
-// call getThisGetter as a method of obj, which sets this inside the body to obj
+// call getThisGetter as a method of obj, which sets 'this' inside the body to obj
 // returned function is assigned to a variable fn
-const fn = obj.getThisGetter();
+const fn = obj.getThisGetter(); // already being called from inside obj, with return value assigned to fn
 
-// Now, when calling fn, the value of this returned is still the one set by the call to getThisGetter, which is obj
+// Now, when calling fn, the value of 'this' returned is still the one set by the call to getThisGetter, which is obj
 console.log(fn() === obj); // true
 
 
 
-// But be careful if you unbind the method of obj without calling it, because getThisGetter is still a method that has a varying this value. 
+// But be careful if you unbind the method of obj without calling it, because getThisGetter is still a method that has a varying 'this' value. 
 // Calling fn2()() in the following example returns globalThis, 
-// because it follows the this from fn2, which is globalThis since it's called without being attached to any object.
-const fn2 = obj.getThisGetter;
+// because it follows the 'this' from fn2, which is globalThis since it's called without being attached to any object.
+const fn2 = obj.getThisGetter; // assigning the getThisGetter function to fn2 only, is now not associated with obj
 console.log(fn2()() === globalThis); // true
 
 
 
 // The above behavior is very useful when defining callbacks. 
-// Usually, each function expression creates its own this binding, which shadows the this value of the upper scope. 
+// Usually, each function expression creates its own 'this' binding, which shadows the 'this' value of the upper scope. 
 
-// Now, you can define functions as arrow functions if you don't care about the this value, 
-// and only create this bindings where you do (e.g. in class methods). See example with setTimeout().
+// Now, you can define functions as arrow functions if you don't care about the 'this' value, 
+// and only create 'this' bindings where you do (e.g. in class methods). See example with setTimeout().
 
 
 
@@ -445,8 +462,8 @@ class Bad extends Base {
     constructor() { }
 }
 
-new Good();
-new AlsoGood();
+new Good(); // No constructor, therefore good
+new AlsoGood(); // returns an object, overriding the 'this' value, therefore good
 new Bad(); // ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
 
 
@@ -457,7 +474,7 @@ new Bad(); // ReferenceError: Must call super constructor in derived class befor
 // Sometimes it is useful to override this behavior so that this within classes always refers to the class instance. 
 // To achieve this, bind the class methods in the constructor:
 
-class Car {
+class Cat {
 
     constructor() {
         // Bind sayBye but not sayHi to show the difference
@@ -473,27 +490,56 @@ class Car {
     }
 
     get name() {
-        return "Ferrari";
+        return "Cat";
     }
 }
 
 class Bird {
     get name() {
-        return "Tweety";
+        return "Bird";
     }
 }
 
-const car = new Car();
+const cat = new Cat();
 const bird = new Bird();
 
 // The value of 'this' in methods depends on their caller
-car.sayHi(); // Hello from Ferrari
-bird.sayHi = car.sayHi;
-bird.sayHi(); // Hello from Tweety
+cat.sayHi(); // Hello from Cat
+bird.sayHi = cat.sayHi;
+bird.sayHi(); // Hello from Bird
 
 // For bound methods, 'this' doesn't depend on the caller
-bird.sayBye = car.sayBye;
-bird.sayBye(); // Bye from Ferrari
+cat.sayBye(); // Bye from Cat
+bird.sayBye = cat.sayBye;
+bird.sayBye(); // Bye from Cat
+
+class Tiger extends Cat {
+    constructor() {
+        super();
+    }
+
+    get name() {
+        return "Tiger";
+    }
+}
+
+class Dog {
+    get name() {
+        return "Dog";
+    }
+}
+
+const tiger = new Tiger();
+const dog = new Dog();
+
+// But as you can see, in derived classes bound 'this' is now bound to the derived class that it's in, in this case 'Tiger'
+tiger.sayHi(); // Hello from Tiger
+tiger.sayBye(); // Bye from Tiger
+
+dog.sayHi = tiger.sayHi;
+dog.sayHi(); // Hello from Dog
+dog.sayBye = tiger.sayBye;
+dog.sayBye(); // Bye from Tiger
 
 
 
