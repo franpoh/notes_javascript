@@ -477,8 +477,7 @@ new Bad(); // ReferenceError: Must call super constructor in derived class befor
 class Cat {
 
     constructor() {
-        // Bind sayBye but not sayHi to show the difference
-        this.sayBye = this.sayBye.bind(this);
+        this.sayBye = this.sayBye.bind(this); // Bind sayBye but not sayHi to show the difference
     }
 
     sayHi() {
@@ -617,6 +616,7 @@ console.log(obj1.a === window); // true
 // so the primitive number 7 is converted to a Number wrapper class and the string 'foo' to a String wrapper class.
 
 function bar() {
+    console.log(this);
     console.log(Object.prototype.toString.call(this));
 }
 
