@@ -616,29 +616,12 @@ console.log(obj1.a === window); // true
 // so the primitive number 7 is converted to a Number wrapper class and the string 'foo' to a String wrapper class.
 
 function bar() {
-    console.log(this);
     console.log(Object.prototype.toString.call(this));
 }
 
 bar.call(7); // [object Number]
 bar.call("foo"); // [object String]
 bar.call(undefined); // [object Window]
-
-
-
-function add(c, d) {
-    return this.a + this.b + c + d;
-}
-
-var o = { a: 1, b: 3 };
-
-// The first parameter is the object to use as 'this'
-// subsequent parameters are passed as arguments in the function call
-console.log(add.call(o, 5, 7)); // 16
-
-// The first parameter is the object to use as 'this'
-// the second is an array whose members are used as the arguments in the function call
-console.log(add.apply(o, [10, 20])); // 34
 
 
 
@@ -651,46 +634,53 @@ console.log(add.apply(o, [10, 20])); // 34
 
 // ----- Example
 
-function f() {
+function greeting() {
     return this.a;
 }
 
-const gg = f.bind({ a: "azerty" });
-console.log(gg()); // azerty
+const hello = greeting.bind({ a: "bye" });
+console.log(hello()); // bye
 
-const hh = gg.bind({ a: "yoo" }); // bind only works once!
-console.log(hh()); // azerty
+const hoi = hello.bind({ a: "doei" }); // bind() only works once
+console.log(hoi()); // bye
 
-const o = { a: 37, f, gg, hh };
-console.log(o.a, o.f(), o.gg(), o.hh()); // 37,37, azerty, azerty
+const hi = { a: 37, greeting, hello, hoi };
+console.log(hi.a, hi.greeting(), hi.hello(), hi.hoi()); // 37, 37, bye, bye
 
 
 
 // ----- Example
 
 const burger = {
-    x: 42,
-    getX: function () {
-        return this.x;
+    filling: "beef patty",
+
+    getFilling: function () {
+        return this.filling;
     }
-};
+}
 
-console.log(burger.getX()); // 42
+const sandwich = {
+    filling: "bacon"
+}
 
-const unboundGetX = burger.getX;
+console.log(burger.getFilling()); // beef patty
+
+const unboundGetFilling = burger.getFilling;
 
 // The function gets invoked at the global scope
-console.log(unboundGetX()); // undefined 
+console.log(unboundGetFilling()); // undefined 
 
-const boundGetX = unboundGetX.bind(burger);
+const boundGetFilling = unboundGetFilling.bind(sandwich);
 
-console.log(boundGetX()); // 42
+console.log(boundGetFilling()); // bacon
 
 
 
 // ----------------------------- > CALL METHOD -----------------------------
 
-// The call() method calls the function with a given this value and arguments provided individually.
+// The call() method is a predefined JavaScript method.
+// It can be used to invoke (call) a method with an owner object as an argument (parameter).
+// With call(), an object can use a method belonging to another object.
 
 // call() provides a new value of this to the function/method. 
 // With call(), you can write a method once and then inherit it in another object, without having to rewrite the method for the new object.
@@ -698,6 +688,37 @@ console.log(boundGetX()); // 42
 // Note: While the syntax of this function is almost identical to that of apply(), 
 // the fundamental difference is that call() accepts an argument list, 
 // while apply() accepts a single array of arguments.
+
+
+
+// ----- Example
+
+const getName = {
+    fullName: function () {
+        console.log(`${this.firstName} ${this.lastName}`);
+    }
+}
+
+const thisPerson = {
+    firstName: "John",
+    lastName: "Doe",
+}
+
+getName.fullName.call(thisPerson);  // John Doe
+
+
+
+// ----- Example
+
+function add(c, d) {
+    return this.a + this.b + c + d;
+}
+
+var someNumbers = { a: 1, b: 3 };
+
+// The first parameter is the object to use as 'this'
+// subsequent parameters are passed as arguments in the function call
+console.log(add.call(someNumbers, 5, 7)); // 16
 
 
 
@@ -713,40 +734,12 @@ function Food(name, price) {
     this.category = 'food';
 }
 
-const dutch = new Food('cheese', 5);
+const gouda = new Food('cheese', 5);
 
-console.log(dutch.name); // cheese
-console.log(dutch.price); // 5
-console.log(dutch.category); // food
-
-
-
-// ----- Example
-
-const person3 = {
-    fullName: function () {
-        console.log(this.firstName + " " + this.lastName);
-    }
-}
-const person4 = {
-    firstName: "John",
-    lastName: "Doe",
-}
-person3.fullName.call(person4);  // John Doe
-
-
-
-// ----- Example
-
-function add(c, d) {
-    return this.a + this.b + c + d;
-}
-
-var o = { a: 1, b: 3 };
-
-// The first parameter is the object to use as 'this'
-// subsequent parameters are passed as arguments in the function call
-console.log(add.call(o, 5, 7)); // 16
+console.log(gouda); // Food { name: 'cheese', price: 5, category: 'food' }
+console.log(gouda.name); // cheese
+console.log(gouda.price); // 5
+console.log(gouda.category); // food
 
 
 
@@ -776,11 +769,11 @@ function add(c, d) {
     return this.a + this.b + c + d;
 }
 
-var o = { a: 1, b: 3 };
+var someNumbers = { a: 1, b: 3 };
 
 // The first parameter is the object to use as 'this'
 // the second is an array whose members are used as the arguments in the function call
-console.log(add.apply(o, [10, 20])); // 34
+console.log(add.apply(someNumbers, [10, 20])); // 34
 
 
 
@@ -789,27 +782,35 @@ console.log(add.apply(o, [10, 20])); // 34
 // this in getters and setters is based on which object the property is accessed on, not which object the property is defined on. 
 // A function used as getter or setter has its this bound to the object from which the property is being set or gotten.
 
-function sum() {
-    return this.a + this.b + this.c;
+const person = {
+    firstName: 'John',
+    lastName: 'Doe',
+
+    get getName() {
+        return `${this.firstName} ${this.lastName}`;
+    },
+
+    set setName(value) {
+        const [first, last] = value.split(' ');
+        this.firstName = first;
+        this.lastName = last;
+    }
 }
 
-const o = {
-    a: 1,
-    b: 2,
-    c: 3,
-    get average() {
-        return (this.a + this.b + this.c) / 3;
-    },
-};
+// Access the getter and setter on person object
+console.log(person.getName); // Output: "John Doe"
+person.setName = 'Jane Smith';
+console.log(person.getName); // Output: "Jane Smith"
 
-// Object.defineProperty() static method defines a new property directly on an object, or modifies an existing property on an object, and returns the object.
-Object.defineProperty(o, "sum", {
-    get: sum,
-    enumerable: true,
-    configurable: true,
-});
+// Define another object that inherits from person
+const student = Object.create(person);
+student.firstName = 'Alice';
+student.lastName = 'Brown';
 
-console.log(o.average, o.sum); // 2, 6
+// Access the getter and setter on student object
+console.log(student.getName); // Output: "Alice Brown"
+student.setName = 'Bob Johnson';
+console.log(student.getName); // Output: "Bob Johnson"
 
 
 
@@ -820,14 +821,11 @@ console.log(o.average, o.sum); // 2, 6
 
 // When called as a listener, turns the related element blue
 function bluify(e) {
+    console.log(this === e.currentTarget); // Always true
 
-    // Always true
-    console.log(this === e.currentTarget);
+    console.log(this === e.target); // true when currentTarget and target are the same object
 
-    // true when currentTarget and target are the same object
-    console.log(this === e.target);
     this.style.backgroundColor = "#A5D9F3";
-
 }
 
 // Get a list of every element in the document

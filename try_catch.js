@@ -14,12 +14,6 @@ Table of Contents
 
 
 
-// ----------------------------- > TRY... CATCH VS PROMISES VS ASYNC/AWAIT -----------------------------
-
-// FIXME: Fill in data here
-
-
-
 // ----------------------------- > EXPLANATION -----------------------------
 
 // The try...catch statement is comprised of a try block and either a catch block, a finally block, or both. 

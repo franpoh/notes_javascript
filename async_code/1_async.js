@@ -5,11 +5,11 @@ Table of Contents
 > EVENT HANDLERS
 > CALLBACK
 >> Callback Hell
+> TRY... CATCH VS PROMISES VS ASYNC/AWAIT
+>> Try/Catch
+>> Promises
+>> Async/Await
 */
-
-
-
-// NOTE: I think before starting on asynchronous code, you should take a look at try_catch.js 
 
 
 
@@ -24,6 +24,10 @@ Table of Contents
 // Making HTTP requests using fetch() (send a request message to a remote server, and it sends us back a response)
 // Accessing a user's camera or microphone using getUserMedia()
 // Asking a user to select files using showOpenFilePicker()
+
+
+
+// NOTE: After finishing this file, it will be good to look at try_catch.js first before moving on to 2_promise_basics.js
 
 
 
@@ -231,3 +235,122 @@ function submissionDone() {
 // If it takes more than a few minutes to understand what is happening, it probably isn't a very good module.
 
 // Handle every single error and make your code stable
+
+
+
+// ----------------------------- > TRY... CATCH VS PROMISES VS ASYNC/AWAIT -----------------------------
+
+// try/catch, promises, and async/await are all mechanisms in JavaScript for handling asynchronous code and dealing with potential errors or exceptional circumstances. 
+// However, they differ in their syntax, use cases, and underlying implementation. 
+
+// Here's an explanation of each:
+
+
+
+// ----------------------------- > TRY... CATCH VS PROMISES VS ASYNC/AWAIT >> Try/Catch
+
+// The try/catch statement is a *control flow construct used for catching and handling exceptions (runtime errors) in synchronous code. 
+// It allows you to execute a block of code (try block) and catch any exceptions that might be thrown within that block using the catch clause.
+
+// *control flow construct: see control_flow_construct.js in Cheatsheet
+
+
+
+function whatNum() {
+    try {
+        // Code that might throw an exception
+        const num = Math.floor(Math.random() * 10) + 1; // Generate a number 1-10
+        if (num >= 5) console.log(`Correct: ${num} is more than or equal to 5!`);
+        else throw num;
+    } catch (error) {
+        // Handle the exception
+        console.log(`Error: ${error} is less than 5!`);
+    }
+}
+
+whatNum();
+
+
+
+// The try/catch statement is primarily used for synchronous code and is not suitable for handling asynchronous operations, such as network requests or file I/O. 
+// For asynchronous operations, promises and async/await are more appropriate.
+
+
+
+// ----------------------------- > TRY... CATCH VS PROMISES VS ASYNC/AWAIT >> Promises
+
+// Promises are objects that represent the eventual completion (or failure) of an asynchronous operation and its resulting value. 
+// They provide a way to handle asynchronous code in a more structured and composable manner.
+
+
+
+// Promise returns with 2-second delay to simulate asynchronous code
+var whatNum = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        const num = Math.floor(Math.random() * 10);
+        num >= 5 ? resolve(num) : reject(num);
+    }, 2000);
+});
+
+
+whatNum.then((result) => {
+    console.log(`Correct: ${result} is more than or equal to 5!`);
+}).catch((error) => {
+    console.log(`Error: ${error} is less than 5!`);
+})
+
+
+
+// Promises have a few advantages over traditional callback-based asynchronous handling: 
+// they help avoid the "callback hell" issue by providing a more linear code structure, 
+// they support chaining, 
+// and they have a clear state (pending, fulfilled, or rejected) that makes error handling more explicit.
+
+
+
+// ----------------------------- > TRY... CATCH VS PROMISES VS ASYNC/AWAIT >> Async/Await
+
+// The async / await syntax is a more recent addition to JavaScript(introduced in ES2017) and provides a way to write asynchronous code that looks and behaves more like synchronous code.
+// It is built on top of promises and works by allowing the use of the await keyword inside an async function.
+
+
+
+async function whatNum() {
+
+    // Promise returns with 2-second delay to simulate asynchronous code
+    // await only works with Promise-based functions
+    const num = await new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(Math.floor(Math.random() * 10));
+        }, 2000);
+    })
+
+    if (num >= 5) console.log(`Correct: ${num} is more than or equal to 5!`);
+    else console.log(`Error: ${num} is less than 5!`);
+}
+
+whatNum();
+
+
+
+// The async keyword is used to define an asynchronous function, and the await keyword is used inside that function to pause the execution until a promise is resolved.
+// This makes asynchronous code more readable and easier to reason about, as it avoids deeply nested callback functions or complex promise chaining.
+
+
+
+// ----------------------------- 
+
+// Key Differences:
+
+// try/catch is used for synchronous error handling, while promises and async/await are used for asynchronous operations.
+
+// promises provide a structured way to handle asynchronous operations, but they still require dealing with .then and.catch chains.
+
+// async / await is a syntactical sugar on top of promises, allowing you to write asynchronous code that looks and behaves more like synchronous code.
+
+// async / await combines the error handling capabilities of try/catch with the asynchronous handling capabilities of promises, providing a more concise and readable approach.
+
+
+
+// In modern JavaScript development, promises and async / await are widely used for handling asynchronous operations, such as network requests, file operations, or interactions with APIs.
+// While try/catch is still used for synchronous error handling, it is often combined with async/await to provide comprehensive error handling for both synchronous and asynchronous code.
