@@ -3,8 +3,8 @@ Table of Contents
 
 > EXPLANATION
 > DEFINITIONS
+> DATA TYPES
 > JAVASCRIPT METHODS
-> <script> IN HTML HEAD
 > ERRORS 
 */
 
@@ -21,6 +21,8 @@ Table of Contents
 // this means that in most cases the code in each tab is run completely separately, 
 // and the code in one tab cannot directly affect the code in another tab — or on another website.
 
+// See also Cheatsheet\javascript.js
+
 
 
 // ----------------------------- > DEFINITIONS -----------------------------
@@ -29,6 +31,33 @@ Table of Contents
 
 // Primitive data type – most basic things eg string, number, boolean
 // Non-primitive data type – things that can still be broken down eg objects, functions
+
+
+
+// ----------------------------- > DATA TYPES -----------------------------
+
+// The latest ECMAScript standard defines eight data types:
+
+
+
+// Seven data types that are primitives:
+
+// Boolean.     true and false.
+// null.        A special keyword denoting a null value. (Because JavaScript is case-sensitive, null is not the same as Null, NULL, or any other variant.)
+// undefined.   A top-level property whose value is not defined.
+// Number.      An integer or floating point number. For example: 42 or 3.14159.
+// BigInt.      An integer with arbitrary precision. For example: 9007199254740992n.
+// String.      A sequence of characters that represent a text value. For example: "Howdy".
+// Symbol.      A data type whose instances are unique and immutable.
+
+// and Object
+
+
+
+// Although these data types are relatively few, they enable you to perform useful operations with your applications. 
+
+// Functions are the other fundamental elements of the language. 
+// While functions are technically a kind of object, you can think of objects as named containers for values, and functions as procedures that your script can perform.
 
 
 
@@ -47,37 +76,6 @@ const person = {
         return this.firstName + " " + this.lastName;
     }
 };
-
-
-
-// ----------------------------- > <script> IN HTML HEAD -----------------------------
-
-// async and defer both instruct the browser to download the script(s) in a separate thread, while the rest of the page is downloading, 
-// so the page loading is not blocked during the fetch process.
-
-// ----- <script src="script.js"></script>
-// No attributes
-// the HTML file will be parsed until it comes to the script file
-// At that point, parsing will stop and a request will be made to fetch the file (if it is external)
-// The script will be executed before parsing is resumed
-
-// ----- <script src="script.js" defer></script>
-// Defer 
-// downloads the file during HTML parsing 
-// only execute after the parser has completed
-// guarantees the order of execution in which they appear in the page
-
-// ----- <script async src="script.js"></script>
-// Async  
-// downloads file during HTML parsing
-// will pause the HTML parser to execute it as soon as the script is loaded
-// doesn't guarantee the order of execution
-// If your scripts should be run immediately and they don't have any dependencies, then use async. eg. loading game files while intro script is running
-
-// for modules: 
-
-// ----- <script type="module" src="main.js"></script>
-// There is no need to use the defer attribute when loading a module script; modules are deferred automatically.
 
 
 
