@@ -11,6 +11,8 @@ Table of Contents
 
 // Higher order functions are functions that operate on other functions, either by taking them as arguments or by returning them. 
 
+// Everything below are examples
+
 
 
 // ----------------------------- > ARRAY.MAP BUT NOT REALLY -----------------------------

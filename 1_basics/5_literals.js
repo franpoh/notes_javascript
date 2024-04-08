@@ -234,7 +234,7 @@ console.log(obj['prop_42']); // 42
 
 
 
-// ----------------------------- > RegExp literals -----------------------------
+// ----------------------------- > REGEXP LITERALS -----------------------------
 
 // A regex literal is a pattern enclosed between slashes. 
 
@@ -246,7 +246,7 @@ const re = /ab+c/;
 
 
 
-// ----------------------------- > String literals -----------------------------
+// ----------------------------- > STRING LITERALS -----------------------------
 
 // A string literal is zero or more characters enclosed in double (") or single (') quotation marks. 
 // A string must be delimited by quotation marks of the same type (that is, either both single quotation marks, or both double quotation marks).
@@ -276,6 +276,8 @@ console.log("Joyo's cat".length); // 10
 
 
 
+// ----------------------------- > STRING LITERALS >> Template Literals
+
 // Template literals are also available. 
 // Template literals are enclosed by the back-tick (`) (grave accent) character instead of double or single quotes.
 
@@ -302,6 +304,8 @@ const person = 'Lev', time = 'today';
 console.log(`Hello ${person}, how are you ${time}?`);
 
 
+
+// ----------------------------- > STRING LITERALS >> Template Literals >>> Tagged Templates
 
 // Tagged templates are a compact syntax for specifying a template literal along with a call to a "tag" function for parsing it. 
 // A tagged template is just a more succinct and semantic way to invoke a function that processes a string and a set of relevant values. 
@@ -347,7 +351,7 @@ const todos1 = [
     "Print materials for Heart RPG",
 ];
 
-printTag`On ${today}, ${person1} needs to do: ${todos1}`;
+// printTag`On ${today}, ${person1} needs to do: ${todos1}`;
 /* 
 On 05/04/2024, Francine needs to do: 
         - Learn JavaScript
@@ -377,15 +381,32 @@ When it is 06/04/2024, Werner should go to
         - Donner
 */
 
-
-
-FIXME:
 // Since tagged template literals are just sugar of function calls, you can re-write the above as an equivalent function call:
 
-print(["I need to do:\n", "\nMy current progress is: ", "\n"], todos, progress);
+printTag(["On ", ", ", " needs to do: "], today, person1, todos1);
+/* 
+On 07/04/2024, Francine needs to do: 
+        - Learn JavaScript
+        - Workout
+        - Get my vaccination
+        - Print materials for Heart RPG
+*/
 
 // This may be reminiscent of the console.log-style interpolation:
 
-console.log("I need to do:\n%o\nMy current progress is: %o\n", todos, progress);
+console.log("When it is %s %s needs to do: %o", today, person1, todos1); // See explanation of %s and %o in string\format_specifier.js
+/* 
+When it is 2024-04-07T09:13:58.057Z 'Francine' needs to do: [
+  'Learn JavaScript',
+  'Workout',
+  'Get my vaccination',
+  'Print materials for Heart RPG',
+  [length]: 4
+]
+*/
+
 
 // You can see how the tagged template reads more naturally than a traditional "formatter" function, where the variables and the template itself have to be declared separately.
+
+
+
