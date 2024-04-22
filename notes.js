@@ -10,24 +10,6 @@
 
 
 
-// ----------------------------- toLocaleTimeString()
-
-// Get the time portion of a date as a string, using locale conventions:
-
-const d = new Date();
-console.log(d.toLocaleTimeString());
-
-
-
-// ----------------------------- toLocaleDateString() 
-
-// Get a date as a string, using locale conventions:
-
-const e = new Date();
-console.log(e.toLocaleDateString());
-
-
-
 // ----------------------------- > <script> IN HTML HEAD -----------------------------
 
 // async and defer both instruct the browser to download the script(s) in a separate thread, while the rest of the page is downloading, 

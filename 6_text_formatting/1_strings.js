@@ -2,10 +2,10 @@
 Table of Contents
 
 > ESCAPING CHARACTERS IN A STRING
-> TOSTRING
 > TEMPLATE LITERAL
 >> ${ } Construct 
 >> Split A Traditional String Over Multiple Lines 
+> TOSTRING
 */
 
 
@@ -24,30 +24,28 @@ console.log(bigmouth); // I've got no right to take my place…
 
 
 
-// ----------------------------- > TOSTRING -----------------------------
-
-// To convert a number value into a string
-
-let myNum2 = 123;
-console.log(myNum2.toString()); // 123
-
-
-
 // ----------------------------- > TEMPLATE LITERAL -----------------------------
 
 // This is a newer syntax that provides more flexible, easier to read strings. 
+// There is no more need to open and close multiple string pieces — the whole lot can just be wrapped in a single pair of backticks. 
+// Also, there is no longer any need to escape characters in a string
+
+
 
 // To turn a standard string literal into a template literal, you have to replace the quote marks (' ', or " ") with backtick characters (` `).
+// variables are inserted using ${}
 
+let song = 'Country Roads'
 let score = 9;
 let highestScore = 10;
 
-let output = 'I like the song "' + song + '". I gave it a score of ' + (score/highestScore * 100) + '%.';
+// Old way of outputting a string with a combination of strings and variables
+let oldOutput = 'I like the song "' + song + '". I gave it a score of ' + (score/highestScore * 100) + '%.';
+console.log(oldOutput); // I like the song "Country Roads". I gave it a score of 90%.
 
 // Template Literal:
-output = `I like the song "${ song }". I gave it a score of ${ score/highestScore * 100 }%.`;
-
-// There is no more need to open and close multiple string pieces — the whole lot can just be wrapped in a single pair of backticks. 
+let newOutput = `I like the song "${song}". I gave it a score of ${score/highestScore * 100}%.`;
+console.log(newOutput); // I like the song "Country Roads". I gave it a score of 90%.
 
 
 
@@ -66,3 +64,12 @@ output = 'I like the song "' + song + '".\nI gave it a score of ' + (score/highe
 
 output = `I like the song "${ song }".
 I gave it a score of ${ score/highestScore * 100 }%.`;
+
+
+
+// ----------------------------- > TOSTRING -----------------------------
+
+// To convert a number value into a string
+
+let myNum2 = 123;
+console.log(myNum2.toString()); // 123
