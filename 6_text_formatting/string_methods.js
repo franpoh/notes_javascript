@@ -1,123 +1,132 @@
 /* 
 Table of Contents
 
-> STRING.LENGTH
-> RETURN ANY CHARACTER INSIDE A STRING
-> STRING.INDEXOF
-> STRING.SLICE
-> STRING.TOLOWERCASE / STRING.TOUPPERCASE
-> STRING.REPLACE
-> STRING.INCLUDES
-> STRING.STARTSWITH / STRING.ENDSWITH 
+> STRING METHODS 
+> STRING METHODS >> Length
+>> Return Any Character Inside A String
+>> Indexof() / lastIndexOf()
+>> Slice()
+>> Tolowercase() / Touppercase()
+>> Replace()
+>> Includes()
+>> Startswith() / Endswith() 
 */
 
 
 
-// ----------------------------- > STRING.LENGTH -----------------------------
+// ----------------------------- > STRING METHODS >> Length -----------------------------
 
 // find out length of string (number of characters)
 
-let browserType = 'mozilla';
-console.log(browserType.length); // 7
+let pancake = 'pannenkoek';
+console.log(pancake.length); // 10
 
 
  
-// ----------------------------- > RETURN ANY CHARACTER INSIDE A STRING -----------------------------
+// ----------------------------- > STRING METHODS >> Return Any Character Inside A String -----------------------------
 
 // return any character inside a string by using square bracket notation at the end of your variable name, and include the number of the character you want to return
 
-// Computers count from 0, so to return the first letter of a string:
+pancake = 'pannenkoek';
 
-console.log(browserType[0]); // m
+console.log(pancake[2]); // n
 
 // To get the last letter of any string:
-
-console.log(browserType[browserType.length - 1]); // a
-
+console.log(pancake[pancake.length - 1]); // k
 
 
-// ----------------------------- > STRING.INDEXOF -----------------------------
 
-// find out if a substring (smaller string) is present inside a larger one
+// ----------------------------- > STRING METHODS >> Indexof() / lastIndexOf() -----------------------------
+
+// ----- Indexof()
+
+// searches string and returns the index of the first occurrence of the specified substring
 
 // takes a single parameter — the substring you want to search for.
-
-// If the substring is found inside the main string, 
-// it returns a number representing the index position of the substring — 
-// which character number of the main string the substring starts at. 
-
+// If the substring is found inside the main string, it returns a number representing the index position of the substring — which character number of the main string the substring starts at. 
 // If the substring is not found inside the main string, it returns a value of -1.
 
-let variableOne = 'mozilla';
-console.log(variableOne.indexOf('zilla')); // 2
+let pancakecakecake = 'pannenkoekkoekkoek';
+
+console.log(pancakecakecake.indexOf('koek')); // 6
+console.log(pancakecakecake.indexOf('cake')); // -1
 
 
 
-// can be combined with assignment operators 
+// ----- lastIndexOf()
 
-if (browserType.indexOf('mozilla') === -1) { }
-if (browserType.indexOf('mozilla') !== -1) { }
+// searches string and returns the index of the last occurrence of the specified substring
 
+pancakecakecake = 'pannenkoekkoekkoek';
 
-
-// ----------------------------- > STRING.SLICE -----------------------------
-
-// use to extract substring
-
-browserType = 'mozilla';
-
-console.log(browserType.slice(0,3)); // moz
-console.log(browserType.slice(2)); // zilla
+console.log(pancakecakecake.lastIndexOf('koek')); // 14
 
 
 
-// ----------------------------- > STRING.TOLOWERCASE / STRING.TOUPPERCASE -----------------------------
+// ----------------------------- > STRING METHODS >> Slice() -----------------------------
+
+// extracts a section of this string and returns it as a new string, without modifying the original string. 
+
+pancake = 'pannenkoek';
+
+console.log(pancake.slice(0,6)); // pannen
+console.log(pancake.slice(6)); // koek
+
+
+
+// ----------------------------- > STRING METHODS >> Tolowercase() / Touppercase() -----------------------------
 
 // convert all characters in string to lower- or uppercase
 
-let radData = "rAdIaTiOn";
+let panCake = "pannenKOEK";
 
-console.log(radData.toLowerCase()); // radiation
-console.log(radData.toUpperCase()); // RADIATION
+console.log(panCake.toLowerCase()); // pannenkoek
+console.log(panCake.toUpperCase()); // PANNENKOEK
 
 
 
-// ----------------------------- > STRING.REPLACE -----------------------------
+// ----------------------------- > STRING METHODS >> Replace() -----------------------------
 
 // replace one substring inside a string with another substring
 
-browserType = "mozilla";
+pancake = "pannenkoek";
 
 // temporary, only for that return
-console.log(browserType.replace('moz','van')); // vanilla
-console.log(browserType); // mozilla
+console.log(pancake.replace('koek','cake')); // pannencake
+console.log(pancake); // pannenkoek
 
 // permanently changed
-browserType = browserType.replace('moz','van');
-console.log(browserType); // vanilla
+pancake = pancake.replace('koek','cake');
+console.log(pancake); // pannencake
 
 
 
-// ----------------------------- > STRING.INCLUDES -----------------------------
+// ----------------------------- > STRING METHODS >> Includes() -----------------------------
 
 // The includes() method returns true if a string contains a specified value, otherwise false:
 
-let text = "Hello world, welcome to the universe.";
-console.log(text.includes("world")); // true
+let pancakeText = "Hello world, welcome to the pannenkoek.";
+console.log(pancakeText.includes("pannenkoek")); // true
 
 
 
 // Checking for multiple substrings in string
+// See array\iteration_methods.js > ARRAY.SOME
 
-// includes
-substringsArray.some(substring => yourBigString.includes(substring))
+pancakeText = "Hello world, welcome to the pannenkoek.";
 
-// matches
-substringsArray.some(substring => yourBigString === substring)
+let pancakeIncludes = ['pannenkoek', 'world'].some(item => pancakeText.includes(item)); // checking if string contains 'pannenkoek' and/or 'world'
+console.log(pancakeIncludes); // true
+
+pancakeIncludes = ['pancake', 'world'].some(item => pancakeText.includes(item)); // checking if string contains 'pancake' and/or 'world'
+console.log(pancakeIncludes); // true
+
+pancakeIncludes = ['pancake', 'wereld'].some(item => pancakeText.includes(item)); // checking if string contains 'pancake' and/or 'wereld'
+console.log(pancakeIncludes); // false
 
 
 
-// ----------------------------- > STRING.STARTSWITH / STRING.ENDSWITH -----------------------------
+// ----------------------------- > STRING METHODS >> Startswith() / Endswith() -----------------------------
 
 // The startsWith() method returns true if a string begins with a specified value, otherwise false:
 

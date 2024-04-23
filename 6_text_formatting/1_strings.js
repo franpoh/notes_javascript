@@ -1,69 +1,67 @@
 /* 
 Table of Contents
 
-> ESCAPING CHARACTERS IN A STRING
-> TEMPLATE LITERAL
->> ${ } Construct 
->> Split A Traditional String Over Multiple Lines 
 > TOSTRING
 */
 
 
 
-// When you enter an actual string in your code, enclosed in single or double quotes, it is called a string literal.
+// ----------------------------- > STRING OBJECTS -----------------------------
+
+// The String object is a wrapper around the string primitive data type.
+
+const foo = new String("foo"); // Creates a String object
+console.log(foo); // [String: 'foo']
+typeof foo; // 'object'
+
+// You can call any of the methods of the String object on a string literal value
+// JavaScript automatically converts the string literal to a temporary String object, calls the method, then discards the temporary String object. 
+// You can also use the length property with a string literal.
+// NOTE: See object\object_wrapper.js
 
 
 
-// ----------------------------- > ESCAPING CHARACTERS IN A STRING -----------------------------
+// You should use string literals unless you specifically need to use a String object, because String objects can have counterintuitive behavior.
 
-// Escaping characters means that we do something to them to make sure they are recognized as text, not part of the code.
-// In JavaScript, we do this by putting a backslash just before the character.
+const firstString = "2 + 2"; // Creates a string literal value
+const secondString = new String("2 + 2"); // Creates a String object
 
-const bigmouth = 'I\'ve got no right to take my place…';
-console.log(bigmouth); // I've got no right to take my place…
-
-
-
-// ----------------------------- > TEMPLATE LITERAL -----------------------------
-
-// This is a newer syntax that provides more flexible, easier to read strings. 
-// There is no more need to open and close multiple string pieces — the whole lot can just be wrapped in a single pair of backticks. 
-// Also, there is no longer any need to escape characters in a string
+console.log(eval(firstString)); // 4
+console.log(eval(secondString)); // [String: '2 + 2']
 
 
 
-// To turn a standard string literal into a template literal, you have to replace the quote marks (' ', or " ") with backtick characters (` `).
-// variables are inserted using ${}
+// A String object has one property, length, that indicates the number of *UTF-16 code units in the string. 
 
-let song = 'Country Roads'
-let score = 9;
-let highestScore = 10;
+// * UTF-16 is a character encoding scheme that is used in various environments, including JavaScript and the web. 
+// It represents each character using one or two 16-bit code units. 
+// So essentially, the string object property 'length' is the number of characters in the string
 
-// Old way of outputting a string with a combination of strings and variables
-let oldOutput = 'I like the song "' + song + '". I gave it a score of ' + (score/highestScore * 100) + '%.';
-console.log(oldOutput); // I like the song "Country Roads". I gave it a score of 90%.
+// For example, the following code assigns helloLength the value 13, because "Hello, World!" has 13 characters, each represented by one UTF-16 code unit. 
 
-// Template Literal:
-let newOutput = `I like the song "${song}". I gave it a score of ${score/highestScore * 100}%.`;
-console.log(newOutput); // I like the song "Country Roads". I gave it a score of 90%.
+const hello = "Hello, World!";
+const helloLength = hello.length;
+
+console.log(helloLength); // 13
+
+// You can access each code unit using an array bracket style. 
+
+console.log(hello[0]); // H
+
+// You can't change individual characters because strings are immutable array-like objects:
+
+hello[0] = "L"; // This has no effect, because strings are immutable
+console.log(hello); // Hello, World!
 
 
 
-// ----------------------------- > TEMPLATE LITERAL >> ${ } Construct 
-
-// to include a variable or expression inside the string, you include it inside a ${ } construct, which is called a placeholder.
 
 
-// ----------------------------- > TEMPLATE LITERAL >> Split A Traditional String Over Multiple Lines
 
-// \n – a newline character
 
-output = 'I like the song "' + song + '".\nI gave it a score of ' + (score/highestScore * 100) + '%.';
 
-// Template literals respect the line breaks in the source code, so newline characters are no longer needed. This would achieve the same result:
 
-output = `I like the song "${ song }".
-I gave it a score of ${ score/highestScore * 100 }%.`;
+
 
 
 

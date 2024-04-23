@@ -1,7 +1,18 @@
 /* 
 Table of Contents
 
-
+> ARRAY LITERAL
+>> Extra Commas In Array Literals
+> BOOLEAN LITERALS
+> NUMERIC LITERALS
+> OBJECT LITERALS
+>> Enhanced Object Literals
+> REGEXP LITERALS
+> STRING LITERALS
+>> Escaping Characters In A String
+>> Template Literals
+>> Split A Traditional String Over Multiple Lines
+>>> Tagged Templates
 */
 
 
@@ -24,21 +35,37 @@ Table of Contents
 // An array literal is a list of zero or more expressions, each of which represents an array element, enclosed in square brackets ([]). 
 // When you create an array using an array literal, it is initialized with the specified values as its elements, and its length is set to the number of arguments specified.
 
+// NOTE: Array index start from 0. So an array with 3 elements in it will have the indexes 0, 1, 2
+
 
 
 // The following example creates the coffees array with three elements and a length of three:
 
 const coffees = ["French Roast", "Colombian", "Kona"];
 
+console.log(coffees[0]); // French Roast
+console.log(coffees[1]); // Colombian
+console.log(coffees[2]); // Kona
+
+// in an array we can store various data types — strings, numbers, objects, and even other arrays. 
+// We can also mix data types in a single array
+
+let random = ['tree', 795, ['apple', 9.273, coffees]];
+
+console.log(random[0]); // tree
+console.log(random[1]); // 795
+console.log(random[2]); // [ 'apple', 9.273, [ 'French Roast', 'Colombian', 'Kona' ] ]
+
+// multidimensional array  - an array inside an array. You can access an item inside an array that is itself inside another array by chaining two sets of square brackets together.
+
+console.log(random[2][2]); // [ 'French Roast', 'Colombian', 'Kona' ]
+console.log(random[2][2][0]); // French Roast
+
 
 
 // An array literal creates a new array object every time the literal is evaluated. 
 // For example, an array defined with a literal in the global scope is created once when the script loads. 
 // However, if the array literal is inside a function, a new array is instantiated every time that function is called.
-
-
-
-// NOTE: Array literals create Array objects. See Javascript\array for more information.
 
 
 
@@ -238,11 +265,42 @@ console.log(obj['prop_42']); // 42
 
 // A regex literal is a pattern enclosed between slashes. 
 
+// Regex is short for regular expression, which are patterns used to match character combinations in strings. 
+// In JavaScript, regular expressions are also objects.
+
+
+
 // The following is an example of a regex literal.
 
-const re = /ab+c/;
+const re = /ab+c/; // Using a regular expression literal, which consists of a pattern enclosed between slashes
 
-// See FIXME:
+// These regex literal can be used with methods, for example: 
+//      test() and exec() methods for the RegExp object, the RegExp object being used for used for matching text with a pattern
+//      match(), matchAll(), replace(), replaceAll(), search(), and split() methods of String
+
+
+
+// ----- Example use for regex literal
+
+function secretPassword(passphrase) {
+
+    const testWord = /owl/; // thing to test for
+    const result = testWord.test(passphrase) ? "Welcome to the secret society" : "Your secret society is 3 doors down";
+    
+    console.log(result);
+}
+
+secretPassword('The owl hoots sadly at night'); // Welcome to the secret society
+secretPassword('The whale sings into the ocean'); // Your secret society is 3 doors down
+
+
+
+// ----- Simple example that tests if "hello" is contained at the very beginning of a string, returning a boolean result.
+
+const str = "hello world!";
+const result = /^hello/.test(str);
+
+console.log(result); // true
 
 
 
@@ -269,6 +327,8 @@ const re = /ab+c/;
 
 // You can call any of the String object's methods on a string literal value. 
 // JavaScript automatically converts the string literal to a temporary String object, calls the method, then discards the temporary String object. 
+// NOTE: See object\object_wrapper.js
+
 // You can also use the length property with a string literal:
 
 // Will print the number of symbols in the string including whitespace.
@@ -276,32 +336,69 @@ console.log("Joyo's cat".length); // 10
 
 
 
+// ----------------------------- > STRING LITERALS >> Escaping Characters In A String
+
+// Escaping characters means that we do something to them to make sure they are recognized as text, not part of the code.
+// In JavaScript, we do this by putting a backslash just before the character.
+
+const bigmouth = 'I\'ve got no right to take my place…';
+console.log(bigmouth); // I've got no right to take my place…
+
+
+
 // ----------------------------- > STRING LITERALS >> Template Literals
 
-// Template literals are also available. 
+// Template literals are also available, a newer syntax that provides more flexible, easier to read strings
 // Template literals are enclosed by the back-tick (`) (grave accent) character instead of double or single quotes.
 
 // Template literals provide syntactic sugar for constructing strings. (This is similar to string interpolation features in Perl, Python, and more.)
 
 
 
-// Basic literal string creation
-console.log(`In JavaScript '\n' is a line-feed.`);
+// To turn a standard string literal into a template literal, you have to replace the quote marks (' ', or " ") with backtick characters (` `).
 
-// Multiline strings
-console.log(`In JavaScript, template strings can run
-over multiple lines, but double and single
-quoted strings cannot.`);
+`I'm a template literal`;
 
-/* 
-console.log('For example this line 
-with single quotes will not run across multiple 
-lines without errors');
-*/
+// to include a variable or expression inside the string, you include it inside a ${ } construct, which is called a placeholder.
 
-// String interpolation
-const person = 'Lev', time = 'today';
-console.log(`Hello ${person}, how are you ${time}?`);
+let whatAmI = 'template literal';
+`I'm a ${whatAmI}`;
+
+
+
+// ----- Example
+
+let song = 'Country Roads'
+let score = 9;
+let highestScore = 10;
+
+// Old way of outputting a string with a combination of strings and variables
+let oldOutput = 'I like the song "' + song + '". I gave it a score of ' + (score/highestScore * 100) + '%.';
+console.log(oldOutput); // I like the song "Country Roads". I gave it a score of 90%.
+
+// Template Literal:
+let newOutput = `I like the song "${song}". I gave it a score of ${score/highestScore * 100}%.`;
+console.log(newOutput); // I like the song "Country Roads". I gave it a score of 90%.
+
+
+
+// ----------------------------- > STRING LITERALS >> Split A Traditional String Over Multiple Lines
+
+// \n – a newline character, used to split a string onto new lines in a traditional string literal
+
+output = 'Roses are Red, \nViolets are Blue, \nThis is a String Literal Example, \nPoetry poetry poetry';
+console.log(output);
+
+
+
+// Template literals respect the line breaks in the source code, so newline characters are no longer needed. This would achieve the same result:
+
+output = `Roses are Red, 
+Violets are Blue, 
+This is a Template Literal Example, 
+Poetry poetry poetry`;
+
+console.log(output);
 
 
 
@@ -395,7 +492,7 @@ On 07/04/2024, Francine needs to do:
 // This may be reminiscent of the console.log-style interpolation:
 
 console.log("When it is %s %s needs to do: %o", today, person1, todos1); // See explanation of %s and %o in string\format_specifier.js
-/* 
+/*
 When it is 2024-04-07T09:13:58.057Z 'Francine' needs to do: [
   'Learn JavaScript',
   'Workout',
