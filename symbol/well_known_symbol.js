@@ -58,6 +58,16 @@ console.log([...iterable1]); // [1, 2, 3]
 
 
 
+// NOTE: Here is an explanation of how the spread syntax helps to produce a usable array from the iterator object
+// Simply put, it spreads the values of the iterator into an array. Here is the process step-by-step
+//      All iterator object has an iterator protocol, which defines how to produce a sequence of values from an object
+//      the iteration protocol includes a next() method, which return an object with 2 properties: 'value', and a boolean 'done'
+//      When the spread syntax is used on the iterator object, it internally calls the iterator's next() method repeatedly to retrieve each yielded value
+//      As the spread syntax iterates over the iterator, it collects all the value properties from the next() method calls into a new array.
+//      This process continues until the done property from the next() method returns true, indicating that there are no more values to iterate over.
+
+
+
 // let's look at what the object will look like with more properties
 const iterable2 = {
     item1: 'foo',
