@@ -263,16 +263,33 @@ console.log(obj['prop_42']); // 42
 
 // ----------------------------- > REGEXP LITERALS -----------------------------
 
-// A regex literal is a pattern enclosed between slashes. 
+// Regex literal is short for regular expression literal
 
-// Regex is short for regular expression, which are patterns used to match character combinations in strings. 
+// A regular expression is a pattern of characters, enclosed between slashes. 
+// The pattern is used for searching and/or replacing characters in strings.
+
 // In JavaScript, regular expressions are also objects.
 
+// More information on how to create a regular expression: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions
 
 
-// The following is an example of a regex literal.
 
-const re = /ab+c/; // Using a regular expression literal, which consists of a pattern enclosed between slashes
+// ----- Examples of how to create a regular expression.
+
+// Using a regular expression literal, which consists of a pattern enclosed between slashes
+const reLit = /ab+c/;
+
+// Regular expression literals provide compilation of the regular expression when the script is loaded. If the regular expression remains constant, using this can improve performance. 
+
+
+
+// You can also create a regular expression by calling the constructor function of the RegExp object
+const reCon = new RegExp("ab+c");
+
+// Using the constructor function provides runtime compilation of the regular expression. 
+// Use the constructor function when you know the regular expression pattern will be changing, or you don't know the pattern and are getting it from another source, such as user input. 
+
+
 
 // These regex literal can be used with methods, for example: 
 //      test() and exec() methods for the RegExp object, the RegExp object being used for used for matching text with a pattern
