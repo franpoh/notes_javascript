@@ -26,7 +26,7 @@ Table of Contents
 
 // numerical position of value in array
 
-//syntax
+// syntax
 // array.indexOf(item, start)
 
 // Item 

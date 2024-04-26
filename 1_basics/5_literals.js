@@ -2,6 +2,8 @@
 Table of Contents
 
 > ARRAY LITERAL
+>> Length
+>> Creating Empty Arrays Of Non-Zero Length
 >> Extra Commas In Array Literals
 > BOOLEAN LITERALS
 > NUMERIC LITERALS
@@ -36,6 +38,8 @@ Table of Contents
 // When you create an array using an array literal, it is initialized with the specified values as its elements, and its length is set to the number of arguments specified.
 
 // NOTE: Array index start from 0. So an array with 3 elements in it will have the indexes 0, 1, 2
+// See interesting but not necessary explanation in https://en.wikipedia.org/wiki/Zero-based_numbering
+// I don't quite understand myself but it's all about optimisation and math stuff
 
 
 
@@ -69,21 +73,102 @@ console.log(random[2][2][0]); // French Roast
 
 
 
+// You can also create arrays using the following methods:
+
+const coffees1 = new Array("French Roast", "Colombian", "Kona");
+console.log(coffees1); // [ 'French Roast', 'Colombian', 'Kona' ]
+
+const coffees2 = Array("French Roast", "Colombian", "Kona");
+console.log(coffees2); // [ 'French Roast', 'Colombian', 'Kona' ]
+
+
+
+// ----- Creating Empty Arrays
+
+const empty1 = [];
+const empty2 = new Array();
+const empty3 = Array();
+
+
+
+// ----------------------------- > ARRAY LITERAL >> Length
+
+// At the implementation level, JavaScript's arrays actually store their elements as standard object properties, using the array index as the property name.
+
+// Writing a value that is shorter than the number of stored items truncates the array. Writing 0 empties it entirely:
+
+const cats = ["Dusty", "Misty", "Twiggy"];
+console.log(cats.length); // 3
+
+cats.length = 2;
+console.log(cats); // [ 'Dusty', 'Misty' ] - Twiggy has been removed
+
+cats.length = 0;
+console.log(cats); // []; the cats array is empty
+
+cats.length = 3;
+console.log(cats); // [ <3 empty items> ]
+
+
+
+// ----------------------------- > ARRAY LITERAL >> Creating Empty Arrays Of Non-Zero Length
+
+// In new Array() and Array(), you can provide a number as argument.
+// an array with a single element (the provided value) will be created.
+// Calling <array>.length will return the length of the array, but the array doesn't contain any elements. A for...in loop will not find any property on the array.
+
+let empty4 = new Array(7);
+console.log(empty4); // [ <7 empty items> ]
+console.log(empty4.length); // 7
+
+// Iterating over the array to log the elements inside
+for (let x in empty4) {
+    console.log(`This is an element: ${empty4[x]}`); // nothing is logged
+}
+
+empty4.push('banana', 'apple'); // putting new elements at the end of the array
+console.log(empty4); // [ <7 empty items>, 'banana', 'apple' ]
+
+// Iterating over the array to log the elements inside
+for (let x in empty4) {
+    console.log(`This is an element: ${empty4[x]}`);
+}
+// This is an element: banana
+// This is an element: apple
+
+empty4.shift(empty4[0]); // removing the element (an empty item) at the start of the array
+console.log(empty4); // [ <6 empty items>, 'banana', 'apple' ]
+
+empty4[3] = 'cat'; // assigning 'cat' to the 4th index
+console.log(empty4); // [ <3 empty items>, 'cat', <2 empty items>, 'banana', 'apple' ]
+
+// Iterating over the array to log the elements inside
+for (let x in empty4) {
+    console.log(`This is an element: ${empty4[x]}`);
+}
+// This is an element: cat
+// This is an element: banana
+// This is an element: apple
+
+
+
+// Also note that in which case, you cannot create an array with a single number. Use array literals if you wish to do so. 
+
+let notEmpty = [7];
+console.log(notEmpty); // [7]
+console.log(notEmpty.length); // 1
+
+
+
 // ----------------------------- > ARRAY LITERAL >> Extra Commas In Array Literals
 
 // If you put two commas in a row in an array literal, the array leaves an empty slot for the unspecified element. 
 
-
-
 // The following example creates the fish array:
-
 const fish = ["Lion", , "Angel"];
 
 // When you log this array, you will see:
-
 console.log(fish); // [ 'Lion', , 'Angel' ]
-
-
 
 // Note that the second item is "empty", which is not exactly the same as the actual undefined value. 
 // When using array-traversing methods like Array.prototype.map, empty slots are skipped. However, index-accessing fish[1] still returns undefined.
@@ -92,30 +177,23 @@ console.log(fish); // [ 'Lion', , 'Angel' ]
 
 // If you include a trailing comma at the end of the list of elements, the comma is ignored.
 
-
-
 // In the following example, the length of the array is three. There is no myList[3]. All other commas in the list indicate a new element.
-
-var myList = ["home", , "school"];
+let myList = ["home", , "school"];
 
 // In the following example, the length of the array is four, and myList[0] and myList[2] are missing.
-
-var myList = [, "home", , "school"];
+myList = [, "home", , "school"];
 
 // In the following example, the length of the array is four, and myList[1] and myList[3] are missing. Only the last comma is ignored.
-
-var myList = ["home", , "school", ,];
+myList = ["home", , "school", ,];
 
 
 
 // Understanding the behavior of extra commas is important to understanding JavaScript as a language.
 
-
-
 // However, when writing your own code, you should explicitly declare the missing elements as undefined, or at least insert a comment to highlight its absence. 
 // Doing this increases your code's clarity and maintainability.
 
-const myList = ["home", /* empty */, "school", /* empty */,];
+myList = ["home", /* empty */, "school", /* empty */,];
 
 
 
@@ -161,13 +239,13 @@ const myList = ["home", /* empty */, "school", /* empty */,];
 // "Saturn"; the second element, the getCar property, is immediately assigned the result of invoking the function (carTypes("Honda")); 
 // the third element, the special property, uses an existing variable (sales).
 
-var sales = "Toyota";
+let sales = "Toyota";
 
 function carTypes(name) {
     return name === "Honda" ? name : `Sorry, we don't sell ${name}.`;
 }
 
-var car = {
+let car = {
     myCar: "Saturn",
     getCar: carTypes("Honda"),
     special: sales
@@ -183,7 +261,7 @@ console.log(car.special); // Toyota
 
 // The following example uses these options.
 
-var car = {
+car = {
     manyCars: {
         a: "Saab",
         b: "Jeep"
@@ -303,7 +381,7 @@ function secretPassword(passphrase) {
 
     const testWord = /owl/; // thing to test for
     const result = testWord.test(passphrase) ? "Welcome to the secret society" : "Your secret society is 3 doors down";
-    
+
     console.log(result);
 }
 
@@ -390,11 +468,11 @@ let score = 9;
 let highestScore = 10;
 
 // Old way of outputting a string with a combination of strings and variables
-let oldOutput = 'I like the song "' + song + '". I gave it a score of ' + (score/highestScore * 100) + '%.';
+let oldOutput = 'I like the song "' + song + '". I gave it a score of ' + (score / highestScore * 100) + '%.';
 console.log(oldOutput); // I like the song "Country Roads". I gave it a score of 90%.
 
 // Template Literal:
-let newOutput = `I like the song "${song}". I gave it a score of ${score/highestScore * 100}%.`;
+let newOutput = `I like the song "${song}". I gave it a score of ${score / highestScore * 100}%.`;
 console.log(newOutput); // I like the song "Country Roads". I gave it a score of 90%.
 
 
