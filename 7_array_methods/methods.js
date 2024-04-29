@@ -1,66 +1,80 @@
 /* 
 Table of Contents
 
-> ARRAY.INDEXOF
-> ARRAY.LASTINDEXOF
-> ARRAY.FINDINDEX
+> INDEXOF() / LASTINDEXOF()
+> FINDINDEX
 > SUMMING UP
 > ACCESS VALUE BY LOCATION WITHIN ARRAY
 > REPLACE INDIVIDUAL ARRAY ITEMS
-> ARRAY.SPLIT
-> ARRAY.JOIN
-> ARRAY.FROM
-> ARRAY.LENGTH 
+> SPLIT
+> JOIN
+> FROM
+> LENGTH 
 > DELETE
-> ARRAY.PUSH / ARRAY.POP
-> ARRAY.UNSHIFT / ARRAY.SHIFT
-> ARRAY.CONCAT
-> ARRAY.SLICE
-> ARRAY.TEST
+> PUSH / ARRAY.POP
+> UNSHIFT / ARRAY.SHIFT
+> CONCAT
+> SLICE
+> TEST
 > ACCESSING EVERY ITEM  
 */
 
 
 
-// ----------------------------- > ARRAY.INDEXOF -----------------------------
+// ----------------------------- > INDEXOF() / LASTINDEXOF() -----------------------------
 
-// numerical position of value in array
-
-// syntax
-// array.indexOf(item, start)
-
-// Item 
-// Required. The item to search for.
-
-// Start 
-// Optional. Where to start the search. 
-
-const fruits1 = ["Banana", "Orange", "Apple", "Mango", "Pineapple", "Apple", "Melon", "Cherry"];
-
-console.log("indexOf without specifying start: " + fruits1.indexOf("Apple")); // indexOf without specifying start: 2
-console.log("indexOf with specified start: " + fruits1.indexOf("Apple", 6)); // indexOf with specified start: -1
-
-// Array.indexOf() returns -1 if the item is not found.
-
-// Negative values will start at the given position counting from the end, and search to the end.
+// ----- indexOf() returns the first index at which a given element can be found in the array, or -1 if it is not present.
 
 // If the item is present more than once, it returns the position of the first occurrence.
 
+let fruits = ["Banana", "Orange", "Apple", "Mango", "Pineapple", "Apple", "Melon", "Cherry"];
 
-// ----------------------------- > ARRAY.LASTINDEXOF -----------------------------
+console.log(fruits.indexOf("Apple")); // 2
+console.log(fruits.indexOf("Cucumber")); // -1
 
-// Array.lastIndexOf() is the same as Array.indexOf(), but returns the position of the last occurrence of the specified element.
+// If starting index < -array.length or starting index is omitted, 0 is used, causing the entire array to be searched.
 
-// Syntax
-// array.lastIndexOf(item, start)
+console.log(fruits.indexOf("Melon")); // 6
 
-// Search an array for the item "Apple":
+// Optional specified starting index, starts from the 6th index 
 
-console.log("lastIndexOf: " + fruits1.lastIndexOf("Apple")); // lastIndexOf: 5
+console.log(fruits.indexOf("Cherry", 6)); // 7
+console.log(fruits.indexOf("Apple", 6)); // -1
+
+// Negative index counts back from the end of the array
+
+console.log(fruits.indexOf("Apple", -2)) // -1
+console.log(fruits.indexOf("Apple", -3)) // 5
+
+// If starting index >= array.length, the array is not searched and -1 is returned.
+
+console.log(fruits.indexOf("Apple", 9)) // -1
 
 
 
-// ----------------------------- > ARRAY.FINDINDEX -----------------------------
+// ----- lastIndexOf(): returns the last index at which a given element can be found in the array, or -1 if it is not present. The array is searched backwards, starting at the specified index. 
+
+fruits = ["Banana", "Orange", "Apple", "Mango", "Pineapple", "Apple", "Melon", "Cherry"];
+
+console.log(fruits.lastIndexOf("Apple")); // 5
+console.log(fruits.lastIndexOf("Cucumber")); // -1
+
+// Optional specified starting index, starts from the 3rd index 
+
+console.log(fruits.lastIndexOf("Apple", 3)); // 2
+console.log(fruits.lastIndexOf("Apple", 1)); // -1
+
+// Negative index counts back from the end of the array
+
+console.log(fruits.lastIndexOf("Apple", -4)); // 2
+
+// If starting index >= array.length, array.length - 1 is used, causing the entire array to be searched.
+
+console.log(fruits.lastIndexOf("Apple", 9)); // 5
+
+
+
+// ----------------------------- > FINDINDEX -----------------------------
 
 // The findIndex() method returns the index of the first array element that passes a test function.
 
@@ -111,7 +125,7 @@ console.log("myNameArray: " + myNameArray); // myNameArray: Mark,Bob,Jim
 
 
 
-// ----------------------------- > ARRAY.SPLIT -----------------------------
+// ----------------------------- > SPLIT -----------------------------
 
 // separate out raw data contained in a big long string into individual items 
 // takes a single parameter, the character you want to separate the string at, and returns the substrings between the separator as items in an array.
@@ -123,7 +137,7 @@ console.log("Split: " + myArray); // Split: ['Manchester','London','Liverpool','
 
 
 
-// ----------------------------- > ARRAY.JOIN -----------------------------
+// ----------------------------- > JOIN -----------------------------
 
 // does the opposite of split
 
@@ -141,7 +155,7 @@ console.log("Join with / separators: " + myArray.join('/')); // Join with / sepa
 console.log("toString: " + myArray.toString()); // toString: Manchester,London,Liverpool,Birmingham,Leeds,Carlisle
 
 
-// ----------------------------- > ARRAY.FROM -----------------------------
+// ----------------------------- > FROM -----------------------------
 
 // The Array.from() method returns an Array object from any object with a length property or any iterable object.
 
@@ -151,7 +165,7 @@ console.log("Array.from: " + Array.from("ABCDEFG"));   // Array.from: A,B,C,D,E,
 
 
 
-// ----------------------------- > ARRAY.LENGTH ----------------------------- >
+// ----------------------------- > LENGTH ----------------------------- >
 
 // length of array
 
@@ -182,7 +196,7 @@ console.log("Item Length: " + strArray[0].length); // Item Length: 10
 
 // With length, we can also append a new element to the end of the array
 
-const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits = ["Banana", "Orange", "Apple", "Mango"];
 fruits[fruits.length] = "Kiwi"; // Appends "Kiwi" to fruits
 
 console.log("Use Length to append: " + fruits); // Use Length to append: Banana,Orange,Apple,Mango,Kiwi
@@ -195,7 +209,7 @@ console.log("Use Length to append: " + fruits); // Use Length to append: Banana,
 // Using delete leaves undefined holes in the array
 // Use pop() or shift() instead
 
-const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits = ["Banana", "Orange", "Apple", "Mango"];
 delete fruits[0];
 
 console.log("Deleted Banana: " + fruits); // Deleted Banana: ,Orange,Apple,Mango
@@ -203,7 +217,7 @@ console.log("Deleted Banana: " + fruits[0]); // Deleted Banana: undefined
 
 
 
-// ----------------------------- > ARRAY.PUSH / ARRAY.POP -----------------------------
+// ----------------------------- > PUSH / ARRAY.POP -----------------------------
 
 // add or remove an item at the end of an array.
 
@@ -248,7 +262,7 @@ console.log("Popped - removed item: " + removedItem); // Popped - removed item: 
 
 
 
-// ----------------------------- > ARRAY.UNSHIFT / ARRAY.SHIFT -----------------------------
+// ----------------------------- > UNSHIFT / ARRAY.SHIFT -----------------------------
 
 // work in exactly the same way as push() and pop(), except that they work on the beginning of the array, not the end.
 
@@ -261,7 +275,7 @@ myEnglandArray.shift();
 
 // Splice - add new items to an array
 
-const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits = ["Banana", "Orange", "Apple", "Mango"];
 fruits.splice(2, 0, "Lemon", "Kiwi");
 
 // The first parameter(2) defines the position where new elements should be added(spliced in).
@@ -270,13 +284,13 @@ fruits.splice(2, 0, "Lemon", "Kiwi");
 
 // The splice() method returns an array with the deleted items:
 
-const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits = ["Banana", "Orange", "Apple", "Mango"];
 fruits.splice(2, 2, "Lemon", "Kiwi");
 fruits = ["Banana", "Orange", "Lemon", "Kiwi"];
 
 // remove elements without leaving "holes" in the array:
 
-const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits = ["Banana", "Orange", "Apple", "Mango"];
 fruits.splice(0, 1);   // Removes the first element
 
 // The first parameter(0) defines the position where new elements should be added(spliced in).
@@ -285,7 +299,7 @@ fruits.splice(0, 1);   // Removes the first element
 
 
 
-// ----------------------------- > ARRAY.CONCAT -----------------------------
+// ----------------------------- > CONCAT -----------------------------
 
 // creates a new array by merging (concatenating) existing arrays:
 
@@ -314,11 +328,11 @@ console.log("Concat array with values: " + arr4.concat("Peter")); // Concat arra
 
 
 
-// ----------------------------- > ARRAY.SLICE -----------------------------
+// ----------------------------- > SLICE -----------------------------
 
 // The slice() method creates a new array, does not remove any elements from the source array.
 
-const fruits = ["Banana", "Orange", "Lemon", "Apple", "Mango"];
+fruits = ["Banana", "Orange", "Lemon", "Apple", "Mango"];
 const citrus2 = fruits.slice(2); // defined start point only
 const citrus3 = fruits.slice(1, 4); // defined start and end point
 
@@ -327,7 +341,7 @@ console.log("Slice - new array with start point: " + citrus2); // Slice - new ar
 console.log("Slice - new array with start/end point: " + citrus3); // Slice - new array with start/end point: Orange,Lemon,Apple
 
 
-// ----------------------------- > ARRAY.TEST -----------------------------
+// ----------------------------- > TEST -----------------------------
 
 // The test() method tests for a match in a string.
 // This method returns true if it finds a match, otherwise it returns false.
