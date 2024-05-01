@@ -10,17 +10,17 @@ Table of Contents
 > FIND() / FINDLAST()
 > AT()
 > WITH()
-> SPLIT
 > JOIN()
-> FROM
 > LENGTH 
 > DELETE
 > PUSH() / POP()
 > SHIFT() / UNSHIFT()
-> SPLICE
+> SPLICE() / TOSPLICED()
 > SLICE()
 > CONCAT()
-> TEST
+> REVERSE() / TOREVERSED()
+> FLAT()
+> SORT() / TOSORTED()
 > ACCESSING EVERY ITEM  
 */
 
@@ -86,7 +86,8 @@ console.log(numSum); // 15
 
 // ----------------------------- > INDEXOF() / LASTINDEXOF() -----------------------------
 
-// ----- indexOf() returns the first index at which a given element can be found in the array
+// ----- indexOf() 
+// returns the first index at which a given element can be found in the array
 
 // returns -1 if item is not present.
 // If the item is present more than once, it returns the position of the first occurrence.
@@ -116,7 +117,8 @@ console.log(fruits.indexOf("Apple", 9)) // -1
 
 
 
-// ----- lastIndexOf(): returns the last index at which a given element can be found in the array 
+// ----- lastIndexOf()
+// returns the last index at which a given element can be found in the array 
 
 // returns -1 if item is not present
 // The array is searched backwards, starting at the specified index.
@@ -143,7 +145,8 @@ console.log(fruits.lastIndexOf("Apple", 9)); // 5
 
 // ----------------------------- > FINDINDEX() / FINDLASTINDEX() -----------------------------
 
-// ----- findIndex(): returns the index of the first element in an array that satisfies the provided testing function. 
+// ----- findIndex()
+// returns the index of the first element in an array that satisfies the provided testing function. 
 
 // If no elements satisfy the testing function, -1 is returned. 
 
@@ -196,7 +199,8 @@ console.log(anotherNumArray.findIndex(fullTestingFunction)); // -1
 
 
 
-// ----- findLastIndex(): iterates the array in reverse order and returns the index of the first element that satisfies the provided testing function. 
+// ----- findLastIndex()
+// iterates the array in reverse order and returns the index of the first element that satisfies the provided testing function. 
 
 // If no elements satisfy the testing function, -1 is returned. 
 
@@ -209,7 +213,8 @@ console.log(numArray.findLastIndex((value) => value < 18)); // 2
 
 // ----------------------------- > FIND() / FINDLAST() -----------------------------
 
-// ----- find(): returns the first element in the provided array that satisfies the provided testing function. 
+// ----- find()
+// returns the first element in the provided array that satisfies the provided testing function. 
 
 // If no values satisfy the testing function, undefined is returned. 
 
@@ -220,7 +225,8 @@ console.log(numArray.find((value) => value > 18)); // 25
 
 
 
-// ----- findLast(): iterates the array in reverse order and returns the value of the first element that satisfies the provided testing function. 
+// ----- findLast()
+// iterates the array in reverse order and returns the value of the first element that satisfies the provided testing function. 
 
 // If no elements satisfy the testing function, undefined is returned. 
 
@@ -233,7 +239,7 @@ console.log(numArray.findLast((value) => value < 18)); // 16
 
 // ----------------------------- > AT() -----------------------------
 
-// at(): returns the element at the specified index in the array, or undefined if the index is out of range. 
+// returns the element at the specified index in the array, or undefined if the index is out of range. 
 // It's notably used for negative indices that access elements from the end of the array.
 
 myArray = ["a", "b", "c", "d", "e"];
@@ -251,7 +257,7 @@ console.log(myArray.at(-2));; // d (second-last element of myArray)
 // The usual practice is to access length and calculate the index from that — for example, array[array.length - 1]. 
 // The at() method allows relative indexing, so this can be shortened to array.at(-1).
 
-// By combining at() with with(), you can both read and write (respectively) an array using negative indices.
+// With the array methods at() and with(), you can both read and write (respectively) an array using negative indices.
 
 // * indices: plural of index
 
@@ -259,21 +265,20 @@ console.log(myArray.at(-2));; // d (second-last element of myArray)
 
 // ----------------------------- > WITH() -----------------------------
 
-// with(): It is the copying version of using the bracket notation to change the value of a given index. It returns a new array with the element at the given index replaced with the given value.
+// It is the *copying version of using the bracket notation to change the value of a given index. 
+// It returns a new array with the element at the given index replaced with the given value.
 
+// * copying: See > COPYING METHODS AND MUTATING METHODS
 
+myArray = ["a", "b", "c", "d", "e"];
+let newArray = myArray.with(2, 'cat'); // arguments is (index, value)
 
+console.log(newArray); // [ 'a', 'b', 'cat', 'd', 'e' ]
+console.log(myArray); // [ 'a', 'b', 'c', 'd', 'e' ]
 
-
-// ----------------------------- > SPLIT -----------------------------
-
-// separate out raw data contained in a big long string into individual items 
-// takes a single parameter, the character you want to separate the string at, and returns the substrings between the separator as items in an array.
-
-let myData = 'Manchester,London,Liverpool,Birmingham,Leeds,Carlisle';
-let myArray = myData.split(',');
-
-console.log("Split: " + myArray); // Split: ['Manchester','London','Liverpool','Birmingham','Leeds','Carlisle']
+// You can also use a negative index in with()
+let negativeIndexArray = myArray.with(-2, "dog");
+console.log(negativeIndexArray); // [ 'a', 'b', 'c', 'dog', 'e' ]
 
 
 
@@ -299,23 +304,12 @@ console.log(myEnglandArray.toString()); // Manchester,London,Liverpool,Birmingha
 
 
 
-// ----------------------------- > FROM -----------------------------
-
-// The Array.from() method returns an Array object from any object with a length property or any iterable object.
-
-// Create an Array from a String:
-
-console.log("Array.from: " + Array.from("ABCDEFG"));   // Array.from: A,B,C,D,E,F,G
-
-
-
 // ----------------------------- > LENGTH ----------------------------- >
 
-// length of array
+// Find the length of array
 
 let sequence = [1, 1, 2, 3, 5, 8, 13];
-
-console.log("Array length: " + sequence.length); // length: 7
+console.log(sequence.length); // 7
 
 
 
@@ -324,46 +318,46 @@ console.log("Array length: " + sequence.length); // length: 7
 // i = 0: Start looping at item number 0 in the array.
 // i < sequence.length: Stop looping at the item number equal to the length of the array.
 // i++: +1 to the current value of i for each loop
+
 for (let i = 0; i < sequence.length; i++) {
-    console.log("Loop through all items in array: " + sequence[i]); // Loop through all items in array: 1 (and so on and so forth)
+    console.log("Loop through all items in array: " + sequence[i]); // Loop through all items in array: 1, ...
 }
 
 
 
-// find length of item in array
+// Find the length of item in array
 
 const strArray = ['JavaScript', 'Python', 'PHP', 'Java', 'C']
-
-console.log("Item Length: " + strArray[0].length); // Item Length: 10
-
+console.log(strArray[0].length); // 10
 
 
-// With length, we can also append a new element to the end of the array
+
+// With length, we can also append a new element to the end of the array, but probably not best practice
 
 fruits = ["Banana", "Orange", "Apple", "Mango"];
 fruits[fruits.length] = "Kiwi"; // Appends "Kiwi" to fruits
 
-console.log("Use Length to append: " + fruits); // Use Length to append: Banana,Orange,Apple,Mango,Kiwi
+console.log(fruits); // [ 'Banana', 'Orange', 'Apple', 'Mango', 'Kiwi' ]
 
 
 
 // ----------------------------- > DELETE -----------------------------
 
-// delete elements
-// Using delete leaves undefined holes in the array
+// Used to delete elements, but leaves undefined holes in the array, therefore not best practice
 // Use pop() or shift() instead
 
 fruits = ["Banana", "Orange", "Apple", "Mango"];
-delete fruits[0];
+delete fruits[2];
 
-console.log("Deleted Banana: " + fruits); // Deleted Banana: ,Orange,Apple,Mango
-console.log("Deleted Banana: " + fruits[0]); // Deleted Banana: undefined
+console.log(fruits); // [ 'Banana', 'Orange', <1 empty item>, 'Mango' ]
+console.log(fruits[2]); // undefined
 
 
 
 // ----------------------------- > PUSH() / POP() -----------------------------
 
-// ----- push(): adds one or more elements to the end of an array and returns the resulting length of the array.
+// ----- push()
+// adds one or more elements to the end of an array and returns the resulting length of the array.
 
 myEnglandArray = ['Manchester', 'London', 'Liverpool', 'Birmingham', 'Leeds', 'Carlisle'];
 
@@ -389,7 +383,8 @@ console.log(numArray); // [ 0, 1, 2, 3, 4, 'apple' ]
 
 
 
-// ----- pop(): removes the last element from an array and returns that element.
+// ----- pop()
+// removes the last element from an array and returns that element.
 
 // You can save the removed element in a variable
 
@@ -407,7 +402,8 @@ console.log(removedItem); // Pepper
 
 
 
-// ----- shift(): removes the first element from an array and returns that element.
+// ----- shift()
+// removes the first element from an array and returns that element.
 
 myEnglandArray = ['Manchester', 'London', 'Liverpool', 'Birmingham', 'Leeds', 'Carlisle'];
 removedElement = myEnglandArray.shift();
@@ -417,7 +413,8 @@ console.log(removedElement); // Manchester
 
 
 
-// ----- unshift(): adds one or more elements to the front of an array and returns the new length of the array.
+// ----- unshift()
+// adds one or more elements to the front of an array and returns the new length of the array.
 
 myEnglandArray = ['Manchester', 'London', 'Liverpool', 'Birmingham', 'Leeds', 'Carlisle'];
 newLength = myEnglandArray.unshift('Edinburgh');
@@ -427,37 +424,55 @@ console.log(newLength); // 7
 
 
 
-// ----------------------------- > SPLICE -----------------------------
+// ----------------------------- > SPLICE() / TOSPLICED() -----------------------------
 
-// Splice - add new items to an array
+// ----- splice()
+// removes elements from an array and (optionally) replaces them. It returns the items which were removed from the array.
 
-fruits = ["Banana", "Orange", "Apple", "Mango"];
-fruits.splice(2, 0, "Lemon", "Kiwi");
-
-// The first parameter(2) defines the position where new elements should be added(spliced in).
-// The second parameter(0) defines how many elements should be removed.
-// The rest of the parameters("Lemon", "Kiwi") define the new elements to be added.
-
-// The splice() method returns an array with the deleted items:
+// This is the syntax: array.splice(startingIndex, noOfElementsToRemove, item1, item2, /* …, */ itemN)
 
 fruits = ["Banana", "Orange", "Apple", "Mango"];
-fruits.splice(2, 2, "Lemon", "Kiwi");
-fruits = ["Banana", "Orange", "Lemon", "Kiwi"];
+let removedFruits = fruits.splice(2, 0, "Lemon", "Kiwi"); // Insert at index 2, 0 elements removed 
 
-// remove elements without leaving "holes" in the array:
+console.log(fruits); // [ 'Banana', 'Orange', 'Lemon', 'Kiwi', 'Apple', 'Mango' ]
+console.log(removedFruits); // [] (since no elements removed)
+
+
+
+// Another example with deleted elements
 
 fruits = ["Banana", "Orange", "Apple", "Mango"];
-fruits.splice(0, 1);   // Removes the first element
+removedFruits = fruits.splice(2, 2, "Lemon", "Kiwi"); // insert at index 2, 2 elements removed
 
-// The first parameter(0) defines the position where new elements should be added(spliced in).
-// The second parameter(1) defines how many elements should be removed.
-// The rest of the parameters are omitted.No new elements will be added.
+console.log(fruits); // [ 'Banana', 'Orange', 'Lemon', 'Kiwi' ]
+console.log(removedFruits); // [ 'Apple', 'Mango' ]
+
+
+
+// Removes elements without leaving "holes" in the array:
+
+fruits = ["Banana", "Orange", "Apple", "Mango"];
+removedFruits = fruits.splice(2, 1); // Removes the third element
+
+console.log(fruits); // [ 'Banana', 'Orange', 'Mango' ]
+console.log(removedFruits); // [ 'Apple' ]
+
+
+
+// ----- toSpliced()
+// the copying version of the splice() method. It returns a new array with some elements removed and/or replaced at a given index.
+
+fruits = ["Banana", "Orange", "Apple", "Mango"];
+let newFruits = fruits.toSpliced(2, 2, "Lemon", "Kiwi"); 
+
+console.log(fruits); // [ 'Banana', 'Orange', 'Apple', 'Mango' ]
+console.log(newFruits); // [ 'Banana', 'Orange', 'Lemon', 'Kiwi' ]
 
 
 
 // ----------------------------- > SLICE() -----------------------------
 
-// slice(): extracts a section of an array and returns a new array, does not remove any elements from the source array.
+// extracts a section of an array and returns a new array, does not remove any elements from the source array.
 
 let fruitsArray = ["Banana", "Orange", "Lemon", "Apple", "Mango"];
 
@@ -508,35 +523,123 @@ console.log(myBoys.concat("Peter")); // [ 'Emil', 'Tobias', 'Linus', 'Peter' ]
 
 
 
-// ----------------------------- > TEST -----------------------------
+// ----------------------------- > REVERSE() / TOREVERSED() -----------------------------
 
-// The test() method tests for a match in a string.
-// This method returns true if it finds a match, otherwise it returns false.
+// ----- reverse()
+// reverses an array in place and returns the reference to the same array, the first array element now becoming the last, and the last array element becoming the first. 
+// In other words, elements order in the array will be turned towards the direction opposite to that previously stated.
 
-let quote1 = "The best things in life are free";
-let match1 = new RegExp("e");
+let cats = ['tiger', 'lion', 'leopard', 'puma', 'jaguar'];
+cats.reverse();
 
-console.log("Test - match 'e': " + match1.test(quote1)); // Test - match 'e': true
-
-
-let quote2 = "Hello world!";
-let match2 = /Hello/g;
-
-console.log("Test - match 'Hello': " + match2.test(quote2)); // Test - match 'Hello': true
-
-let match3 = /Time/g
-
-console.log("Test - match 'Time': " + + match3.test(quote2)); // Test - match 'Time': 0
+console.log(cats); // [ 'jaguar', 'puma', 'leopard', 'lion', 'tiger' ]
 
 
 
-// Also see under array.filter for another example
+// ----- toReversed()
+// the copying counterpart of the reverse() method. It returns a new array with the elements in reversed order.
+
+cats = ['tiger', 'lion', 'leopard', 'puma', 'jaguar'];
+let newCats = cats.toReversed();
+
+console.log(cats); // [ 'tiger', 'lion', 'leopard', 'puma', 'jaguar' ]
+console.log(newCats); // [ 'jaguar', 'puma', 'leopard', 'lion', 'tiger' ]
+
+
+
+// ----------------------------- > FLAT() -----------------------------
+
+// creates a new array with all sub-array elements concatenated into it recursively up to the specified depth. 
+// In short, flat() flattens nested arrays, starting from the shallowest nested array and ending at the deepest nested array
+
+// flat() is a copying method, and therefore it does not alter the original array, and instead returns a new array
+
+const oneDeep = [0, 1, 2, [3, 4]];
+let flatArray = oneDeep.flat(); 
+
+console.log(flatArray); // [0, 1, 2, 3, 4]
+console.log(oneDeep); // [ 0, 1, 2, [ 3, 4 ] ]
+
+
+
+const threeDeep = [0, 1, [2, [3, [4, 5]]]];
+
+// Flattened the shallowest array into the topmost array
+console.log(threeDeep.flat()); // [ 0, 1, 2, [ 3, [ 4, 5 ] ] ] 
+
+// Flattened the array up to 2 deep
+console.log(threeDeep.flat(2)); // [ 0, 1, 2, 3, [ 4, 5 ] ] 
+
+// Flattened the array up to infinity depth, therefore by default the whole array
+console.log(threeDeep.flat(Infinity)); // [ 0, 1, 2, 3, 4, 5 ] 
+
+
+
+// ----------------------------- > SORT() / TOSORTED() -----------------------------
+
+// -----sort()
+// sorts the elements of an array in place and returns the reference to the same array, now sorted. 
+// The default sort order is ascending, built upon converting the elements into strings, then comparing their sequences of UTF-16 code units values.
+
+let months = ['March', 'Jan', 'Feb', 'Dec'];
+months.sort();
+
+// Sorted by alphabetical order
+console.log(months); // [ 'Dec', 'Feb', 'Jan', 'March' ]
+
+
+
+numArray = [1, 30, 4, 21, 100000];
+numArray.sort();
+
+// Sorted by first digit in number
+console.log(numArray); // [ 1, 100000, 21, 30, 4 ]
+
+
+
+// sort() can also take a callback function to determine how array elements are compared. 
+
+// The callback function is called with two arguments, which are two values from the array. 
+// The function compares these two values and returns a positive number, negative number, or zero, indicating the order of the two values.
+
+numArray = [1, 30, 4, 21, 100000];
+
+// Sort numbers in ascending order based on value
+numArray.sort((a, b) => a < b ? -1 : 1);
+console.log(numArray); // [ 1, 4, 21, 30, 100000 ]
+
+
+
+// How the return value works:
+
+function compareNumbers (a, b) {
+    if (a < b) {
+        return -1; // a comes before b
+    } else if (a > b) {
+        return 1; // b comes before a
+    } else {
+        return 0; // a and b keep their original order
+    }
+}
+
+console.log([200, 7, 42, 8394, 34].sort(compareNumbers)); // [ 7, 34, 42, 200, 8394 ]
+
+
+
+// ----- toSorted()
+// is the copying version of the sort() method. It returns a new array with the elements sorted in ascending order.
+
+months = ['March', 'Jan', 'Feb', 'Dec'];
+let newMonths = months.toSorted();
+
+console.log(newMonths); // [ 'Dec', 'Feb', 'Jan', 'March' ]
+console.log(months); // [ 'March', 'Jan', 'Feb', 'Dec' ]
 
 
 
 // ----------------------------- > ACCESSING EVERY ITEM -----------------------------
 
-// See array\iteration-methods.js
+// See 7_array_methods/2_iteration_methods.js
 
 const birds = ['Parrot', 'Falcon', 'Owl'];
 

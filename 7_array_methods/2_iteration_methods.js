@@ -1,138 +1,145 @@
 /* 
 Table of Contents
 
-> ARRAY.FOREACH
-> ARRAY.MAP
-> ARRAY.FILTER
-> ARRAY.REDUCE
-> ARRAY.REDUCERIGHT
-> ARRAY.EVERY
-> ARRAY.SOME
-> ARRAY.INCLUDES
-> ARRAY.FIND
-> ARRAY.KEYS 
+> FOREACH()
+> MAP
+> FILTER
+> REDUCE
+> REDUCERIGHT
+> EVERY
+> SOME
+> INCLUDES
+> FIND
+> KEYS 
 */
 
 
 
-// Array iteration methods operate on every array item.
+// Array methods that take a callback are known as iterative methods, because they iterate over the entire array in some fashion, and can operate on every array item
 
-// value - The value of the current element
-// index - The array index of the current element
-// array - The array object the current element belongs to
+// Each one takes an optional second argument called thisArg. If provided, thisArg becomes the value of the this keyword inside the body of the callback function.
+// If thisArg is not provided, as with other cases where a function is invoked outside of an explicit object context, 
+// this will refer to the global object (window, globalThis, etc.) when the function is not strict, or undefined when the function is strict.
 
 
 
-// ----------------------------- > ARRAY.FOREACH -----------------------------
+// Syntax: 
 
-// The forEach() method calls a function (a callback function) once for each array element.
+Array.iterativeMethod(callbackFunction, thisArg);
 
-const numbersA = [45, 4, 9, 16, 25];
-let txt = "";
-numbersA.forEach(myFunction);
+// Syntax without the optional thisArg argument. All examples will now be shown without the optional thisArg unless necessary.
 
-function myFunction(value, index, array) {
-    txt += value + "/";
-    console.log(txt);
+Array.iterativeMethod(callbackFunction);
+
+
+
+// A typical example might have a separate callback function, which is then inserted as an argument
+
+function callBackFunction(value, index, array) {
+    // code
 }
 
-// Note that the function takes 3 arguments:
-// The item value
-// The item index
-// The array itself
+Array.iterativeMethod(callbackFunction);
 
-// The example above uses only the value parameter.The example can be rewritten to:
 
-function myFunction(value) {
-    txt += value + "/";
-    console.log(txt);
+
+// However, you can also write a full callback function in the argument of forEach()
+// NOTE: The thisArg argument is irrelevant for any callbackFn defined with an arrow function, as arrow functions don't have their own this binding.
+
+Array.iterativeMethod((value, index, array) => {
+    // callback function code
+});
+
+
+
+// value: The value of the current element
+// index: The array index of the current element
+// array: The array object the current element belongs to
+
+// The above arguments for the callback function is optional, but value is most often used
+// Therefore, you don't necessarily need to use all the arguments in the callback function
+
+Array.iterativeMethod((value) => {
+    // callback function code that only uses value
+});
+
+
+
+// Let's head down to > FOREACH() to take a look at an example where thisArg is used
+
+
+
+// ----------------------------- > FOREACH() -----------------------------
+
+// calls a function (a callback function) once for each array element.
+
+let numArray = [45, 4, 9, 16, 25];
+let text = "";
+
+function callbackFunction(value) {
+    text += value + "/";
 }
 
+numArray.forEach(callbackFunction);
+
+console.log(text); // 45/4/9/16/25/
+
+// The above code be written as a forEach argument, making it more concise
+
+numArray = [45, 4, 9, 16, 25];
+text = "";
+
+numArray.forEach((value) => text += value + "/")
+
+console.log(text); // 45/4/9/16/25/
 
 
-// COLOUR CHANGE EXAMPLES
 
-const colours = [
-    {
-        color: "red",
-        value: "#f00"
-    },
-    {
-        color: "green",
-        value: "#0f0"
-    },
-    {
-        color: "blue",
-        value: "#00f"
-    },
-    {
-        color: "cyan",
-        value: "#0ff"
-    },
-    {
-        color: "magenta",
-        value: "#f0f"
-    },
-    {
-        color: "yellow",
-        value: "#ff0"
-    },
-    {
-        color: "black",
-        value: "#000"
+// ----- Example utilising thisArg 
+
+const person = {
+    name: 'John Doe',
+    greetFriends: function (friend) {
+        console.log(`Hello ${friend}, my name is ${this.name}`);
     }
-];
+};
 
-var interval = 1000;
+const friends = ['Alice', 'Bob', 'Charlie'];
 
-
-
-// Change colours loop, with delay of 1 second, stops at end of array
-
-colours.forEach(function (value, index, array) {
-    setTimeout(function () {
-        console.log(array[index].color);
-    }, index * interval);
-    // adding 1 second to each item eg red = 0*1000, green = 1*1000, blue = 2*1000
-})
+friends.forEach(person.greetFriends, person); // 'person' is the optional thisArg
+// Hello Alice, my name is John Doe
+// Hello Bob, my name is John Doe
+// Hello Charlie, my name is John Doe
 
 
-
-// Change colours loop, with delay of 1 second, restarts at end of array
-
-colours.forEach(function (value, index, array) {
-    let noCol = -1; // setting this to -1 starts the noCol loop at 0, setting at 0 starts it at 1
-    setInterval(function () {
-        console.log(array[noCol = (noCol + 1) % colours.length].color);
-    }, 1000);
-})
-
-// interval runs forever 
-// just access the next element in array each time
-// by incrementing a variable(noCol) that stores the index of the current colour
-// using % to reset it back to 0 when it exceeds the length of the array(since 7 % 7 = 0)
-
-// % Remainder / modulo
-// Returns the remainder left over after you've divided the left number into a number of integer portions equal to the right number.
-// 8 % 3 (returns 2, as three goes into 8 twice, leaving 2 left over)
+friends.forEach(person.greetFriends); // when 'person' is not provided for thisArg
+// Hello Alice, my name is undefined
+// Hello Bob, my name is undefined
+// Hello Charlie, my name is undefined
 
 
 
-// Change colours loop, with delay of 1 second, restarts at end of array, stops at end of array when checkbox is checked
+// When we call friends.forEach(person.greetFriends, person), we pass two arguments:
 
-checkBox.addEventListener("change", colours.forEach(() => {
-    let noCol = -1;
-    let delayLoop = setInterval(() => { // named the interval
-        spanCol.style.backgroundColor = colours[noCol = (noCol + 1) % colours.length].color;
-        if (checkBox.checked && noCol === 6) {
-            clearInterval(delayLoop); // clear interval
-        }
-    }, 1000);
-}));
+// person.greetFriends: This is the function that will be called for each element in the friends array.
+// person: This is the thisArg parameter, which sets the value of this inside the greetFriends function to the person object.
+
+// Without the thisArg parameter, the this value inside the greetFriends function would be bound to the global object (window in a browser, global in Node.js), or undefined in strict mode. 
+// By providing the person object as the thisArg, we ensure that this.name inside the greetFriends function refers to the name property of the person object.
+
+// The forEach method calls the greetFriends function for each element in the friends array, using the provided thisArg (person) as the value of this inside the function. 
+// This allows the greetFriends method to access the name property of the person object and log the appropriate greeting for each friend.
+
+// The thisArg parameter is useful when you need to call a function with a specific context (this value), 
+// particularly when working with methods defined on objects or when passing callback functions to array methods like forEach, map, filter, etc.
 
 
 
-// ----------------------------- > ARRAY.MAP -----------------------------
+// See 4_functions/custom_functions/colour_change.js for another forEach example.
+
+
+
+// ----------------------------- > MAP -----------------------------
 
 // The map() method creates a new array by performing a function on each array element.
 // The map() method does not execute the function for array elements without values.
@@ -158,7 +165,7 @@ console.log(numbers2);
 
 
 
-// ----------------------------- > ARRAY.FILTER -----------------------------
+// ----------------------------- > FILTER -----------------------------
 
 // The filter() method creates a new array with array elements that passes a test.
 
@@ -218,7 +225,7 @@ db.filter("gender", "f").then((r) => console.log("filter() returns", r));
 
 
 
-// ----------------------------- > ARRAY.REDUCE -----------------------------
+// ----------------------------- > REDUCE -----------------------------
 
 // The reduce() method runs a function on each array element to produce (reduce it to) a single value.
 // The reduce() method works from left - to - right in the array. See also reduceRight().
@@ -233,7 +240,7 @@ function myFunction(total, value, index, array) {
     let num = total + value;
     console.log(num);
     return num;
-} 
+}
 
 console.log(sumC); // 99
 
@@ -262,13 +269,13 @@ let sumD = numbersD.reduce(myFunction, 100); // 100 is the initial value
 
 function myFunction(total, value) {
     return total + value;
-} 
+}
 
 console.log(sumD); // 199
 
 
 
-// ----------------------------- > ARRAY.REDUCERIGHT -----------------------------
+// ----------------------------- > REDUCERIGHT -----------------------------
 
 // The reduceRight() method runs a function on each array element to produce(reduce it to) a single value.
 // The reduceRight() works from right - to - left in the array.See also reduce().
@@ -287,7 +294,7 @@ console.log(sumE); // 99
 
 
 
-// ----------------------------- > ARRAY.EVERY -----------------------------
+// ----------------------------- > EVERY -----------------------------
 
 // The every() method check if all array values pass a test.
 
@@ -310,7 +317,7 @@ console.log(allOver18); // false
 
 
 
-// ----------------------------- > ARRAY.SOME -----------------------------
+// ----------------------------- > SOME -----------------------------
 
 // The some() method check if some array values pass a test.
 // some() executes the function once for each element in the array:
@@ -341,7 +348,7 @@ console.log(adults); // true
 
 
 
-// ----------------------------- > ARRAY.INCLUDES -----------------------------
+// ----------------------------- > INCLUDES -----------------------------
 
 // allows us to check if an element is present in an array(including NaN, unlike indexOf).
 
@@ -351,7 +358,7 @@ console.log(fruitsA.includes("Mango")); // true
 
 
 
-// ----------------------------- > ARRAY.FIND -----------------------------
+// ----------------------------- > FIND -----------------------------
 
 // The find() method returns the value of the first array element that passes a test function.
 
@@ -373,7 +380,7 @@ console.log(first); // 25
 
 
 
-// ----------------------------- > ARRAY.KEYS -----------------------------
+// ----------------------------- > KEYS -----------------------------
 
 // The Array.keys() method returns an Array Iterator object with the keys (indexes) of an array.
 
@@ -385,5 +392,5 @@ const iterator = array1.keys();
 console.log(iterator); // Object [Array Iterator] {}
 
 for (const key of iterator) {
-  console.log(key);
+    console.log(key);
 }
