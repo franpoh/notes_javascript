@@ -6,8 +6,6 @@ Table of Contents
 > REPLACE INDIVIDUAL ARRAY ITEMS
 > SUMMING UP ALL VALUES IN ARRAY
 > INDEXOF() / LASTINDEXOF()
-> FINDINDEX() / FINDLASTINDEX()
-> FIND() / FINDLAST()
 > AT()
 > WITH()
 > JOIN()
@@ -55,6 +53,23 @@ Table of Contents
 
 
 
+// ----------------------------- > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES -----------------------------
+
+// ----- Similar functions in 7_array_methods\1_methods.js
+
+//      If you need the index of the found element in the array, use findIndex().
+//      If you need to find the index of a value, use indexOf(). (It's similar to findIndex(), but checks each element for equality with the value instead of using a testing function.)
+//      If you need to find if a value exists in an array, use includes(). Again, it checks each element for equality with the value instead of using a testing function.
+
+
+
+// ----- Similar functions in 7_array_methods\2_iterative_methods.js
+
+//      If you need to find if any element satisfies the provided testing function, use some().
+//      If you need to find all elements that satisfy the provided testing function, use filter().
+
+
+
 // ----------------------------- > ACCESS VALUE BY LOCATION WITHIN ARRAY -----------------------------
 
 let nameArray = ['Chris', 'Bob', 'Jim'];
@@ -87,10 +102,14 @@ console.log(numSum); // 15
 // ----------------------------- > INDEXOF() / LASTINDEXOF() -----------------------------
 
 // ----- indexOf() 
-// returns the first index at which a given element can be found in the array
 
+// returns the first index at which a given element can be found in the array
 // returns -1 if item is not present.
 // If the item is present more than once, it returns the position of the first occurrence.
+
+// NOTE: See 7_array_methods\1_methods.js > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES
+
+
 
 let fruits = ["Banana", "Orange", "Apple", "Mango", "Pineapple", "Apple", "Melon", "Cherry"];
 
@@ -118,10 +137,12 @@ console.log(fruits.indexOf("Apple", 9)) // -1
 
 
 // ----- lastIndexOf()
-// returns the last index at which a given element can be found in the array 
 
+// returns the last index at which a given element can be found in the array 
 // returns -1 if item is not present
 // The array is searched backwards, starting at the specified index.
+
+
 
 fruits = ["Banana", "Orange", "Apple", "Mango", "Pineapple", "Apple", "Melon", "Cherry"];
 
@@ -140,100 +161,6 @@ console.log(fruits.lastIndexOf("Apple", -4)); // 2
 // If starting index >= array.length, array.length - 1 is used, causing the entire array to be searched.
 
 console.log(fruits.lastIndexOf("Apple", 9)); // 5
-
-
-
-// ----------------------------- > FINDINDEX() / FINDLASTINDEX() -----------------------------
-
-// ----- findIndex()
-// returns the index of the first element in an array that satisfies the provided testing function. 
-
-// If no elements satisfy the testing function, -1 is returned. 
-
-
-
-// This is the syntax: array.findIndex(providedTestingFunction)
-
-// The provided testing function takes 3 arguments:
-//      The item value
-//      The item index
-//      The array itself
-
-
-
-// This example finds the index of the first element that is larger than 18:
-
-let numArray = [4, 9, 16, 25, 29];
-
-// The testing function finds the index of the first element that is larger than 18:
-function providedTestingFunction(value, index, array) { // in this case, only the value is being used
-    return value > 18;
-}
-
-console.log(numArray.findIndex(providedTestingFunction)); // 3
-
-
-
-// The above example can also be written like this:
-
-console.log(numArray.findIndex((value) => value > 18)); // 3
-
-
-
-// Another example where we make full use of the arguments
-
-numArray = [4, 9, 16, 25, 29];
-
-let anotherNumArray = [3, 5, 13, 19, 26]
-
-function fullTestingFunction (value, index, array) {
-    if ( value > 13 && index > 2 && array[index] > 27 ) {
-        return true; // returning booleans results in returning the index anyway (or -1 if no elements satisfy the testing function)
-    } else {
-        return false;
-    }
-}
-
-console.log(numArray.findIndex(fullTestingFunction)); // 4
-console.log(anotherNumArray.findIndex(fullTestingFunction)); // -1
-
-
-
-// ----- findLastIndex()
-// iterates the array in reverse order and returns the index of the first element that satisfies the provided testing function. 
-
-// If no elements satisfy the testing function, -1 is returned. 
-
-numArray = [4, 9, 16, 25, 29];
-
-// The testing function finds the index of the first element that is smaller than 18:
-console.log(numArray.findLastIndex((value) => value < 18)); // 2
-
-
-
-// ----------------------------- > FIND() / FINDLAST() -----------------------------
-
-// ----- find()
-// returns the first element in the provided array that satisfies the provided testing function. 
-
-// If no values satisfy the testing function, undefined is returned. 
-
-numArray = [4, 9, 16, 25, 29];
-
-// The testing function finds the first element that is bigger than 18:
-console.log(numArray.find((value) => value > 18)); // 25
-
-
-
-// ----- findLast()
-// iterates the array in reverse order and returns the value of the first element that satisfies the provided testing function. 
-
-// If no elements satisfy the testing function, undefined is returned. 
-
-numArray = [4, 9, 16, 25, 29];
-
-// The testing function finds the first element that is smaller than 18:
-console.log(numArray.findLast((value) => value < 18)); // 16
 
 
 
@@ -357,6 +284,7 @@ console.log(fruits[2]); // undefined
 // ----------------------------- > PUSH() / POP() -----------------------------
 
 // ----- push()
+
 // adds one or more elements to the end of an array and returns the resulting length of the array.
 
 myEnglandArray = ['Manchester', 'London', 'Liverpool', 'Birmingham', 'Leeds', 'Carlisle'];
@@ -384,6 +312,7 @@ console.log(numArray); // [ 0, 1, 2, 3, 4, 'apple' ]
 
 
 // ----- pop()
+
 // removes the last element from an array and returns that element.
 
 // You can save the removed element in a variable
@@ -403,6 +332,7 @@ console.log(removedItem); // Pepper
 
 
 // ----- shift()
+
 // removes the first element from an array and returns that element.
 
 myEnglandArray = ['Manchester', 'London', 'Liverpool', 'Birmingham', 'Leeds', 'Carlisle'];
@@ -414,6 +344,7 @@ console.log(removedElement); // Manchester
 
 
 // ----- unshift()
+
 // adds one or more elements to the front of an array and returns the new length of the array.
 
 myEnglandArray = ['Manchester', 'London', 'Liverpool', 'Birmingham', 'Leeds', 'Carlisle'];
@@ -427,6 +358,7 @@ console.log(newLength); // 7
 // ----------------------------- > SPLICE() / TOSPLICED() -----------------------------
 
 // ----- splice()
+
 // removes elements from an array and (optionally) replaces them. It returns the items which were removed from the array.
 
 // This is the syntax: array.splice(startingIndex, noOfElementsToRemove, item1, item2, /* …, */ itemN)
@@ -439,7 +371,7 @@ console.log(removedFruits); // [] (since no elements removed)
 
 
 
-// Another example with deleted elements
+// Example with deleted elements
 
 fruits = ["Banana", "Orange", "Apple", "Mango"];
 removedFruits = fruits.splice(2, 2, "Lemon", "Kiwi"); // insert at index 2, 2 elements removed
@@ -460,6 +392,7 @@ console.log(removedFruits); // [ 'Apple' ]
 
 
 // ----- toSpliced()
+
 // the copying version of the splice() method. It returns a new array with some elements removed and/or replaced at a given index.
 
 fruits = ["Banana", "Orange", "Apple", "Mango"];
@@ -526,6 +459,7 @@ console.log(myBoys.concat("Peter")); // [ 'Emil', 'Tobias', 'Linus', 'Peter' ]
 // ----------------------------- > REVERSE() / TOREVERSED() -----------------------------
 
 // ----- reverse()
+
 // reverses an array in place and returns the reference to the same array, the first array element now becoming the last, and the last array element becoming the first. 
 // In other words, elements order in the array will be turned towards the direction opposite to that previously stated.
 
@@ -537,6 +471,7 @@ console.log(cats); // [ 'jaguar', 'puma', 'leopard', 'lion', 'tiger' ]
 
 
 // ----- toReversed()
+
 // the copying counterpart of the reverse() method. It returns a new array with the elements in reversed order.
 
 cats = ['tiger', 'lion', 'leopard', 'puma', 'jaguar'];
@@ -577,7 +512,8 @@ console.log(threeDeep.flat(Infinity)); // [ 0, 1, 2, 3, 4, 5 ]
 
 // ----------------------------- > SORT() / TOSORTED() -----------------------------
 
-// -----sort()
+// ----- sort()
+
 // sorts the elements of an array in place and returns the reference to the same array, now sorted. 
 // The default sort order is ascending, built upon converting the elements into strings, then comparing their sequences of UTF-16 code units values.
 
@@ -627,6 +563,7 @@ console.log([200, 7, 42, 8394, 34].sort(compareNumbers)); // [ 7, 34, 42, 200, 8
 
 
 // ----- toSorted()
+
 // is the copying version of the sort() method. It returns a new array with the elements sorted in ascending order.
 
 months = ['March', 'Jan', 'Feb', 'Dec'];
