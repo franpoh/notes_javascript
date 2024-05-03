@@ -3,7 +3,7 @@ Table of Contents
 
 > ARRAY LITERAL
 >> Length
->> Creating Empty Arrays Of Non-Zero Length
+>> Sparse Arrays 
 >> Extra Commas In Array Literals
 > BOOLEAN LITERALS
 > NUMERIC LITERALS
@@ -41,45 +41,54 @@ Table of Contents
 // See interesting but not necessary explanation in https://en.wikipedia.org/wiki/Zero-based_numbering
 // I don't quite understand myself but it's all about optimisation and math stuff
 
+// An array literal creates a new array object every time the literal is evaluated. 
+// For example, an array defined with a literal in the global scope is created once when the script loads. 
+// However, if the array literal is inside a function, a new array is instantiated every time that function is called
+
 
 
 // The following example creates the coffees array with three elements and a length of three:
 
-const coffees = ["French Roast", "Colombian", "Kona"];
+let coffees = ["French Roast", "Colombian", "Kona"];
 
 console.log(coffees[0]); // French Roast
 console.log(coffees[1]); // Colombian
 console.log(coffees[2]); // Kona
 
+// You can also create arrays using the following methods:
+
+coffees = new Array("French Roast", "Colombian", "Kona");
+console.log(coffees); // [ 'French Roast', 'Colombian', 'Kona' ]
+
+coffees = Array("French Roast", "Colombian", "Kona");
+console.log(coffees); // [ 'French Roast', 'Colombian', 'Kona' ]
+
+
+
 // in an array we can store various data types — strings, numbers, objects, and even other arrays. 
 // We can also mix data types in a single array
 
-let random = ['tree', 795, ['apple', 9.273, coffees]];
+coffees = ["French Roast", "Colombian", "Kona"];
+let random = ['tree', 795, 'apple', 9.273, coffees];
 
 console.log(random[0]); // tree
 console.log(random[1]); // 795
-console.log(random[2]); // [ 'apple', 9.273, [ 'French Roast', 'Colombian', 'Kona' ] ]
+console.log(random[4]); // [ 'French Roast', 'Colombian', 'Kona' ]
 
-// multidimensional array  - an array inside an array. You can access an item inside an array that is itself inside another array by chaining two sets of square brackets together.
+
+
+// ----- Multidimensional Array  
+
+// Arrays can be nested, meaning that an array can contain another array as an element. 
+// Using this characteristic of JavaScript arrays, multi-dimensional arrays can be created.
+
+// You can access an item inside an array that is itself inside another array by chaining two sets of square brackets together.
+
+coffees = ["French Roast", "Colombian", "Kona"];
+random = ['tree', 795, ['apple', 9.273, coffees]];
 
 console.log(random[2][2]); // [ 'French Roast', 'Colombian', 'Kona' ]
 console.log(random[2][2][0]); // French Roast
-
-
-
-// An array literal creates a new array object every time the literal is evaluated. 
-// For example, an array defined with a literal in the global scope is created once when the script loads. 
-// However, if the array literal is inside a function, a new array is instantiated every time that function is called.
-
-
-
-// You can also create arrays using the following methods:
-
-const coffees1 = new Array("French Roast", "Colombian", "Kona");
-console.log(coffees1); // [ 'French Roast', 'Colombian', 'Kona' ]
-
-const coffees2 = Array("French Roast", "Colombian", "Kona");
-console.log(coffees2); // [ 'French Roast', 'Colombian', 'Kona' ]
 
 
 
@@ -111,17 +120,99 @@ console.log(cats); // [ <3 empty items> ]
 
 
 
-// ----------------------------- > ARRAY LITERAL >> Creating Empty Arrays Of Non-Zero Length
+// ----------------------------- > ARRAY LITERAL >> Sparse Arrays 
 
-// In new Array() and Array(), you can provide a number as argument.
-// an array with a single element (the provided value) will be created.
-// Calling <array>.length will return the length of the array, but the array doesn't contain any elements. A for...in loop will not find any property on the array.
+// Arrays can contain "empty slots", which are not the same as slots filled with the value undefined. 
+// Empty slots can be created in one of the following ways:
+
+// Array constructor:
+const a = Array(5);
+console.log(a);// [ <5 empty items> ]
+
+// Consecutive commas in array literal:
+const b = [1, 2, , , 5];
+console.log(b); // [ 1, 2, <2 empty items>, 5 ]
+
+// Directly setting a slot with index greater than array.length:
+const c = [1, 2];
+c[4] = 5;
+console.log(c); // [ 1, 2, <2 empty items>, 5 ]
+
+// Elongating an array by directly setting .length:
+const d = [1, 2];
+d.length = 5;
+console.log(d); // [ 1, 2, <3 empty items> ]
+
+// Deleting an element:
+const e = [1, 2, 3, 4, 5];
+delete e[2];
+console.log(e); // [ 1, 2, <1 empty item>, 4, 5 ]
+
+// If you include a trailing comma at the end of the list of elements, the comma is ignored.
+
+const f = [1, 2, 3, , ];
+console.log(f); // [ 1, 2, 3, <1 empty item> ]
+
+// When writing your own code, you should explicitly declare the missing elements as undefined, or at least insert a comment to highlight its absence. 
+// Doing this increases your code's clarity and maintainability.
+
+const g = [1, /* empty */, 3, /* empty */,];
+console.log(g); // [ 1, <1 empty item>, 3, <1 empty item> ]
+
+
+
+// In some operations, empty slots behave as if they are filled with undefined.
+
+const arr = [1, 2, , , 5]; // Create a sparse array
+
+// Indexed access
+console.log(arr[2]); // undefined
+
+// For...of
+for (const i of arr) {
+    console.log(i); // 1 2 undefined undefined 5
+}
+
+// Spreading
+const another = [...arr]; // "another" is [ 1, 2, undefined, undefined, 5 ]
+
+
+
+// But in others (most notably array iteration methods), empty slots are skipped.
+
+const arraySkip = [1, 2, , , 5];
+const mapped = arraySkip.map((i) => i + 1);
+console.log(mapped);// [ 2, 3, <2 empty items>, 6 ]
+
+arraySkip.forEach((i) => console.log(i)); // 1 2 5
+
+const filtered = arraySkip.filter(() => true);
+console.log(filtered); // [ 1, 2, 5 ]
+
+const hasFalsy = arraySkip.some((k) => !k);
+console.log(hasFalsy); // false
+
+// Property enumeration
+const keys = Object.keys(arraySkip);
+console.log(keys); // [ '0', '1', '4' ]
+
+for (const key in arraySkip) {
+    console.log(key); // 0 1 4
+}
+
+// Spreading into an object uses property enumeration, not the array's iterator
+const objectSpread = { ...arraySkip };
+console.log(objectSpread); // { '0': 1, '1': 2, '4': 5 }
+
+
+
+// ----- Example Test of a Sparse Array
 
 let empty4 = new Array(7);
 console.log(empty4); // [ <7 empty items> ]
 console.log(empty4.length); // 7
 
-// Iterating over the array to log the elements inside
+// Iterating over the array with for... in
 for (let x in empty4) {
     console.log(`This is an element: ${empty4[x]}`); // nothing is logged
 }
@@ -129,12 +220,14 @@ for (let x in empty4) {
 empty4.push('banana', 'apple'); // putting new elements at the end of the array
 console.log(empty4); // [ <7 empty items>, 'banana', 'apple' ]
 
-// Iterating over the array to log the elements inside
+// Iterating over the array with for... in
 for (let x in empty4) {
-    console.log(`This is an element: ${empty4[x]}`);
+    // console.log(`This is an element: ${empty4[x]}`);
 }
-// This is an element: banana
-// This is an element: apple
+/* 
+This is an element: banana
+This is an element: apple
+*/
 
 empty4.shift(empty4[0]); // removing the element (an empty item) at the start of the array
 console.log(empty4); // [ <6 empty items>, 'banana', 'apple' ]
@@ -146,54 +239,26 @@ console.log(empty4); // [ <3 empty items>, 'cat', <2 empty items>, 'banana', 'ap
 for (let x in empty4) {
     console.log(`This is an element: ${empty4[x]}`);
 }
-// This is an element: cat
-// This is an element: banana
-// This is an element: apple
+/* 
+This is an element: cat
+This is an element: banana
+This is an element: apple 
+*/
 
-
-
-// Also note that in which case, you cannot create an array with a single number. Use array literals if you wish to do so. 
-
-let notEmpty = [7];
-console.log(notEmpty); // [7]
-console.log(notEmpty.length); // 1
-
-
-
-// ----------------------------- > ARRAY LITERAL >> Extra Commas In Array Literals
-
-// If you put two commas in a row in an array literal, the array leaves an empty slot for the unspecified element. 
-
-// The following example creates the fish array:
-const fish = ["Lion", , "Angel"];
-
-// When you log this array, you will see:
-console.log(fish); // [ 'Lion', , 'Angel' ]
-
-// Note that the second item is "empty", which is not exactly the same as the actual undefined value. 
-// When using array-traversing methods like Array.prototype.map, empty slots are skipped. However, index-accessing fish[1] still returns undefined.
-
-
-
-// If you include a trailing comma at the end of the list of elements, the comma is ignored.
-
-// In the following example, the length of the array is three. There is no myList[3]. All other commas in the list indicate a new element.
-let myList = ["home", , "school"];
-
-// In the following example, the length of the array is four, and myList[0] and myList[2] are missing.
-myList = [, "home", , "school"];
-
-// In the following example, the length of the array is four, and myList[1] and myList[3] are missing. Only the last comma is ignored.
-myList = ["home", , "school", ,];
-
-
-
-// Understanding the behavior of extra commas is important to understanding JavaScript as a language.
-
-// However, when writing your own code, you should explicitly declare the missing elements as undefined, or at least insert a comment to highlight its absence. 
-// Doing this increases your code's clarity and maintainability.
-
-myList = ["home", /* empty */, "school", /* empty */,];
+// Iterating over the array with for... in
+for (const x of empty4) {
+    console.log(`This is an element: ${x}`); 
+}
+/* 
+This is an element: undefined
+This is an element: undefined
+This is an element: undefined
+This is an element: cat
+This is an element: undefined
+This is an element: undefined
+This is an element: banana
+This is an element: apple
+*/
 
 
 
