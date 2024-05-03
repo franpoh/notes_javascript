@@ -1,3 +1,4 @@
+
 // When you hear about 'everything is an object' in Javascript, it doesn't mean that everything is actually an object
 // Unlike objects, all primitives are immutable; that is, they cannot be altered.
 

@@ -88,7 +88,7 @@ console.log(nameArray); // [ 'Mark', 'Bob', 'Jim' ]
 
 // ----------------------------- > SUMMING UP ALL VALUES IN ARRAY -----------------------------
 
-numArray = [1, 2, 3, 4, 5];
+let numArray = [1, 2, 3, 4, 5];
 let numSum = 0;
 
 for (let value in numArray) {
@@ -161,6 +161,23 @@ console.log(fruits.lastIndexOf("Apple", -4)); // 2
 // If starting index >= array.length, array.length - 1 is used, causing the entire array to be searched.
 
 console.log(fruits.lastIndexOf("Apple", 9)); // 5
+
+
+
+// ----------------------------- > INCLUDES -----------------------------
+
+// determines whether an array includes a certain value among its entries, returning true or false as appropriate. (including NaN, unlike indexOf).
+
+// NOTE: See 7_array_methods\1_methods.js > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES
+
+
+
+numArray = [1, 2, 3];
+console.log(numArray.includes(2)); // true
+
+let pets = ['cat', 'dog', 'bat'];
+console.log(pets.includes('cat')); // true
+console.log(pets.includes('at')); // false
 
 
 

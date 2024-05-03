@@ -252,6 +252,8 @@ console.log(ages); // [ 45, 4, 9, 16, 25 ]
 
 // ----------------------------- > REDUCE() / REDUCERIGHT() -----------------------------
 
+// ----- reduce()
+
 // executes a user-supplied "reducer" callback function on each element of the array, in left-to-right order, passing in the return value from the calculation on the preceding element. 
 // The final result of running the reducer across all elements of the array is a single value.
 
@@ -294,7 +296,7 @@ function callbackFunction(accumulator, currentValue, currentIndex, array) {
 
 
 
-// ----- InitialValue in array.reduce(callbackFunction, initialValue)
+// initialValue in array.reduce(callbackFunction, initialValue)
 
 // A value to which accumulator is initialized the first time the callback is called. 
 // If initialValue is specified, callbackFn starts executing with the first value in the array as currentValue. 
@@ -312,9 +314,12 @@ numArray = [45, 4, 9, 16, 25];
 let sum = numArray.reduce(callbackFunction);
 
 function callbackFunction(accumulator, currentValue) {
-    console.log(`accumulator: ${accumulator}, currentValue: ${currentValue}`);
+
     let returnValue = accumulator + currentValue;
+
+    console.log(`accumulator: ${accumulator}, currentValue: ${currentValue}`);
     console.log(`returnValue, which will become the accumulator on the next execution of the callbackFunction: ${returnValue}`);
+
     return returnValue;
 }
 
@@ -340,9 +345,12 @@ numArray = [45, 4, 9, 16, 25];
 sum = numArray.reduce(callbackFunction, 16);
 
 function callbackFunction(accumulator, currentValue) {
-    console.log(`accumulator: ${accumulator}, currentValue: ${currentValue}`);
+
     let returnValue = accumulator + currentValue;
+
+    console.log(`accumulator: ${accumulator}, currentValue: ${currentValue}`);
     console.log(`returnValue, which will become the accumulator on the next execution of the callbackFunction: ${returnValue}`);
+    
     return returnValue;
 }
 
@@ -363,22 +371,40 @@ returnValue, which will become the accumulator on the next execution of the call
 
 
 
-// ----------------------------- 
+// ----- reduceRight()
 
-// The reduceRight() method runs a function on each array element to produce(reduce it to) a single value.
-// The reduceRight() works from right - to - left in the array.See also reduce().
-// The reduceRight() method does not reduce the original array.
+// works like reduce(), but starts with the last element
+
+
 
 // This example finds the sum of all numbers in an array:
 
-const numbersE = [45, 4, 9, 16, 25];
-let sumE = numbersE.reduceRight(callbackFunction);
+numArray = [45, 4, 9, 16, 25];
 
-function callbackFunction(total, value, index, array) {
-    return total + value;
+sum = numArray.reduceRight(callbackFunction);
+
+function callbackFunction(accumulator, currentValue) {
+
+    let returnValue = accumulator + currentValue;
+
+    console.log(`accumulator: ${accumulator}, currentValue: ${currentValue}`);
+    console.log(`returnValue, which will become the accumulator on the next execution of the callbackFunction: ${returnValue}`);
+
+    return returnValue;
 }
 
-console.log(sumE); // 99
+console.log(sum);
+/* 
+accumulator: 25, currentValue: 16
+returnValue, which will become the accumulator on the next execution of the callbackFunction: 41
+accumulator: 41, currentValue: 9
+returnValue, which will become the accumulator on the next execution of the callbackFunction: 50
+accumulator: 50, currentValue: 4
+returnValue, which will become the accumulator on the next execution of the callbackFunction: 54
+accumulator: 54, currentValue: 45
+returnValue, which will become the accumulator on the next execution of the callbackFunction: 99
+99
+*/
 
 
 
@@ -416,19 +442,6 @@ console.log(ages.some((age) => age >= 18)); // true
 
 let underAge = [15, 2, 8, 14, 16];
 console.log(underAge.some((age) => age >= 18)); // false
-
-
-
-
-// ----------------------------- > INCLUDES -----------------------------
-
-// allows us to check if an element is present in an array(including NaN, unlike indexOf).
-
-// NOTE: See 7_array_methods\1_methods.js > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES
-
-const fruitsA = ["Banana", "Orange", "Apple", "Mango"];
-
-console.log(fruitsA.includes("Mango")); // true
 
 
 
