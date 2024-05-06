@@ -10,6 +10,17 @@
 
 
 
+function clickButton() {
+    let name = prompt('What is your name?');
+    alert('Hello ' + name + ', nice to see you!');
+}
+
+// window.prompt() function - creates a pop-up dialog box to ask the user to answer a question, then stores the text they enter inside a given variable
+
+// window.alert() function - display another popup containing a string we've assembled from two string literals and the name variable, via concatenation.
+
+
+
 // ----------------------------- > <script> IN HTML HEAD -----------------------------
 
 // async and defer both instruct the browser to download the script(s) in a separate thread, while the rest of the page is downloading, 

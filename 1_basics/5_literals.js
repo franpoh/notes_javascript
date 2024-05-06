@@ -24,11 +24,31 @@ Table of Contents
 // This section describes the following types of literals:
 
 // Array literals
+const array = [value1, value2, value3];
+
 // Boolean literals
+true;
+false;
+
 // Numeric literals
+1, 28, 545;
+
 // Object literals
+const object = {
+    property1: value1,
+    property2: value2,
+    property3: value3,
+}
+
 // RegExp literals
+const regExp = /ab+c/;
+
 // String literals
+'Hello I am a string.'
+
+
+
+// NOTE: Although this page is about literals, we will also be going through some stuff about these data types, not just about literals. 
 
 
 
@@ -97,6 +117,12 @@ console.log(random[2][2][0]); // French Roast
 const empty1 = [];
 const empty2 = new Array();
 const empty3 = Array();
+
+
+
+const arr = [1, 2, 3];
+arr.property = "value";
+console.log(arr); // "value"
 
 
 

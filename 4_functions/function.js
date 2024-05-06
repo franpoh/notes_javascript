@@ -1,11 +1,13 @@
 /* 
 Table of Contents
 
+> WHAT IS A FUNCTION
 > RETURN
 > FUNCTION DECLARATION
 > FUNCTION EXPRESSION
 >> IIFE (Immediately Invoked Function Expression)
 >> Names
+> CLOSURES
 > ARROW FUNCTION EXPRESSION
 >> Concise Body / Block Body
 >> Cannot be Used as Methods
@@ -20,39 +22,44 @@ Table of Contents
 > ARGUMENTS OBJECT
 */
 
-function name(parameter1, parameter2) {
-    // statements
+
+
+// ----------------------------- > WHAT IS A FUNCTION -----------------------------
+
+// Define a function by using the keyword 'function', followed by a name, with parentheses ( ) put after it. 
+// After that we put two curly braces { }. Inside the curly braces goes all the code that we want to run whenever we call the function
+
+let myName = 'Francine'; // an argument that we can use in the function
+
+function myFunction(parameter) {
+    // statement
+    console.log(`I am ${parameter}`);
 }
 
-// name - The function name.
-// Parameter - The name of an argument to be passed to the function.
-// Statements - The statements comprising the body of the function.
+// Run the function by using the function name, followed by ()
+myFunction(myName); // Note myName being passed into the function
 
-
+// myFunction - The function name.
+// parameter - The name of an argument to be passed to the function.
+// statement - The statements comprising the body of the function.
 
 // Functions are reusable blocks of code that you can write once and run again and again, saving the need to keep repeating code all the time
 
-function checkGuess() {
-    alert('I am a placeholder');
-}
 
-// define a function by using the keyword function, followed by a name, with parentheses put after it. 
-// After that we put two curly braces ({ }). Inside the curly braces goes all the code that we want to run whenever we call the function
-
-// When we want to run the code, we type the name of the function followed by the parentheses.
 
 // Functions that are part of objects are called methods
 
+let objectThing = {
 
+    thisThing: 'I am a thing',
 
-function clickButton() {
-    let name = prompt('What is your name?');
-    alert('Hello ' + name + ', nice to see you!');
+    // This is a method
+    thisMethod: function () {
+        console.log(this.thisThing);
+    }
 }
 
-// window.prompt() function - creates a pop-up dialog box to ask the user to answer a question, then stores the text they enter inside a given variable
-
-// window.alert() function - display another popup containing a string we've assembled from two string literals and the name variable, via concatenation.
+objectThing.thisMethod(); // I am a thing
 
 
 
@@ -255,6 +262,60 @@ console.log(bar.name); // baz
 console.log(foo === foo2); // true
 console.log(typeof baz); // undefined
 console.log(bar === baz); // false (errors because baz == undefined)
+
+
+
+// ----------------------------- > CLOSURES -----------------------------
+
+// A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). 
+// In other words, a closure gives you access to an outer function's scope from an inner function. 
+// In JavaScript, closures are created every time a function is created, at function creation time.
+
+function init() {
+
+    let name = "Mozilla"; // name is a local variable created by init
+
+    // displayName() is the inner function, that forms the closure
+    function displayName() {
+        console.log(name); // use variable declared in the parent function
+    }
+
+    displayName();
+}
+
+init(); // Mozilla
+
+// init() creates a local variable called name and a function called displayName(). 
+// The displayName() function is an inner function that is defined inside init() and is available only within the body of the init() function. 
+// Note that the displayName() function has no local variables of its own. 
+// However, since inner functions have access to the variables of outer functions, displayName() can access the variable name declared in the parent function, init().
+
+// In short, nested functions have access to variables declared in their outer scope, which in this case is the scope of the outer function (the function scope).
+
+
+
+// ----- Another Example 
+
+function outer() {
+    let animal = "Tiger";
+    function inner() {
+        animal = "Rabbit";
+        return animal;
+    }
+
+    return inner;
+}
+
+console.log(inner()); // Error: inner not defined 
+
+let returnedFunc = outer();
+console.log(returnedFunc); // [Function: inner]
+
+const result = returnedFunc();
+console.log(`result = ${result}`); // Rabbit
+
+const result1 = outer()();
+console.log(`result1 = ${result1}`); // Rabbit
 
 
 

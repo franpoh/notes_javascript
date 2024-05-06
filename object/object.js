@@ -65,6 +65,7 @@ let Pet = {
     hobby: "guarding the gates of hell",
     colour: ['black', 'red'],
 
+    // Methods are functions stored as object properties
     // demonstrating 2 different ways to write methods
 
     about() { // simpler syntax
