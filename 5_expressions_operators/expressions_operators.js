@@ -34,7 +34,20 @@ Table of Contents
 // 9 * 9
 // 9 / 9
 
+
+
 // + can be used to join text strings together (in programming, this is called concatenation)
+
+// In expressions involving numeric and string values with the + operator, JavaScript converts numeric values to strings. 
+
+console.log("The answer is " + 42); // The answer is 42
+console.log(42 + " is the answer"); // 42 is the answer
+console.log("37" + 7); // 377
+
+// With all other operators, JavaScript does not convert numeric values to strings. 
+
+console.log("37" - 7); // 30
+console.log("37" * 7); // 259
 
 
 

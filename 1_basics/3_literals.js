@@ -187,6 +187,8 @@ console.log(g); // [ 1, <1 empty item>, 3, <1 empty item> ]
 
 
 
+// NOTE: You may want to come back to the reset of the >> Sparse Arrays section again once you have studied till 7_array_methods
+
 // In some operations, empty slots behave as if they are filled with undefined.
 
 const arr = [1, 2, , , 5]; // Create a sparse array
@@ -194,7 +196,7 @@ const arr = [1, 2, , , 5]; // Create a sparse array
 // Indexed access
 console.log(arr[2]); // undefined
 
-// For...of
+// For... of method to iterate over an array
 for (const i of arr) {
     console.log(i); // 1 2 undefined undefined 5
 }
@@ -312,6 +314,8 @@ This is an element: apple
 
 
 
+// When working with numbers, you might sometimes see the result/error NaN. It means 'Not a Number'.
+
 // For more information on numeric literals: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#numeric_literals
 
 
@@ -333,6 +337,9 @@ This is an element: apple
 let sales = "Toyota";
 
 function carTypes(name) {
+    // if [name of car] is 'Honda'
+    // return [name of car] if true
+    // return 'Sorry, we don't sell [name of car]' if false
     return name === "Honda" ? name : `Sorry, we don't sell ${name}.`;
 }
 
@@ -470,8 +477,13 @@ const reCon = new RegExp("ab+c");
 
 function secretPassword(passphrase) {
 
-    const testWord = /owl/; // thing to test for
+    const testWord = /owl/; // text to test for
+
+    // if passphrase contains the text 'owl'
+    // "Welcome to the secret society" is assigned to 'result' if true
+    // "Your secret society is 3 doors down" if assigned to 'result' if false
     const result = testWord.test(passphrase) ? "Welcome to the secret society" : "Your secret society is 3 doors down";
+    // You will learn more about this method of writing an if/else statement in 5_expressions_operators \ expressions_operators.js > CONDITIONAL (TERNARY) OPERATOR
 
     console.log(result);
 }
@@ -589,6 +601,8 @@ console.log(output);
 
 
 // ----------------------------- > STRING LITERALS >> Template Literals >>> Tagged Templates
+
+// NOTE: You might want to come back to this later after studying until 7_array_methods at least. 
 
 // Tagged templates are a compact syntax for specifying a template literal along with a call to a "tag" function for parsing it. 
 // A tagged template is just a more succinct and semantic way to invoke a function that processes a string and a set of relevant values. 

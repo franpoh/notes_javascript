@@ -1,9 +1,12 @@
 /* 
 Table of Contents
 
+> DECLARING VARIABLES
 > NAMING VARIABLES
-> CREATING VARIABLES WITH LET OR VAR
-> VARIABLE TYPES 
+> DECLARING & INITIALISING
+>> Redeclaration
+> SCOPE
+> HOISTING
 */
 
 
@@ -20,16 +23,17 @@ Table of Contents
 
 // ----- var
 // Declares a variable, optionally initializing it to a value.
-// Ever since let and const were added, they are preferred over var 
 
 // ----- let
 // Declares a block-scoped, local variable, optionally initializing it to a value.
 
 // ----- const
-// Declares a block-scoped, read-only named constant.
+// Declares a block-scoped, read-only named constant. 
 
 // Example:
 let example = 'example';
+
+// NOTE: let and const is newer than var, and has taken over as the preferred way to create a variable. We will look into this more below.
 
 
 
@@ -53,7 +57,7 @@ console.log(ThisVariable); // This is upper case.
 
 
 
-// ----------------------------- > DECLARING AND INITIALISING -----------------------------
+// ----------------------------- > DECLARING & INITIALISING -----------------------------
 
 let whatWhat = 'what what'; // This variable has been declared, and initialized with a value
 
@@ -73,33 +77,69 @@ console.log(whatWhat); // what what
 let popPop; // This variable has been declared, without a value
 console.log(popPop); // undefined
 
+// If you try to declare a const variable without being initialised with a value, it will throw an error.
+
+// Uncomment the statement below to see the error. 
+// const beepBeep; 
 
 
-// ----- Redeclaration
 
-// With let, you don’t have to redeclare the same variables, no matter where in the script they are
+// ----------------------------- > DECLARING & INITIALISING >> Redeclaration
+
+// NOTE: Here, we will look at one of the reasons why let and const is preferred over var
+
+
+
+// ----- var
+
+// var variables can be re-declared and updated
+// This means that we can do this within the same scope and won't get an error.
+
+var yourName = 'Werner';
+console.log(yourName); // Werner
+
+var yourName = 'Francine';
+console.log(yourName); // Francine
+
+// While this is not a problem if you knowingly want yourName to be redefined, it becomes a problem when you do not realize that a variable yourName has already been defined before.
+
+
+
+// ----- let 
+
+// let can be updated but not re-declared.
 
 let myName = 'Werner';
 console.log(myName); // Werner
 
+// Uncomment the statement below to see the error. You will not accidentally redefine the same variable as it will throw an error. 
+// let myName = 'Wiener';
+
+// However, you can update the variable. Still, it is less prone to accidental redefinition than var. 
 myName = 'Francine'; // initialized a value, did not redeclare with let
 console.log(myName); // Francine
 
-// NOTE: This is why 'let' will be most commonly used in my notes. I can reuse the same variable names with different values if need be, instead of thinking of new variable names.
+
+// NOTE: This is why 'let' will be most commonly used in my notes. I can reuse the same variable names and reassign different values if need be, instead of thinking of new variable names.
+// Also, you will have a tidy block of code that you can highlight and run, instead of having to scroll up to find some variable I defined 50 lines ago
+// However, I'm pretty sure this is not best practices when it comes to actual coding, since it can create a lot of confusion.
 
 
 
-// You can declare var as many times as you like, but not let
+// ----- const
 
-var yourName = 'Chris';
-console.log(yourName); // Chris
+// The value of a constant can't be changed through reassignment using the assignment operator, but if a constant is an object, its properties can be added, updated, or removed.
+// You will learn more about objects later. 
 
-var yourName = 'Bob';
-console.log(yourName); // Bob
+const thisName = 'Werner';
+console.log(thisName); // Werner
 
+// Uncomment the statement below to see the error. A const variable cannot be reassigned. 
+// const thisName = 'Francine';
 
-
-// ----------------------------- > CONST -----------------------------
+// An error does not show up now, but if you run it, it will throw an error.
+thisName = 'Francine'; // TypeError: Assignment to constant variable.
+console.log(thisName);
 
 
 
@@ -124,9 +164,9 @@ console.log(yourName); // Bob
 
 
 
-// ----------------------------- > SCOPE >> Variable Scope
-
-// let and const declarations can also be scoped to the block statement that they are declared in.
+// ----- let and const 
+// can also be scoped to the block statement that they are declared in
+// See below for applicable scopes
 
 let thisLet = 'value'; // global scope
 const thisConst = 'value'; // global scope
@@ -143,7 +183,9 @@ function myFunction() {
 
 
 
-// However, variables created with var are not block-scoped, but only local to the function (or global scope) that the block resides within.
+// ----- var 
+// are not block-scoped, but only local to the function (or global scope) that the block resides within.
+// See below for applicable scopes
 
 var thisVar = 'value'; // global scope
 
@@ -167,7 +209,42 @@ console.log(werner); // ReferenceError: werner is not defined
 
 
 
-// ----------------------------- > HOISTING ----------------------------- FIXME: NEEDED FROM HERE ONWARDS
+// NOTE: Here, we will look at another of the reasons why let and const is preferred over var. 
+
+// Due to the fact that var is not block-scoped, errors like this could happen:
+
+var greeter = "say hi";
+var times = 4;
+
+if (times > 3) {
+    var greeter = "say Hello instead";
+    console.log(`From within the block scope: ${greeter}`); // From within the block scope: say Hello instead
+}
+
+console.log(`From the global scope: ${greeter}`) // From the global scope: say Hello instead
+
+// the global variable 'greeter' has changed as the variable 'greeter' defined within the 'if' statement is not block-scoped. 
+
+
+
+// Compare it to the equivalent using let
+
+let greeting = "say hi";
+let times = 4;
+
+if (times > 3) {
+    let greeting = "say Hello instead";
+    console.log(`From within the block scope: ${greeting}`); // From within the block scope: say Hello instead
+}
+
+console.log(`From the global scope: ${greeting}`) // From the global scope: say hi
+
+// There is no inadvertent reassignment of the variable here because both instances are treated as different variables since they have different scopes.
+// This fact makes let a better choice than var. When using let, you don't have to bother if you have used a name for a variable before as a variable exists only within its scope. 
+
+
+
+// ----------------------------- > HOISTING ----------------------------- 
 
 // Hoisting is JavaScript's default behavior of moving all declarations to the top of the current scope (to the top of the current script or the current function).
 
@@ -198,21 +275,5 @@ console.log("carName: " + carName); // Cannot access 'carName' before initializa
 let carName; // Declare carName
 
 
-
-// ----------------------------- > INITIALIZATION -----------------------------
-
-// When you declare a variable it is automatically initialized, which means memory is allocated for the variable by the JavaScript engine.
-// While declarations are hoisted, initializations are NOT hoisted
-
-var x = 5; // Initialize x
-var y = 7; // Initialize y
-console.log("x: " + x + ", y: " + y); // x: 5, y: 7
-
-var b = 5; // initialize b
-console.log("b: " + b + ", c: " + c); // b: 5, c: undefined
-var c = 7; // initialize c
-
-// This is because only the declaration (var c), not the initialization (= 7) is hoisted to the top.
-// Because of hoisting, c has been declared before it is used, but because initializations are not hoisted, the value of c is undefined.
 
 

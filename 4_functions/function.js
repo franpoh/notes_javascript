@@ -63,6 +63,19 @@ objectThing.thisMethod(); // I am a thing
 
 
 
+// ----------------------------- > VARIABLES IN FUNCTIONS -----------------------------
+
+let hello = 'hello there';
+
+function greeting() {
+    console.log(hello);
+}
+
+greeting(); // hello there
+
+
+
+
 // ----------------------------- > RETURN -----------------------------
 
 // To return a value other than the default, a function must have a return statement that specifies the value to return
@@ -71,19 +84,7 @@ objectThing.thisMethod(); // I am a thing
 
 
 
-// Parameter Assigned a Value
-
-function multiple(a, b = 5) {
-    return a * b;
-}
-
-console.log(multiple(2, 3)); // 6
-console.log(multiple(2)); // 10
-console.log(multiple()); // NaN
-
-
-
-// Passing by Value
+// ----- Passing by Value
 
 let a = 2;
 let b = 3;
@@ -98,19 +99,31 @@ console.log(multiple(4, 5)); // 20
 
 
 
-// Passing by Value, continuation
+// ----- Passing by Value, continuation
 
-a = 2;
-b = 3;
+let apple = 2;
+let banana = 3;
 
 function multiple() { // no parameters 
-    return a * b;
+    return apple * banana;
 }
 
-console.log(a * b); // 6
-console.log(multiple(a, b)); // 6
+console.log(apple * banana); // 6
+console.log(multiple(apple, banana)); // 6
 console.log(multiple(4, 5)); // 6
 console.log(multiple()); // 6
+
+
+
+// ----- Parameter Assigned a Value
+
+function multiple(africa, britain = 5) {
+    return africa * britain;
+}
+
+console.log(multiple(2, 3)); // 6
+console.log(multiple(2)); // 10
+console.log(multiple()); // NaN
 
 
 
@@ -152,10 +165,6 @@ function hoisted() {
 // The main difference between a function expression and a function declaration is the function name, 
 // which can be omitted in function expressions to create anonymous functions.
 
-// A function expression can be used as an IIFE (Immediately Invoked Function Expression) which runs as soon as it is defined.
-
-
-
 const getRectArea = function (width, height) {
     return width * height;
 };
@@ -178,25 +187,23 @@ var notHoisted = function () {
 // If you want to refer to the current function inside the function body, you need to create a named function expression. 
 // This name is then local only to the function body (scope).
 
-let math = {
-    'iteration': function subtract(n) {
-        console.log(n)
-        if (n <= 1) {
-            return 1;
-        }
-        return subtract(n - 1);
+let greeter = {
+    greeting: function(name) {
+        console.log(`Hello ${name}!`);
     }
-};
+}
 
-math.iteration(3) // 3; 2; 1;
+greeter.greeting('Francine'); // Hello Francine!
 
 
 
 // Unnamed Function
 
-var x = function (y) {
-    return y * y;
-};
+let farewell = function(name) {
+    console.log(`Bye ${name}!`);
+}
+
+farewell('Werner'); // Bye Werner!
 
 
 
@@ -209,6 +216,8 @@ button.addEventListener('click', function (event) {
 
 
 // ----------------------------- > FUNCTION EXPRESSION >> IIFE (Immediately Invoked Function Expression) 
+
+// A function expression can be used as an IIFE (Immediately Invoked Function Expression) which runs as soon as it is defined.
 
 // When used only once, are invoked as soon as the function is declared.
 // useful because they don't pollute the global object, and they are a simple way to isolate variables declarations
