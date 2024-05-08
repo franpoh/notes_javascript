@@ -3,6 +3,7 @@ Table of Contents
 
 > CLASS
 > CLASS EXPRESSION AND DECLARATION
+> CLASS METHODS
 > BODY
 > PUBLIC
 >> This and Super
@@ -215,6 +216,82 @@ const Rectangle = class Rectangle2 {
 
 
 
+// ----------------------------- > CLASS METHODS -----------------------------
+
+// Because a class's body has a this context, arrow functions as class fields close over the class's this context, 
+// and the this inside the arrow function's body will correctly point to the instance (or the class itself, for static fields). 
+
+// However, because it is a closure, not the function's own binding, the value of this will not change based on the execution context.
+
+class C {
+
+    a = 1;
+
+    autoBoundMethod = () => {
+        console.log(this.a);
+    };
+
+}
+
+const c = new C();
+
+c.autoBoundMethod(); // 1
+
+const { autoBoundMethod } = c;
+
+autoBoundMethod(); // 1 - If it were a normal method, it should be undefined in this case
+
+
+
+// Arrow function properties are often said to be "auto-bound methods", because the equivalent with normal methods is:
+
+class Z {
+
+    a = 1;
+    b = 2;
+
+    constructor() {
+        this.methodA = this.methodA.bind(this);
+    }
+
+    methodA() {
+        console.log(this.a);
+    }
+
+    methodB() {
+        console.log(this.b);
+    }
+
+}
+
+const z = new Z();
+
+z.methodA(); // 1
+z.methodB(); // 2
+
+const { methodA } = z;
+console.log(methodA); // [Function: bound methodA]
+methodA(); // 1
+
+const { methodB } = z;
+console.log(methodB); // [Function: methodB]
+methodB(); // TypeError: Cannot read properties of undefined (reading 'b')
+
+
+
+// Note: Class fields are defined on the instance, not on the prototype, 
+// so every instance creation would create a new function reference and allocate a new closure, 
+// potentially leading to more memory usage than a normal unbound method.
+
+
+
+// For similar reasons, the call(), apply(), and bind() methods are not useful when called on arrow functions, 
+// because arrow functions establish this based on the scope the arrow function is defined within, 
+// and the this value does not change based on how the function is invoked.
+// whereas call(), apply() and bind() as were designed to allow methods to execute within different scopes 
+
+
+
 // ----------------------------- > BODY -----------------------------
 
 // The body of a class is the part that is in curly brackets {}. 
@@ -335,16 +412,16 @@ class Document extends Permission {
 }
 
 // Scenario 1:
-const b = new Document(Permission.RolesConst.EDITOR, Permission.OperationsConst.UPDATE, "Hello content")
-b.process(); // "Allowed"
+const editor = new Document(Permission.RolesConst.EDITOR, Permission.OperationsConst.UPDATE, "Hello content")
+editor.process(); // "Allowed"
 
 // Scenario 2:
-const c = new Document(Permission.RolesConst.READER, Permission.OperationsConst.UPDATE, "Hello content")
-c.process(); // "Blocked"
+const reader = new Document(Permission.RolesConst.READER, Permission.OperationsConst.UPDATE, "Hello content")
+reader.process(); // "Blocked"
 
 // Scenario 3:
-const d = new Document(Permission.RolesConst.OWNER, Permission.OperationsConst.DELETE, "Hello content")
-d.process(); // "Allowed"
+const owner = new Document(Permission.RolesConst.OWNER, Permission.OperationsConst.DELETE, "Hello content")
+owner.process(); // "Allowed"
 
 
 

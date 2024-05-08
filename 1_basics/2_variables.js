@@ -165,6 +165,7 @@ console.log(thisName);
 
 
 // ----- let and const 
+
 // can also be scoped to the block statement that they are declared in
 // See below for applicable scopes
 
@@ -184,6 +185,7 @@ function myFunction() {
 
 
 // ----- var 
+
 // are not block-scoped, but only local to the function (or global scope) that the block resides within.
 // See below for applicable scopes
 

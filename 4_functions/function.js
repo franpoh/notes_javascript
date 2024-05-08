@@ -17,7 +17,7 @@ Table of Contents
 > CALLBACK
 >> How to pass arguments properly with callbacks
 >> Inserting callback functions in functions with predefined arguments
->> Getting ‘This’ Right When Passing Functions
+>> Getting 'This' Right When Passing Functions
 > PURE FUNCTION
 > ARGUMENTS OBJECT
 */
@@ -25,6 +25,13 @@ Table of Contents
 
 
 // ----------------------------- > WHAT IS A FUNCTION -----------------------------
+
+// ----- Structure Of A Function
+
+// To repeat what we learn in the basics:
+// A JavaScript function is a reusable block of code that performs a specific task or set of operations, and can optionally accept inputs (called parameters or arguments) and return a value.
+
+
 
 // Define a function by using the keyword 'function', followed by a name, with parentheses ( ) put after it. 
 // After that we put two curly braces { }. Inside the curly braces goes all the code that we want to run whenever we call the function
@@ -39,21 +46,62 @@ function myFunction(parameter) {
 // Run the function by using the function name, followed by ()
 myFunction(myName); // Note myName being passed into the function
 
-// myFunction - The function name.
-// parameter - The name of an argument to be passed to the function.
+// myFunction - The function name. Can be anything, but mostly follow variable naming conventions. 
+// parameter - The name of an argument to be passed to the function. Parameters are optional.
 // statement - The statements comprising the body of the function.
 
-// Functions are reusable blocks of code that you can write once and run again and again, saving the need to keep repeating code all the time
 
 
+// ----- Return Statement
+
+// There is also the 'return' statement, which specifies the value returned by the function
+// If omitted, undefined is returned.
+
+function myFunction() {
+    return 'Francine'; // 'Francine' is the return value
+}
+
+// Run the function inside the console log function
+console.log(myFunction()); // Francine
+
+// When I use console.log inside functions to demonstrate the workings of a function, we are in fact not returning any value that can be used outside of that function
+// return statements are needed for a function to output a value that can be used in other places other than within the function itself
+
+
+
+// When a return statement is used in a function body, the execution of the function is stopped.
+
+function myFunction(number) {
+    if (number > 5) {
+        return 'The number is larger than 5';
+    } else if (number < 5) {
+        return 'The number is smaller than 5';
+    } else {
+        return 'The number is 5';
+    }
+}
+
+// The function stopped at the first return statement
+console.log(myFunction(7)); // The number is larger than 5
+
+// The function stopped at the second return statement
+console.log(myFunction(3)); // The number is smaller than 5
+
+// The function stopped at the third return statement
+console.log(myFunction(5)); // The number is 5
+
+
+
+// ----- Methods 
 
 // Functions that are part of objects are called methods
 
+// This is an object
 let objectThing = {
 
     thisThing: 'I am a thing',
 
-    // This is a method
+    // And within the object, this is a method
     thisMethod: function () {
         console.log(this.thisThing);
     }
@@ -65,41 +113,66 @@ objectThing.thisMethod(); // I am a thing
 
 // ----------------------------- > VARIABLES IN FUNCTIONS -----------------------------
 
+// Variables that are available in global scope are also available for use in functions
+
 let hello = 'hello there';
 
+// NOTE: there are no parameters for this function, this will become important later
 function greeting() {
     console.log(hello);
 }
 
+// Function is pointing to the variable 'hello' defined within the global scope
 greeting(); // hello there
 
+// Logging the variable 'hello' defined within the global scope
+console.log(hello); // hello there
 
 
 
-// ----------------------------- > RETURN -----------------------------
+// However, if you define a variable with the same name in the function, it will point to the function-scoped variable instead
 
-// To return a value other than the default, a function must have a return statement that specifies the value to return
-// A function without a return statement will return a default value.
-// When a return statement is used in a function body, the execution of the function is stopped.
+let hi = 'hi there';
 
+function greeting() { 
+    let hi = 'hey there'; // variable defined, with the same name
+    console.log(hi);
+}
 
+// Function is pointing to the variable 'hi' defined within the function scope
+greeting(); // hey there
 
-// ----- Passing by Value
-
-let a = 2;
-let b = 3;
-
-function multiple(a, b) { // ‘a’ and ‘b’ in here is declared but not defined
-    return a * b;
-} // outside of this function, ‘a = 2’ and ‘b = 3’
-
-console.log(a * b); // 6
-console.log(multiple(a, b)); // 6 
-console.log(multiple(4, 5)); // 20
+// Logging the variable 'hi' defined within the global scope
+console.log(hi); // hi there
 
 
 
-// ----- Passing by Value, continuation
+// Remember when I mentioned to note the lack of parameters earlier? Here is the same function as the first, except with a parameter
+
+let hoi = 'hoi there';
+
+function greeting(hoi) {
+    console.log(hoi);
+}
+
+// Function is not pointing at the variable 'hoi' defined within the global scope
+// It is pointing to the parameter 'hoi', and we did not pass any argument into the function, hence the return value is undefined
+greeting(); // undefined
+
+// When we pass an argument into the function:
+greeting('Salutations'); // Salutations
+greeting(777); // 777
+greeting(hoi); // hoi there
+
+
+// Logging the variable 'hoi' defined within the global scope
+console.log(hoi); // hoi there
+
+
+
+// ----------------------------- > PARAMETERS IN FUNCTIONS -----------------------------
+
+// ----- Passing by Value, without Parameters
 
 let apple = 2;
 let banana = 3;
@@ -108,21 +181,64 @@ function multiple() { // no parameters
     return apple * banana;
 }
 
+// global-scoped variables 'apple' and 'banana' being used in the function
 console.log(apple * banana); // 6
+
+// global-scoped variables 'apple' and 'banana' being passed into the function as arguments
 console.log(multiple(apple, banana)); // 6
+
+// numerical values passed into the function as arguments
 console.log(multiple(4, 5)); // 6
+
+// global-scoped variables 'apple' and 'banana' being pointed to and used in the function
 console.log(multiple()); // 6
+
+
+
+// ----- Passing by Value, with Parameters
+
+// Parameters are essentially passed to functions by value — 
+// so if the code within the body of a function assigns a completely new value to a parameter that was passed to the function, 
+// the change is not reflected globally or in the code which called that function.
+
+// See pass_reference_value.js
+
+let annie = 2;
+let britta = 3;
+
+function multiple(annie, britta) { // 'a' and 'b' in here are parameters 
+    return annie * britta;
+} 
+
+// outside of this function, 'a = 2' and 'b = 3'
+console.log(annie * britta); // 6
+
+// global-scoped 'a' and 'b' variables passed into the function as arguments
+console.log(multiple(annie, britta)); // 6 
+
+// numerical values passed into the function as arguments
+console.log(multiple(4, 5)); // 20
+
+// Function is not pointing at the variables 'a' and 'b' defined within the global scope
+// It is pointing to the parameters 'a' and 'b', and we did not pass any arguments into the function, hence the return value is NaN
+console.log(multiple()); // NaN
 
 
 
 // ----- Parameter Assigned a Value
 
+// the parameter 'britain' is assigned the default value of 5
 function multiple(africa, britain = 5) {
     return africa * britain;
 }
 
+// numerical values passed into the function as arguments. The second argument overrides the parameter's default value
 console.log(multiple(2, 3)); // 6
+
+// numerical values passed into the function as arguments. There is no second argument and therefore the parameter's default value is used. 
 console.log(multiple(2)); // 10
+
+// No arguments is passed into the function, and therefore is is no value for the parameter 'africa', even if 'britain' has its default value
 console.log(multiple()); // NaN
 
 
@@ -197,21 +313,13 @@ greeter.greeting('Francine'); // Hello Francine!
 
 
 
-// Unnamed Function
+// The same, but as an unnamed function
 
 let farewell = function(name) {
     console.log(`Bye ${name}!`);
 }
 
 farewell('Werner'); // Bye Werner!
-
-
-
-// Unnamed Function Being Used as a Callback
-
-button.addEventListener('click', function (event) {
-    console.log('button is clicked!')
-});
 
 
 
@@ -233,7 +341,7 @@ button.addEventListener('click', function (event) {
 
 
 // Those wrapping parentheses are actually what make our function, internally, be considered an expression. 
-// Otherwise, the function declaration would be invalid, because we didn’t specify any name.
+// Otherwise, the function declaration would be invalid, because we didn't specify any name.
 
 (function () {
     // statement
@@ -256,16 +364,17 @@ button.addEventListener('click', function (event) {
 
 // The variable the function expression is assigned to will have a name property. 
 // The name doesn't change if it's assigned to a different variable. 
+
 // If function name is omitted, it will be the variable name (implicit name). 
 // If function name is present, it will be the function name (explicit name). 
 
-var foo = function () { };
+let foo = function () { };
 console.log(foo.name); // foo
 
-var foo2 = foo;
+let foo2 = foo;
 console.log(foo2.name); // foo
 
-var bar = function baz() { };
+let bar = function baz() { };
 console.log(bar.name); // baz
 
 console.log(foo === foo2); // true
@@ -339,7 +448,7 @@ console.log(`result1 = ${result1}`); // Rabbit
 
 
 
-// If the arrow function contains one expression, and you omit the function’s curly braces, then the expression is implicitly returned. 
+// If the arrow function contains one expression, and you omit the function's curly braces, then the expression is implicitly returned. 
 
 () => expression;
 
@@ -354,28 +463,6 @@ console.log(`result1 = ${result1}`); // Rabbit
 ([a, b] = [10, 20]) => expression;
 
 ({ a, b } = { a: 10, b: 20 }) => expression;
-
-
-
-// Arrow functions can be async by prefixing the expression with the async keyword.
-
-async param => expression;
-
-async (param1, param2, ...paramN) => {
-    statements
-}
-
-
-
-// Arrow functions cannot be used as constructors. 
-// Calling them with new throws a TypeError. They also don't have access to the new.target keyword.
-
-const Foo = () => { };
-const foo = new Foo(); // TypeError: Foo is not a constructor
-
-// Arrow functions do not have a prototype property.
-
-console.log("prototype" in Foo); // false
 
 
 
@@ -404,23 +491,26 @@ callback = callback || (() => { });
 // In a concise body, only an expression is specified, which becomes the implicit return value. 
 // In a block body, you must use an explicit return statement.
 
-var func = x => x * x; // concise body syntax, implied "return"
+let conciseFunction = () => 'Pancake'; // concise body syntax, implied "return"
+console.log(conciseFunction()); // Pancake
 
-var func = (x, y) => { return x + y; }; // with block body, explicit "return" needed
+let blockFunction = () => { return 'Pancake'; }; // with block body, explicit "return" needed
+console.log(blockFunction()); // Pancake
 
 
 
 // Returning object literals using the concise body syntax (params) => { object: literal } does not work as expected.
 
-const func = () => { foo: 1 }; // Calling func() returns undefined!
+let brokenFunction = () => { foo: 1 }; // Calling func() returns undefined!
+console.log(brokenFunction()); // undefined
 
 // This is because JavaScript only sees the arrow function as having a concise body if the token following the arrow is not a left brace, 
 // so the code inside braces ({}) is parsed as a sequence of statements, where foo is a label, not a key in an object literal.
 
 // To fix this, wrap the object literal in parentheses:
 
-var func = () => ({ foo: 1 });
-
+let workingFunction = () => ({ foo: 1 });
+console.log(workingFunction()); // { foo: 1 }
 
 
 
@@ -429,125 +519,25 @@ var func = () => ({ foo: 1 });
 // Arrow functions don't have their own bindings to this, arguments, or super, and should not be used as methods.
 // not for call, apply and bind methods, which generally rely on establishing a scope.
 
-"use strict";
+const community = {
 
-const obje = {
+    jeff: 'winger',
+    abed: 'nadir',
+    annie: 'edison',
 
-    i: 10,
+    arrowName: () => console.log(this.jeff),
 
-    b: () => console.log('Arrow Function / ', 'this.i: ', this.i, ' / this: ', this),
+    expName1() { console.log(this.abed); },
 
-    c() {
-        console.log('Function Expression / ', 'this.i: ', this.i, ' / this: ', this);
-    },
-
-};
-
-obje.b(); // Arrow Function /  this.i:  undefined  / this:  {} (or the global object)
-obje.c(); // Function Expression /  this.i:  10  / this:  { i: 10, b: [Function: b], c: [Function: c] }
-
-
-
-// ----------------------------- > ARROW FUNCTION EXPRESSION >> Cannot be Used as Methods >>> Class Methods
-
-// Because a class's body has a this context, arrow functions as class fields close over the class's this context, 
-// and the this inside the arrow function's body will correctly point to the instance (or the class itself, for static fields). 
-
-// However, because it is a closure, not the function's own binding, the value of this will not change based on the execution context.
-
-class C {
-
-    a = 1;
-
-    autoBoundMethod = () => {
-        console.log(this.a);
-    };
-
+    expName2: function() { console.log(this.annie); },
 }
 
-const c = new C();
+// 'this' does not work with arrow functions
+community.arrowName(); // undefined
 
-c.autoBoundMethod(); // 1
-
-const { autoBoundMethod } = c;
-
-autoBoundMethod(); // 1 - If it were a normal method, it should be undefined in this case
-
-
-
-// Arrow function properties are often said to be "auto-bound methods", because the equivalent with normal methods is:
-
-class Z {
-
-    a = 1;
-    b = 2;
-
-    constructor() {
-        this.methodA = this.methodA.bind(this);
-    }
-
-    methodA() {
-        console.log(this.a);
-    }
-
-    methodB() {
-        console.log(this.b);
-    }
-
-}
-
-const z = new Z();
-
-z.methodA(); // 1
-z.methodB(); // 2
-
-const { methodA } = z;
-console.log(methodA); // [Function: bound methodA]
-methodA(); // 1
-
-const { methodB } = z;
-console.log(methodB); // [Function: methodB]
-methodB(); // TypeError: Cannot read properties of undefined (reading 'b')
-
-
-
-// Note: Class fields are defined on the instance, not on the prototype, 
-// so every instance creation would create a new function reference and allocate a new closure, 
-// potentially leading to more memory usage than a normal unbound method.
-
-
-
-// For similar reasons, the call(), apply(), and bind() methods are not useful when called on arrow functions, 
-// because arrow functions establish this based on the scope the arrow function is defined within, 
-// and the this value does not change based on how the function is invoked.
-// whereas call(), apply() and bind() as were designed to allow methods to execute within different scopes 
-
-
-
-// ----------------------------- > ARROW FUNCTION EXPRESSION >> NO BINDING OF ARGUMENTS 
-
-// See > ARGUMENTS OBJECT
-
-// Arrow functions do not have their own arguments object. 
-// Thus, in this example, arguments is a reference to the arguments of the enclosing scope:
-
-const arguments = [1, 2, 3];
-const arrr = () => arguments[0];
-
-console.log(arrr()); // 1
-
-function foo(n) {
-
-    // 'arguments' in the line below doesn't refer to 'const f = () => {...}' arguments, as it does not have its own arguments object
-    // it instead points to 'function foo() {...}' arguments 
-    const f = () => { console.log(`${arguments[0]} + ${n} = ${arguments[0] + n}`) }; // foo's implicit arguments binding, arguments[0] is n
-
-    return f();
-}
-
-foo(3); // 3 + 3 = 6
-
-// Note: You cannot declare a variable called arguments in strict mode, so the code above would be a syntax error.
+// but 'this' works with 'normal' function statements
+community.expName1(); // nadir
+community.expName2(); // edison
 
 
 
@@ -605,7 +595,7 @@ console.log(boundAddB(1, 2, 3)); // 48
 
 
 
-// -----------------------------
+// ----- DOM Examples
 
 // the greatest benefit of using Arrow functions is with DOM-level methods 
 // setTimeout, setInterval, addEventListener
@@ -614,9 +604,9 @@ console.log(boundAddB(1, 2, 3)); // 48
 
 
 // With traditional function expressions, code like this does not work as expected:
-// See > CALLBACK >> Getting ‘This’ Right When Passing Functions
+// See > CALLBACK >> Getting 'This' Right When Passing Functions
 
-var obj = {
+let objC = {
     count: 10,
 
     doSomethingLater: function () {
@@ -628,13 +618,13 @@ var obj = {
     }
 }
 
-obj.doSomethingLater(); // console prints "NaN", because the property "count" is not in the window scope.
+objC.doSomethingLater(); // console prints "NaN", because the property "count" is not in the window scope.
 
 
 
 // With arrow functions, the this scope is more easily preserved:
 
-const obj = {
+let objD = {
     count: 10,
 
     doSomethingLater() {
@@ -649,18 +639,18 @@ const obj = {
     },
 };
 
-obj.doSomethingLater(); // logs 11
+objD.doSomethingLater(); // logs 11
 
 
 
 // ----------------------------- > CALLBACK -----------------------------
 
-// Functions in JavaScript are ‘first class’, 
+// Functions in JavaScript are 'first class', 
 // which means they are treated like any other variable — including being passed to or returned from other functions.
 
-// When they’re passed as an argument to another function, they’re known as a ‘callback’ — to be called when the other function is ready for them.
+// When they're passed as an argument to another function, they're known as a 'callback' — to be called when the other function is ready for them.
 
-// Pass functions — don’t invoke them
+// Pass functions — don't invoke them
 // You can write callback functions entirely inside the function that needs them — 
 // but for ease of readability and debugging it often helps to declare or assign them elsewhere and reference them by function or variable name.
 
@@ -707,7 +697,7 @@ function countdown(n) {
 countdown(5);
 // calls countdown n times instantly
 // 1 second later, timeouts expire and do nothing.
-// We can’t supply a function name with arguments directly in brackets
+// We can't supply a function name with arguments directly in brackets
 
 
 
@@ -754,7 +744,7 @@ arr.forEach(saySquared) // 1 2 3 4
 // function saySquared takes one argument, but forEach actually has three to offer
 // the current value, the current index, and the original collection
 
-// JavaScript functions don’t complain if you supply them with more arguments than they need, 
+// JavaScript functions don't complain if you supply them with more arguments than they need, 
 // so as long as you know the order in which arguments will be supplied,
 
 
@@ -776,7 +766,7 @@ arr.forEach(sayIndexAndValue)
 
 
 
-// ----------------------------- > CALLBACK >> Getting ‘This’ Right When Passing Functions
+// ----------------------------- > CALLBACK >> Getting 'This' Right When Passing Functions
 
 // using functions as callbacks changes the context in which they are invoked
 // if your function relies on the this keyword to refer to the context in which you originally wrote it, 
@@ -799,7 +789,7 @@ setTimeout(ghost.sayBoo, 1000) // undefined says: Boo!  -- 'this' refers to the 
 setTimeout(ghost.sayBoo.bind(ghost), 2000) // Casper says: Boo!
 
 // NOTE: Increasingly, with newer JavaScript syntax, declaring functions with arrow syntax will help: 
-// they will automatically bind ‘this’ to the scope in which the function is declared.
+// they will automatically bind 'this' to the scope in which the function is declared.
 
 // Arrow syntax fix:
 
@@ -851,7 +841,7 @@ obj.sayHello();
 // ----------------------------- > PURE FUNCTION -----------------------------
 
 // The function always returns the same result if the same arguments are passed in. 
-// It does not depend on any state, or data, change during a program’s execution. 
+// It does not depend on any state, or data, change during a program's execution. 
 // It must only depend on its input arguments.
 
 // The function does not produce any observable side effects such as network requests, input and output devices, or data mutation.
@@ -892,18 +882,13 @@ function calculateTax(productPrice) {
 // JavaScript arguments are passed by value: The function only gets to know the values, not the argument's locations.
 // If a function changes an argument's value, it does not change the parameter's original value.
 
-function func1(a, b, c) {
-    console.log(arguments[0]);
-    // 1
-
-    console.log(arguments[1]);
-    // 2
-
-    console.log(arguments[2]);
-    // 3
+function myFunction(a, b, c) {
+    console.log(arguments[0]); // 1
+    console.log(arguments[1]); // 2
+    console.log(arguments[2]); // 3
 }
 
-func1(1, 2, 3);
+myFunction(1, 2, 3);
 
 
 
@@ -913,6 +898,28 @@ function myFunction() {
     console.log(arguments);
 }
 myFunction('a', 'b'); // [Arguments] { '0': 'a', '1': 'b' }
+
+
+
+// ----- Arrow Functions
+
+// Arrow functions do not have their own arguments object. 
+
+// Thus, in this example, const arrowFunction does not has its own argument object
+// The 'arguments' in arrowFunction is a reference to the argument object of the enclosing scope, which in this case is enclosingFunction
+
+function enclosingFunction(n) {
+
+    const arrowFunction = () => { 
+        console.log(`${arguments[0]} + ${n} = ${arguments[0] + n}`) // enclosingFunction's arguments[0] is actually n
+    }; 
+
+    return arrowFunction();
+}
+
+enclosingFunction(3); // 3 + 3 = 6
+
+// Note: You cannot declare a variable called arguments in strict mode, so the code above would be a syntax error.
 
 
 

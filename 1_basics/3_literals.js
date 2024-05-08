@@ -330,28 +330,18 @@ This is an element: apple
 
 
 // The following is an example of an object literal. 
-// The first element of the car object defines a property, myCar, and assigns to it a new string, 
-// "Saturn"; the second element, the getCar property, is immediately assigned the result of invoking the function (carTypes("Honda")); 
-// the third element, the special property, uses an existing variable (sales).
-
-let sales = "Toyota";
-
-function carTypes(name) {
-    // if [name of car] is 'Honda'
-    // return [name of car] if true
-    // return 'Sorry, we don't sell [name of car]' if false
-    return name === "Honda" ? name : `Sorry, we don't sell ${name}.`;
-}
 
 let car = {
-    myCar: "Saturn",
-    getCar: carTypes("Honda"),
-    special: sales
+    type: "Sedan",
+    brand: "Honda",
+    wheels: 4,
+    colour: 'Red',
 };
 
-console.log(car.myCar); // Saturn
-console.log(car.getCar); // Honda
-console.log(car.special); // Toyota
+console.log(car.type); // Sedan
+console.log(car.brand); // Honda
+console.log(car.wheels); // 4
+console.log(car.colour); // Red
 
 
 
