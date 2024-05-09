@@ -4,7 +4,6 @@ Table of Contents
 > ARRAY LITERAL
 >> Length
 >> Sparse Arrays 
->> Extra Commas In Array Literals
 > BOOLEAN LITERALS
 > NUMERIC LITERALS
 > OBJECT LITERALS

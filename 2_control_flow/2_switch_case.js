@@ -1,25 +1,43 @@
 
-const expr = 'Papayas';
+// A switch statement allows a program to evaluate an expression and attempt to match the expression's value to a case label. 
+// If a match is found, the program executes the associated statement. 
 
-switch (expr) { // expr - An expression whose result is matched against each case clause
+
+
+// ----- Example
+
+const fruit = 'Papayas'; // Try changing the fruit for testing
+
+switch (fruit) { // The value of fruit is matched against each case clause
 
     case 'Oranges': // Statements executed when the result of expression matches value Oranges
         console.log('Oranges are $0.59 a pound.');
-        break; 
-        // If the previous choice matches the expression/value, the browser stops executing the code block here, and moves on to any code that appears below the switch statement.
-        // If break is omitted, the program continues execution at the next statement in the switch statement.
+        break; // If the previous choice matches the expression/value, the browser stops executing the code block here, and resumes execution of any code following the end of switch.
 
-    case 'Mangoes': // Statements executed when the result of expression matches value Mangoes
-    case 'Papayas': // Statements executed when the result of expression matches value Papayas
-        console.log('Mangoes and papayas are $2.79 a pound.'); // expected output: "Mangoes and papayas are $2.79 a pound."
+    case 'Mangoes': 
+
+    case 'Papayas': 
+        console.log('Mangoes and papayas are $2.79 a pound.'); 
         break;
 
     default: // Statements executed when none of the values match the value of the expression
-        console.log(`Sorry, we are out of ${expr}.`);
+        console.log(`Sorry, we are out of ${fruit}.`);
 }
 
+console.log('This is the code after the switch statement, for testing purposes.')
 
+// Expected Output: 
 // Mangoes and papayas are $2.79 a pound.
+// This is the code after the switch statement, for testing purposes.
+
+
+
+// Default:
+// If no default clause is found, the program resumes execution of any code following the end of switch.
+// (By convention, the default clause is written as the last clause, but it does not need to be so.) 
+
+// Break:
+// If break is omitted, the program continues execution at the next statement in the switch statement.
 
 
 
@@ -47,28 +65,7 @@ console.log(animal); // grizzly bear
 
 
 
-// ----- Example with let declared without being defined
-
-var Animal = 'Giraffe';
-
-switch (Animal) {
-    case 'Cow':
-    case 'Giraffe':
-    case 'Dog':
-    case 'Pig':
-        console.log('This animal is not extinct.');
-        break;
-    case 'Dinosaur':
-    default:
-        console.log('This animal is extinct.');
-}
-
-// This animal is not extinct.
-
-
-
-// Multi-case: single operation
-// This method takes advantage of the fact that if there is no break below a case clause it will continue to execute the next case clause regardless if the case meets the criteria.
+// ----- This example takes advantage of the fact that if there is no break below a case clause it will continue to execute the next case clause regardless if the case meets the criteria.
 
 var foo = 1;
 
@@ -100,11 +97,3 @@ switch (foo) {
     default:
         console.log('Please pick a number from 0 to 5!');
 }
-
-// Multi-case: chained operations
-// multiple-operation sequential case clause, where, depending on the provided integer, you can receive different output. 
-// This shows you that it will traverse in the order that you put the case clauses, and it does not have to be numerically sequential.
-
-
-
-// Ensure that your function respects block-scoping

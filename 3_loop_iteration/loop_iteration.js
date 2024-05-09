@@ -50,7 +50,7 @@ cats.map((cat) => { console.log(cat) });
 
 // for loop
 
-for (initializer; condition; final - expression) {
+for (initializer; condition; final-expression) {
     // code to run
 }
 
@@ -59,32 +59,25 @@ for (let i = 0; i < 3; i++) { // shows 0, then 1, then 2
     console.log(i);
 }
 
-// An initializer
-
+// ----- initializer
 // this is usually a variable set to a number, which is incremented to count the number of times the loop has run. 
 // It is also sometimes referred to as a counter variable 
 // let i = 0 - Executes once upon entering the loop.
 
-
-
-// A condition 
-
+// ----- condition 
 // this defines when the loop should stop looping. 
 // This is generally an expression featuring a comparison operator, a test to see if the exit condition has been met 
 // i < 3 - Checked before every loop iteration. Keeps going round the loop for as long as i is smaller than 3
 
-
-
-// A final-expression 
-
+// ----- final-expression 
 // this is always evaluated (or run) each time the loop has gone through a full iteration. 
 // It usually serves to increment (or in some cases decrement) the counter variable, to bring it closer to the point where the condition is no longer true
 // i++ - Executes after the body on each iteration.
 
 
 
-// Here, the “counter” variable p is declared right in the loop. 
-// This is called an “inline” variable declaration. 
+// Here, the "counter" variable p is declared right in the loop. 
+// This is called an "inline" variable declaration. 
 // Such variables are visible only inside the loop.
 
 for (let p = 0; p < 3; p++) {
@@ -136,7 +129,7 @@ for (; ;) {
 } 
 */ // placed in comments otherwise affecting code below
 
-// Please note that the two for semicolons ; must be present. Otherwise, there would be a syntax error.
+// Please note that the two semicolons in for() ; must be present. Otherwise, there would be a syntax error.
 
 
 
@@ -274,34 +267,28 @@ for (const value of iterable) {
 
 
 
-// TypedArray:
-
-iterable = new Uint8Array([0x00, 0xff]);
-
-for (const value of iterable) {
-    console.log(value);
-} // 0 255
-
-
-
 // // ----------------------------- > FOR >> Break
 
 // Break – force an exit at any time in a loop
 
-// The combination “infinite loop + break as needed” 
+// The combination "infinite loop + break as needed" 
 // is great for situations when a loop’s condition must be checked not in the beginning or end of the loop, but in the middle or even in several places of its body.
 
 const contacts = ['Chris:2232322', 'Sarah:3453456', 'Bill:7654322', 'Mary:9998769', 'Dianne:9384975'];
 
-let searchName = "chris"; // change search term here to name or blank
+let searchName = "chris"; // change search term here to lowercase name or blank
 
 for (const contact of contacts) {
 
-    const splitContact = contact.split(':'); // [ 'Chris', '2232322' ]
+    // array.split() is an array function that you wil learn more about in 7_array_methods\1_methods.js
+    const splitContact = contact.split(':'); // It splits the element at ':', therefore resulting in [ 'Chris', '2232322' ]
 
-    if (splitContact[0].toLowerCase() === searchName) {
+    if (splitContact[0].toLowerCase() === searchName) { // Changing the name string to lowercase in order to match value of searchName
+
         console.log(`${splitContact[0]}'s number is ${splitContact[1]}.`);
-        break;
+
+        break; // stop function right here if the above conditions is achieved
+
     }
 }
 
@@ -323,6 +310,10 @@ if (searchName === '') {
 // The loop below uses continue to output only odd values.
 // For even values of i, the continue directive stops executing the body and passes control to the next iteration of for (with the next number). 
 // So console.log is only called for odd values.
+
+
+
+// See more about the % operator at 5_expressions_operators\expressions_operators.js >> % Remainder / modulo
 
 for (let i = 0; i < 10; i++) {
     if (i % 2 == 0) continue; // if true, skip the remaining part of the body
@@ -554,7 +545,7 @@ while (condition) { // Check condition
 
     // code to run
 
-    final - expression // final-expression is included inside the loop after the code to run
+    final-expression // final-expression is included inside the loop after the code to run
 }
 
 
@@ -571,7 +562,6 @@ while (i < 3) { // shows 0, then 1, then 2
 
 
 // Any expression or variable can be a loop condition, not just comparisons: the condition is evaluated and converted to a boolean by while.
-
 // For instance, a shorter way to write while (i != 0) is while (i):
 
 i = 3;
@@ -620,7 +610,7 @@ do {
 
     // code to run
 
-    final - expression // final-expression is included inside the loop after the code to run
+    final-expression // final-expression is included inside the loop after the code to run
 
 } while (condition) // Check condition
 
@@ -657,4 +647,4 @@ do {
     i++;
 } while (i < katten.length);
 
-console.log(mijnKatten);     // "My katten are called Pete, Biggles, and Jasmine."
+console.log(mijnKatten); // "My katten are called Pete, Biggles, and Jasmine."

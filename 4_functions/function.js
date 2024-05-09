@@ -2,7 +2,8 @@
 Table of Contents
 
 > WHAT IS A FUNCTION
-> RETURN
+> VARIABLES IN FUNCTIONS
+> PARAMETERS IN FUNCTIONS
 > FUNCTION DECLARATION
 > FUNCTION EXPRESSION
 >> IIFE (Immediately Invoked Function Expression)
@@ -11,8 +12,6 @@ Table of Contents
 > ARROW FUNCTION EXPRESSION
 >> Concise Body / Block Body
 >> Cannot be Used as Methods
->>> Class Methods
->> NO BINDING OF ARGUMENTS 
 >> Examples
 > CALLBACK
 >> How to pass arguments properly with callbacks
@@ -835,6 +834,10 @@ obj.sayHello();
 // Even though innerFunc is defined inside the sayHello method, its execution context is separate from the execution context of sayHello. 
 // The sayHello method has its own this value bound to the obj object because it is called with obj.sayHello(). 
 // However, this context is not automatically inherited by innerFunc because it is called as a standalone function without any context object.
+
+
+
+// Study function.js first, then see this.js, read from the beginning until > ARROW FUNCTIONS
 
 
 

@@ -54,6 +54,21 @@ if (x = y) {
 
 
 
+// Example
+
+// Change the number between 1, 2, and any other number
+let test = 2;
+
+if (test === 1) {
+    console.log('This is the number 1');
+} else if (test === 2) {
+    console.log('This is the number 2');
+} else {
+    console.log('This is whatever');
+}
+
+
+
 // ----- Falsy values
 
 // The following values evaluate to false (also known as Falsy values):
