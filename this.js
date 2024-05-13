@@ -26,51 +26,137 @@ Table of Contents
 
 
 
+// The this keyword refers to the context where a piece of code, such as a function's body, is supposed to run. 
+
 const test = {
     prop: 42,
-    func: function () {
-        return this.prop;
+    runTest: function () {
+        console.log(this.prop);;
     },
 };
 
-console.log(test.func()); // 42
+test.runTest(); // 42
 
 
 
-// this keyword refers to the current object the code is being written inside
-// it always ensures that the correct values are used when a member's context changes 
-// (for example, two different person object instances may have different names, but we want to use their own name when saying their greeting).
-// really useful when dynamically generating objects (for example using constructors)
+// Most typically, it is used in object methods, where this refers to the object that the method is attached to, thus allowing the same method to be reused on different objects.
+
+const copyTest = Object.create(test); // create a copy of the test object
+copyTest.prop = 'Forty-two'; // change the value of the key 'prop'
+copyTest.runTest(); // Forty-two
+
+// This example demonstrates that the context of 'this' in copyTest has changed. It now no longer refers to 'test', it refers to 'copyTest'
+// Therefore, you can see how 'this' allows the same method to be reused in different contexts 
+
+// We will look at more examples of this reusability later
 
 
 
 // ----------------------------- > THE VALUE OF THIS -----------------------------
 
-// The value of this depends on in which context it appears: function, class, or global.
+// The value of this in JavaScript depends on how a function is invoked (runtime binding), not how it is defined. 
 
-// In a method, this refers to the owner object.
+// When a regular function is invoked as a method of an object (obj.method()), this points to that object. 
+// When invoked as a standalone function (not attached to an object: func()), this typically refers to the global object (in non-strict mode) or undefined (in strict mode). 
+// Event handler attributes are executed with this set to the element they are attached to.
 
-// Alone, this refers to the global object.
-
-// In a function, this refers to the global object.
-// In a function, in strict mode, this is undefined.
-
-// In an event, this refers to the element that received the event.
-
-// Methods like call(), and apply() can refer this to any object.
+// The Function.prototype.bind() method can create a function whose this binding doesn't change, 
+// and methods apply() and call() can also set the this value for a particular call.
 
 
 
-// ----------------------------- > THE VALUE OF THIS >> Method Context 
+// NOTE: Arrow functions differ in their handling of this: they inherit this from the parent scope at the time they are defined. 
+// This behavior makes arrow functions particularly useful for callbacks and preserving context. 
+// However, arrow functions do not have their own this binding. Therefore, their this value cannot be set by bind(), apply() or call() methods, nor does it point to the current object in object methods.
 
-const person1 = { // owner object
-    name: 'Chris',
-    greeting: function () {
-        console.log('Hi! I\'m ' + this.name + '.');
+
+
+// When used alone, this refers to the global object.
+
+// NOTE: You will not be able to access variables and functions declared in the global scope, eg this.ownerObject
+// this is because variables and functions declared in the global scope are not automatically added as properties to the global object. They are instead added to the global scope itself.
+// Therefore, the global object does not have a property named testText.
+
+const testText = 'Hello world!';
+
+console.log(this.testText); // undefined
+
+// Access like this:
+console.log(testText); // Hello world!
+
+
+
+// ----------------------------- > METHOD -----------------------------
+
+// We have already seen 'this' in methods at the beginning, but let's look at it again with another example
+
+let francine = {
+    firstName: 'Francine',
+    lastName: 'Poh',
+    age: 34,
+
+    introduction: function () {
+        console.log(`Hi, my name is ${this.firstName} ${this.lastName}, and I am ${this.age} this year.`);
     }
 }
 
-person1.greeting(); // Hi! I'm Chris.
+francine.introduction(); // Hi, my name is Francine Poh, and I am 34 this year.
+
+
+
+// Let's look at what happens when you don't use 'this'
+
+francine = {
+    firstName: 'Francine',
+    lastName: 'Poh',
+    age: 34,
+
+    introduction: function () {
+        console.log(`Hi, my name is ${firstName} ${lastName}, and I am ${age} this year.`); // this has been removed
+    }
+}
+
+francine.introduction(); // ReferenceError: firstName is not defined
+
+// Remember what we said earlier: The value of 'this' in JavaScript depends on how a function is invoked (runtime binding), not how it is defined. 
+
+// introduction() might be defined inside of francine, but it is being ran as (more or less) a standalone function in the global scope
+// Also, with the omission of the 'this' keyword, the variables in the function are no longer pointing to the variables in the object 'francine'
+// Therefore, the variables firstName, lastName, and age are being treated as undefined variable names within the introduction function, instead of properties of the francine object.
+
+// Functionally, it is the same as doing this:
+
+function introduction() {
+    console.log(`Hi, my name is ${firstName} ${lastName}, and I am ${age} this year.`);
+}
+
+introduction(); // ReferenceError: firstName is not defined
+
+
+
+// Let's see what happens when those variables are defined in the global scope
+
+
+let firstName = 'Werner';
+let lastName = 'Marschall';
+let age = 57;
+
+francine = {
+    firstName: 'Francine',
+    lastName: 'Poh',
+    age: 34,
+
+    introduction: function () {
+        console.log(`Hi, my name is ${firstName} ${lastName}, and I am ${age} this year.`); // this is still removed
+    }
+}
+
+// the introduction function now has global-scoped variables to point to
+francine.introduction(); // Hi, my name is Werner Marschall, and I am 57 this year.
+
+
+
+// Always remember to use the 'this' keyword if you want to access your object properties correctly
 
 
 
@@ -78,23 +164,38 @@ person1.greeting(); // Hi! I'm Chris.
 
 // Inside a function, the value of this depends on how the function is called. 
 
-// Think about this as a hidden parameter of a function — 
-// just like the parameters declared in the function definition, 
-// this is a binding that the language creates for you when the function body is evaluated
+// Think about this as a hidden parameter of a function —
+// just like the parameters declared in the function definition, this is a binding that the language creates for you when the function body is evaluated
 
 
 
-// In typical function calls, this is implicitly passed like a parameter through the function's prefix (the part before the dot). 
-// You can also explicitly set the value of this using the Function.prototype.call(), Function.prototype.apply(), or Reflect.apply() methods. 
-// NOTE: Using Function.prototype.bind(), you can create a new function with a specific value of this that doesn't change regardless of how the function is called. 
-// When using these methods, the this substitution rules above still apply if the function is non-strict.
+// In typical function calls, this is implicitly passed like a parameter through the function's prefix *(the part before the dot). 
+
+// * the part before the dot: When you have an object with a method (a function assigned as a property of the object), and you call that method using the dot notation, the part before the dot is the prefix.
+
+const john = {
+    name: 'John',
+    greet: function () {
+        console.log(`Hello, my name is ${this.name}`);
+    }
+}
+
+john.greet(); // Output: Hello, my name is John
+
+// In this case, john is the prefix, and greet is the method being called.
+
+// When you invoke a method using the dot notation like person.greet(), the JavaScript engine implicitly sets the value of this inside the greet function to the object that the method belongs to (person). 
+// This is why this.name inside the greet method correctly refers to the name property of the person object.
+
+// However, it's important to note that the value of this can be changed or bound to different values using techniques like call(), apply(), bind(), or arrow functions. 
+// The behavior described above is just the default way this is set when calling a method on an object using the dot notation.
 
 
 
 // ----------------------------- > FUNCTION >> Typical Function
 
 // For a typical function, the value of this is the object that the function is accessed on
-// In other words, if the function call is in the form obj.f(), then this refers to obj
+// In other words, if the function call is in the form obj.f(), then this refers to obj 
 
 function getThis() {
     return this;

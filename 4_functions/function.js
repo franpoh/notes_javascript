@@ -8,11 +8,11 @@ Table of Contents
 > FUNCTION EXPRESSION
 >> IIFE (Immediately Invoked Function Expression)
 >> Names
-> CLOSURES
 > ARROW FUNCTION EXPRESSION
 >> Concise Body / Block Body
 >> Cannot be Used as Methods
 >> Examples
+> CLOSURES
 > CALLBACK
 >> How to pass arguments properly with callbacks
 >> Inserting callback functions in functions with predefined arguments
@@ -382,60 +382,6 @@ console.log(bar === baz); // false (errors because baz == undefined)
 
 
 
-// ----------------------------- > CLOSURES -----------------------------
-
-// A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). 
-// In other words, a closure gives you access to an outer function's scope from an inner function. 
-// In JavaScript, closures are created every time a function is created, at function creation time.
-
-function init() {
-
-    let name = "Mozilla"; // name is a local variable created by init
-
-    // displayName() is the inner function, that forms the closure
-    function displayName() {
-        console.log(name); // use variable declared in the parent function
-    }
-
-    displayName();
-}
-
-init(); // Mozilla
-
-// init() creates a local variable called name and a function called displayName(). 
-// The displayName() function is an inner function that is defined inside init() and is available only within the body of the init() function. 
-// Note that the displayName() function has no local variables of its own. 
-// However, since inner functions have access to the variables of outer functions, displayName() can access the variable name declared in the parent function, init().
-
-// In short, nested functions have access to variables declared in their outer scope, which in this case is the scope of the outer function (the function scope).
-
-
-
-// ----- Another Example 
-
-function outer() {
-    let animal = "Tiger";
-    function inner() {
-        animal = "Rabbit";
-        return animal;
-    }
-
-    return inner;
-}
-
-console.log(inner()); // Error: inner not defined 
-
-let returnedFunc = outer();
-console.log(returnedFunc); // [Function: inner]
-
-const result = returnedFunc();
-console.log(`result = ${result}`); // Rabbit
-
-const result1 = outer()();
-console.log(`result1 = ${result1}`); // Rabbit
-
-
-
 // ----------------------------- > ARROW FUNCTION EXPRESSION -----------------------------
 
 // An arrow function expression is a compact alternative to a traditional function expression, 
@@ -642,6 +588,60 @@ objD.doSomethingLater(); // logs 11
 
 
 
+// ----------------------------- > CLOSURES -----------------------------
+
+// A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). 
+// In other words, a closure gives you access to an outer function's scope from an inner function. 
+// In JavaScript, closures are created every time a function is created, at function creation time.
+
+function init() {
+
+    let name = "Mozilla"; // name is a local variable created by init
+
+    // displayName() is the inner function, that forms the closure
+    function displayName() {
+        console.log(name); // use variable declared in the parent function
+    }
+
+    displayName();
+}
+
+init(); // Mozilla
+
+// init() creates a local variable called name and a function called displayName(). 
+// The displayName() function is an inner function that is defined inside init() and is available only within the body of the init() function. 
+// Note that the displayName() function has no local variables of its own. 
+// However, since inner functions have access to the variables of outer functions, displayName() can access the variable name declared in the parent function, init().
+
+// In short, nested functions have access to variables declared in their outer scope, which in this case is the scope of the outer function (the function scope).
+
+
+
+// ----- Another Example 
+
+function outer() {
+    let animal = "Tiger";
+    function inner() {
+        animal = "Rabbit";
+        return animal;
+    }
+
+    return inner;
+}
+
+console.log(inner()); // Error: inner not defined 
+
+let returnedFunc = outer();
+console.log(returnedFunc); // [Function: inner]
+
+const result = returnedFunc();
+console.log(`result = ${result}`); // Rabbit
+
+const result1 = outer()();
+console.log(`result1 = ${result1}`); // Rabbit
+
+
+
 // ----------------------------- > CALLBACK -----------------------------
 
 // Functions in JavaScript are 'first class', 
@@ -834,10 +834,6 @@ obj.sayHello();
 // Even though innerFunc is defined inside the sayHello method, its execution context is separate from the execution context of sayHello. 
 // The sayHello method has its own this value bound to the obj object because it is called with obj.sayHello(). 
 // However, this context is not automatically inherited by innerFunc because it is called as a standalone function without any context object.
-
-
-
-// Study function.js first, then see this.js, read from the beginning until > ARROW FUNCTIONS
 
 
 
