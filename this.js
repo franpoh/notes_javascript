@@ -70,6 +70,7 @@ copyTest.runTest(); // Forty-two
 // However, arrow functions do not have their own this binding. Therefore, their this value cannot be set by bind(), apply() or call() methods, nor does it point to the current object in object methods.
 
 
+FIXME:
 
 // When used alone, this refers to the global object.
 
@@ -83,6 +84,37 @@ console.log(this.testText); // undefined
 
 // Access like this:
 console.log(testText); // Hello world!
+
+
+
+FIXME:
+
+const obj = { itemObj: "CustomObj" };
+
+var itemVar = "GlobalVar"; // Variables declared with var become properties of the global object.
+
+let itemLet = 'GlobalLet'
+
+const itemConst = 'GlobalConst'
+
+// In browser window
+console.log(this.itemVar); // GlobalVar
+console.log(this.itemLet); // undefined
+console.log(this.itemConst); // undefined
+
+
+
+
+function whatsThis() {
+    return this.a; // The value of this is dependent on how the function is called
+}
+
+// This will only return 'Global' in browser, it returns 'undefined' in VS code
+console.log(whatsThis()); // 'Global'; this in the function isn't set, so it defaults to the global/window object in non–strict mode
+
+obj.whatsThis = whatsThis;
+
+console.log(obj.whatsThis()); // 'Custom'; this in the function is set to obj
 
 
 
@@ -184,31 +216,29 @@ john.greet(); // Output: Hello, my name is John
 
 // In this case, john is the prefix, and greet is the method being called.
 
-// When you invoke a method using the dot notation like person.greet(), the JavaScript engine implicitly sets the value of this inside the greet function to the object that the method belongs to (person). 
-// This is why this.name inside the greet method correctly refers to the name property of the person object.
+// When you invoke a method using the dot notation like john.greet(), the JavaScript engine implicitly sets the value of this inside the greet function to the object that the method belongs to (john). 
+// This is why this.name inside the greet method correctly refers to the name property of the john object.
 
 // However, it's important to note that the value of this can be changed or bound to different values using techniques like call(), apply(), bind(), or arrow functions. 
 // The behavior described above is just the default way this is set when calling a method on an object using the dot notation.
 
 
 
-// ----------------------------- > FUNCTION >> Typical Function
+// ----- Let's look at another way of using 'this', where we show how the value of 'this' is the object that the function is accessed on
 
-// For a typical function, the value of this is the object that the function is accessed on
-// In other words, if the function call is in the form obj.f(), then this refers to obj 
-
-function getThis() {
-    return this;
+function getName() {
+    return this.name;
 }
 
-const obj0 = { name: "obj0" };
-const obj1 = { name: "obj1" };
+const lassie = { name: "Lassie the Dog" };
+const buddy = { name: "Buddy the Also Dog" };
 
-obj0.getThis = getThis;
-obj1.getThis = getThis;
+// Creating and assigning a value to new 'getName' properties in objects
+lassie.getName = getName;
+buddy.getName = getName;
 
-console.log(obj0.getThis()); // { name: 'obj0', getThis: [Function: getThis] }
-console.log(obj1.getThis()); // { name: 'obj1', getThis: [Function: getThis] }
+console.log(lassie.getName()); // Lassie the Dog
+console.log(buddy.getName()); // Buddy the Also Dog
 
 // Note how the function is the same, but based on how it's invoked, the value of this is different. 
 // This is analogous to how function parameters work.
@@ -218,55 +248,35 @@ console.log(obj1.getThis()); // { name: 'obj1', getThis: [Function: getThis] }
 // ----------------------------- > FUNCTION >> The value of this 
 
 // The value of this is not the object that has the function as an own property, but the object that is used to call the function. 
-// You can prove this by calling a method of an object up in the prototype chain.
+// You can prove this by calling a method of an object up in the *prototype chain.
 
-const obj2 = {
-    name: "obj2",
-    getThis() {
-        return this;
+// * prototype
+//      See Cheatsheet\coding\prototype.js
+//      You will also learn more in 9_object\prototypes.js
+
+const mickey = {
+    name: "Mickey",
+    animal: "Mouse",
+    getName() {
+        return `${this.name} ${this.animal}`;
     },
-};
-
-const obj3 = {
-    __proto__: obj2,
-    name: "obj3",
-};
-
-console.log(obj3.getThis()); // { name: 'obj3' }
-// getThis method not shown in object as it belongs to obj3's prototype, obj2
-
-
-
-// The value of this always changes based on how a function is called, even when the function was defined on an object at creation:
-
-const obj4 = {
-    name: "obj4",
-    getThis() {
-        return this;
-    },
-};
-
-const obj5 = { name: "obj5" };
-
-obj5.getThis = obj4.getThis;
-console.log(obj5.getThis()); // { name: 'obj5', getThis: [Function: getThis] }
-
-
-
-// An object can be passed as the first argument to call
-// or apply and this will be bound to it.
-const obj = { a: "Custom" };
-
-// Variables declared with var become properties of the global object.
-var a = "Global";
-
-function whatsThis() {
-    return this.a; // The value of this is dependent on how the function is called
 }
 
-whatsThis(); // 'Global'; this in the function isn't set, so it defaults to the global/window object in non–strict mode
-obj.whatsThis = whatsThis;
-obj.whatsThis(); // 'Custom'; this in the function is set to obj
+const donald = {
+    __proto__: mickey,
+    name: "Donald",
+    animal: "Duck",
+}
+
+console.log(mickey); // { name: 'Mickey', animal: 'Mouse', getName: [Function: getName] }
+
+// getName method not shown in object as it belongs to donald's prototype, mickey
+console.log(donald); // { name: 'Donald', animal: 'Duck' }
+
+// But you can still use the getName method in donald (in accordance with how prototypes work)
+console.log(donald.getName()); // Donald Duck
+
+// The value of this always changes based on how a function is called, even when the function was defined on an object at creation
 
 
 

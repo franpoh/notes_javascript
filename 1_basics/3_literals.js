@@ -387,15 +387,19 @@ console.log(unusualPropertyNames["!"]); // Bang!
 
 // Object literals support a range of shorthand syntaxes that include 
 
-//      setting the prototype at construction, 
+//      setting the *prototype at construction, 
 //      shorthand for foo: foo assignments, 
 //      defining methods, 
 //      making super calls, 
 //      and computing property names with expressions.
 
-
-
 // Together, these also bring object literals and class declarations closer together, and allow object-based design to benefit from some of the same conveniences.
+
+// * prototype
+//      Dictionary definition: the first example of something, such as a machine or other industrial product, from which all later forms are developed
+//      Coding Definition: new objects are produced by cloning existing objects, which are called prototypes
+//      See Cheatsheet\coding\prototype.js
+//      You will also learn more in 9_object\prototypes.js
 
 const originalObj = {
     bar() {

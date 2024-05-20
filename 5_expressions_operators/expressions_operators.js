@@ -429,8 +429,12 @@ console.log(currentStatus); // adult
 // ----------------------------- > MISC OPERATORS -----------------------------
 
 // instanceof
-// The instanceof operator tests to see if the prototype property of a constructor appears anywhere in the prototype chain of an object.
+// The instanceof operator tests to see if the * prototype property of a constructor appears anywhere in the prototype chain of an object.
 // The return value is a boolean value.
+
+// * prototype
+//      See Cheatsheet\coding\prototype.js
+//      You will also learn more in 9_object\prototypes.js
 
 function Car(make, model, year) {
     this.make = make;
