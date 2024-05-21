@@ -74,7 +74,10 @@ FIXME:
 
 // When used alone, this refers to the global object.
 
-// NOTE: You will not be able to access variables and functions declared in the global scope, eg this.ownerObject
+// NOTE: However, global variables can work differently depending on whether it is declared with var, let or const
+// See Cheatsheet\global_scope.js
+
+// You will not be able to access variables and functions declared in the global scope, eg this.ownerObject
 // this is because variables and functions declared in the global scope are not automatically added as properties to the global object. They are instead added to the global scope itself.
 // Therefore, the global object does not have a property named testText.
 

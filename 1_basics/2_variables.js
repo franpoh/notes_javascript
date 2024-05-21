@@ -149,13 +149,16 @@ console.log(thisName);
 
 // A variable may belong to one of the following scopes:
 
-// ----- Global scope: The default scope for all code running in script mode.
+// ----- *Global scope: The default scope for all code running in script mode.
 // ----- Module scope: The scope for code running in module mode.
 // ----- Function scope: The scope created with a function.
 
 // In addition, variables declared with let or const can belong to an additional scope:
 
 // ----- Block scope: The scope created with a pair of curly braces (a block).
+
+// * Global scope: Despite the fact that var, let and const can all be global scoped, global scope means different things for var, and const and let. 
+// See Cheatsheet\global_scope.js now, or I will remind you to check it out in a later section when it becomes really relevant. 
 
 
 
