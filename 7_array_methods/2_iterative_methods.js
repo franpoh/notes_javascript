@@ -125,7 +125,7 @@ friends.forEach(person.greetFriends); // when 'person' is not provided for thisA
 // person.greetFriends: This is the function that will be called for each element in the friends array.
 // person: This is the thisArg parameter, which sets the value of this inside the greetFriends function to the person object.
 
-// Without the thisArg parameter, the this value inside the greetFriends function would be bound to the global object (window in a browser, global in Node.js), or undefined in strict mode. 
+// Without the thisArg parameter, the this value inside the greetFriends function would be bound to the global object ('window' in a browser, 'global' in Node.js), or undefined in strict mode. 
 // By providing the person object as the thisArg, we ensure that this.name inside the greetFriends function refers to the name property of the person object.
 
 // The forEach method calls the greetFriends function for each element in the friends array, using the provided thisArg (person) as the value of this inside the function. 

@@ -16,9 +16,9 @@ Table of Contents
 >> Bound Methods In Classes
 > GLOBAL CONTEXT
 > OBJECT CONVERSION
-> BIND METHOD
-> CALL METHOD
-> APPLY METHOD 
+> BIND
+> CALL
+> APPLY 
 > WITH GETTER OR SETTER
 > DOM EVENT HANDLER
 > INLINE EVENT HANDLER
@@ -70,49 +70,25 @@ copyTest.runTest(); // Forty-two
 // However, arrow functions do not have their own this binding. Therefore, their this value cannot be set by bind(), apply() or call() methods, nor does it point to the current object in object methods.
 
 
-FIXME:
 
-// When used alone, this refers to the global object.
+// At the top level of a script, 'this' refers to 'globalThis' whether in strict mode or not. This is generally the same as the global object
 
 // NOTE: However, global variables can work differently depending on whether it is declared with var, let or const
 // See Cheatsheet\global_scope.js
 
-// You will not be able to access variables and functions declared in the global scope, eg this.ownerObject
-// this is because variables and functions declared in the global scope are not automatically added as properties to the global object. They are instead added to the global scope itself.
-// Therefore, the global object does not have a property named testText.
-
-const testText = 'Hello world!';
-
-console.log(this.testText); // undefined
-
-// Access like this:
-console.log(testText); // Hello world!
 
 
+var a = 'Global';
 
-FIXME:
-
-const obj = { itemObj: "CustomObj" };
-
-var itemVar = "GlobalVar"; // Variables declared with var become properties of the global object.
-
-let itemLet = 'GlobalLet'
-
-const itemConst = 'GlobalConst'
-
-// In browser window
-console.log(this.itemVar); // GlobalVar
-console.log(this.itemLet); // undefined
-console.log(this.itemConst); // undefined
-
-
-
+const obj = {
+    a: 'Custom',
+}
 
 function whatsThis() {
     return this.a; // The value of this is dependent on how the function is called
 }
 
-// This will only return 'Global' in browser, it returns 'undefined' in VS code
+// This will only return 'Global' in browser, it returns 'undefined' in Node
 console.log(whatsThis()); // 'Global'; this in the function isn't set, so it defaults to the global/window object in non–strict mode
 
 obj.whatsThis = whatsThis;
@@ -290,29 +266,54 @@ console.log(donald.getName()); // Donald Duck
 // So, when used in a function, in strict mode, this is undefined
 
 "use strict";
-function myFunction() {
+
+function getThis() {
     return this;
 }
 
-console.log(myFunction()); // undefined
+console.log(getThis());
+// undefined; with "use strict"
+// Object [global] { ... }; without "use strict"
+
+
 
 // If the value that the method is accessed on is a primitive, this will be a primitive value as well — but only if the function is in strict mode.
 
+const primitiveSeven = 7;
+
+// NOTE: Using call() to assign an arbitrary value as 'this' when calling an existing function, without first attaching the function to the object as a property. 
+// You will see more in > CALL later.
+
+// using call() to set primitiveSeven as the value of 'this' in 'getThis'
+console.log(getThis.call(primitiveSeven)); // 7
+console.log(typeof getThis.call(primitiveSeven)); // number
 
 
-// ----- Default - Non-Strict
+
+// ----- Default Non-Strict
 
 // In a JavaScript function, the owner of the function is the default binding for this.
 // In non-strict mode, a special process called this substitution ensures that the value of this is always an object.
 
-// If a function is called with this set to undefined or null, this gets substituted with globalThis.
-// If the function is called with this set to a primitive value, this gets substituted with the primitive value's wrapper object.
-
-function myFunction() {
+function getThis() {
     return this;
 }
 
-console.log(myFunction()); // Object [global] ...
+// If a function is called with this set to undefined or null, this gets substituted with globalThis.
+
+console.log(getThis() === globalThis); // true
+
+// If the function is called with this set to a primitive value, this gets substituted with the primitive value's *wrapper object.
+// * wrapper object: See 9_object\object_wrapper.js
+
+const primitiveZeven = 7;
+
+// NOTE: Using call() to assign an arbitrary value as 'this' when calling an existing function, without first attaching the function to the object as a property. 
+// You will see more in > CALL later.
+
+// using call() to set primitiveZeven as the value of 'this' in 'getThis'
+console.log(getThis.call(primitiveZeven)); // [Number: 7]
+console.log(typeof getThis.call(primitiveZeven)); // object
 
 
 
@@ -345,10 +346,6 @@ function logThis() {
 }
 
 [1, 2, 3].forEach(logThis, "This"); // This, This, This
-
-
-
-// See functions\function\> CALLBACK >> Getting ‘This’ Right When Passing Functions
 
 
 
@@ -739,7 +736,7 @@ bar.call(undefined); // [object Window]
 
 
 
-// ----------------------------- > BIND METHOD -----------------------------
+// ----------------------------- > BIND -----------------------------
 
 // Calling f.bind(someObject) creates a new function with the same body and scope as f, 
 // but the value of this is permanently bound to the first argument of bind, regardless of how the function is being called.
@@ -790,7 +787,7 @@ console.log(boundGetFilling()); // bacon
 
 
 
-// ----------------------------- > CALL METHOD -----------------------------
+// ----------------------------- > CALL -----------------------------
 
 // The call() method is a predefined JavaScript method.
 // It can be used to invoke (call) a method with an owner object as an argument (parameter).
@@ -857,7 +854,7 @@ console.log(gouda.category); // food
 
 
 
-// ----------------------------- > APPLY METHOD -----------------------------
+// ----------------------------- > APPLY -----------------------------
 
 // The apply() method calls the specified function with a given this value, and arguments provided as an array (or an array-like object).
 
