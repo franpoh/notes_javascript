@@ -321,7 +321,13 @@ console.log(typeof getThis.call(primitiveZeven)); // object
 
 // When a function is passed as a callback, the value of this depends on how the callback is called, which is determined by the implementor of the API. 
 
-// Callbacks are typically called with a this value of undefined (calling it directly without attaching it to any object), 
+// For example, if you use the setTimeout function in JavaScript, which is part of the Web API provided by the browser, 
+// the implementor of this API (in this case, the browser vendor) has decided that when the callback function passed to setTimeout is called, 
+// the value of this within that callback will be the global object (window in a web browser, or global in Node.js).
+
+
+
+// Callbacks are typically called with a 'this' value of undefined (calling it directly without attaching it to any object), 
 // which means if the function is non–strict, the value of this is the global object (globalThis). 
 // This is the case for iterative array methods, the Promise() constructor, etc.
 
