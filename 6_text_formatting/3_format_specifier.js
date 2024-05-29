@@ -1,14 +1,23 @@
 
-// A format specifier is a special symbol or sequence of characters used in string formatting to represent a specific data type or formatting style. 
-// Format specifiers are often used in programming languages to provide a standardized way of inserting dynamic values into a string.
+// We know that the console.log() function will log a message to the console, but console.log() can also format the text and make the message stand out from other messages. 
+// This gives us the ability to find important messages in the console.
+
+
+// Format specifiers, otherwise also known as string substitutions, are special strings that can be used with console.log() and other console methods in JavaScript to format and style the output.
+// In other words, we can use format specifiers to tell the log function how the data should be printed. 
+
+
 
 // In JavaScript, the most common format specifiers used with the `console.log()` method are:
 
-// %s        Represents a string value.
-// %d or %i  Represents an integer value.
-// %f        Represents a floating-point number.
-// %o        Represents an object in an expandable, interactive format.
-// %c        Applies CSS styles to the logged message.
+// %s           Formats the value as a string.
+// %i or %d     Formats the value as an integer.
+// %f           Formats the value as a floating-point value.
+// %o           Formats the value as an expandable DOM element, as seen in the Elements panel.
+// %O           Formats the value as an expandable JavaScript object.
+// %c           Applies CSS style rules to the output string as specified by the second parameter.
+
+
 
 // Here's an example:
 
@@ -21,5 +30,7 @@ console.log("Name: %s, Age: %d, Student: %s", pname, age, isStudent); // Name: J
 
 // In this example, the format specifiers `%s`, `%d`, and `%s` are used to represent the string, integer, and boolean values, respectively.
 
-// Overall, format specifiers provide a way to dynamically insert values into a string in a structured and readable way, 
-// making it easier to work with and display data in the console or other output.
+
+
+// Try running this in browser console!
+console.log("%cJavascript Jeep 🚙in Blue", "color:blue; font-size:50px");

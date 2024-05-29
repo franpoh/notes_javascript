@@ -325,6 +325,18 @@ console.log(typeof getThis.call(primitiveZeven)); // object
 // the implementor of this API (in this case, the browser vendor) has decided that when the callback function passed to setTimeout is called, 
 // the value of this within that callback will be the global object (window in a web browser, or global in Node.js).
 
+let ghost = {
+    name: 'Casper',
+    sayBoo: function () {
+        console.log(`${this.name} says: Boo!`)
+    }
+}
+
+ghost.sayBoo() // Casper says: Boo!; 'this' refers to our ghost
+setTimeout(ghost.sayBoo, 1000) // undefined says: Boo!; 'this' refers to the global object
+
+// See > ARROW FUNCTIONS for a fix!
+
 
 
 // Callbacks are typically called with a 'this' value of undefined (calling it directly without attaching it to any object), 
@@ -332,7 +344,7 @@ console.log(typeof getThis.call(primitiveZeven)); // object
 // This is the case for iterative array methods, the Promise() constructor, etc.
 
 function logThis() {
-    "use strict";
+    "use strict"; // Using strict mode, otherwise the global object will be returned
     console.log(this);
 }
 
@@ -343,7 +355,7 @@ function logThis() {
 // Some APIs allow you to set a this value for invocations of the callback. 
 // For example, all iterative array methods and related ones like Set.prototype.forEach() accept an optional *thisArg parameter.
 
-// *thisArg — An object to which the this keyword can refer in the callbackfn function. 
+// * thisArg: An object to which the this keyword can refer in the callbackfn function. 
 // If thisArg is omitted, undefined is used as the this value.
 
 function logThis() {
@@ -351,17 +363,102 @@ function logThis() {
     console.log(this);
 }
 
-[1, 2, 3].forEach(logThis, "This"); // This, This, This
+[1, 2, 3].forEach(logThis, "Hello World!"); // Hello World! Hello World! Hello World!
+
+
+
+// Occasionally, a callback is called with a this value other than undefined. 
+// For example, the reviver parameter of JSON.parse() and the replacer parameter of JSON.stringify() are both called with this set to the object that the property being parsed/serialized belongs to.
+
+
+
+// ----- Another Example with Explanation
+
+const obj = {
+
+    name: 'Outer',
+
+    outerMethod: function () {
+
+        console.log(this.name); // Outer
+
+        const regularFunction = function () {
+            console.log(this.name); // undefined (or Window/global object)
+        }
+
+        regularFunction();
+    }
+
+}
+
+obj.outerMethod();
+// Outer
+// undefined
+
+
+
+// When a regular function is defined inside an object method, it creates a new execution context with its own this value that is separate from the this value of the enclosing method. 
+// This is because the value of this inside a regular function is determined dynamically at runtime based on how the function is called, not where it is defined.
+
+// When 'obj.outerMethod()' is called, 'this' inside 'outerMethod' refers to the 'obj' object, so 'Outer' is logged.
+// Inside 'outerMethod', a new regular function 'regularFunction' is defined.
+// When 'regularFunction' is called, it creates a new execution context with its own 'this' value.
+// Since 'regularFunction' is called as a regular function (not as a method), its 'this' value is set to the global object (window in browsers, global in Node.js) or undefined in strict mode.
+// Therefore, 'this.name' inside 'regularFunction' logs 'undefined' (or the value of name on the global object if it exists).
+
+// The key point is that regular functions defined inside methods create their own execution context with a separate this value, 
+// which is determined dynamically at call-time based on how the function is invoked.
+
+
+
+// Demonstrating 3 fixes, one with call, one with bind, and one with an arrow function
+
+const obj = {
+
+    name: 'Outer',
+
+    outerMethod: function () {
+
+        console.log(this.name); // Outer
+
+        const regularFunction = function () {
+            console.log(this.name); 
+        }
+
+        regularFunction(); // undefined
+
+        // fix with call
+        regularFunction.call(obj); // Outer
+
+        // fix with bind
+        (regularFunction.bind(obj))(); // Outer
+
+        // fix with arrow function; See more in > ARROW FUNCTIONS to learn about arrow function's autobound feature
+        const arrowFunction = () => {
+            console.log(this.name); 
+        }
+
+        arrowFunction(); // Outer
+
+    }
+    
+}
+
+obj.outerMethod();
+// Outer
+// undefined
+// Outer
+// Outer
+// Outer
 
 
 
 // ----------------------------- > ARROW FUNCTIONS -----------------------------
 
-// arrow function expressions are best suited for non-method functions.
-
-// Arrow functions do not have their own this
-
-// value is set to what it was when it was created
+// Arrow functions:
+//      do not have their own this
+//      value is set to what it was when it was created
+//      are best suited for non-method functions
 
 
 
@@ -376,6 +473,73 @@ console.log(foo() === globalObject); // true
 
 
 
+// ----- Another Example
+
+const chocolate = {
+    name: 'chocolate',
+
+    // normal method 
+    getName: function () {
+        return this.name;
+    },
+
+    // method written as arrow function
+    getNameAgain: () => {
+        return this.name;
+    },
+
+    // method enclosing an arrow function within
+    getNameWithin: function () {
+        const arrowFunc = () => this.name;
+        return arrowFunc();
+    }
+}
+
+console.log(chocolate.getName()); // chocolate
+console.log(chocolate.getNameAgain()); // undefined
+console.log(chocolate.getNameWithin()); // chocolate
+
+// getNameAgain() didn't work, but getNameWithin() did. How it works is all because of this two statements: 
+//      Arrow functions do not have their own 'this'
+//      Object literals don't create a 'this' scope — only functions (methods) defined within the object do.
+
+// Therefore, for getNameAgain(), its enclosing lexical scope is the global scope, not the object 'chocolate' itself.
+// Calling chocolate.getNameAgain() will return either the global object, or undefined
+
+// For getNameWithin(), we defined an arrow function within called arrowFunc()
+// Here, arrowFunc() inherits 'this' from its enclosing scope getNameWithin(), which itself is a regular method function bound to the 'chocolate' object when called as chocolate.getNameWithin()
+
+
+
+// So in summary, arrow functions defined directly inside objects do not inherit the object's context because they lexically bind this based on their enclosing scope, 
+// which is the global scope when defined as a top-level property of an object literal.
+
+// However, a workaround will be to define the arrow function within an object method, which will then bind its 'this' to the object method's 'this'
+// There are other methods involving call() and bind(), which we will look at later
+
+
+
+// ----- Another Example
+
+const getName = function () {
+    return this.name;
+}
+
+const getNameAgain = () => {
+    return this.name;
+}
+
+const lassie = { name: "Lassie the Dog" };
+const buddy = { name: "Buddy the Also Dog" };
+
+lassie.getName = getName;
+buddy.getNameAgain = getNameAgain;
+
+console.log(lassie.getName()); // Lassie the Dog
+console.log(buddy.getNameAgain()); // undefined
+
+
+
 // arrow functions create a closure over the 'this' value of its surrounding scope, which means arrow functions behave as if they are "auto-bound" — 
 // no matter how it's invoked, 'this' is set to what it was when the function was created (in the example above, the global object). 
 // in short, the value of 'this' is set to what it was when it was created and will not change
@@ -387,18 +551,48 @@ console.log(foo() === globalObject); // true
 // Furthermore, when invoking arrow functions using call(), bind(), or apply(), the thisArg parameter is ignored. 
 // You can still pass other arguments using these methods, though.
 
-const obje = { name: "obje" };
+const globalObj = this;
+const baz = () => this;
+const obj = { name: "object" };
 
 // Attempt to set this using call
-console.log(foo.call(obje) === globalObject); // true
+console.log(baz.call(obj) === globalObj); // true
 
 // Attempt to set this using bind
-const boundFoo = foo.bind(obje);
-console.log(boundFoo() === globalObject); // true
+const boundBaz = baz.bind(obj);
+console.log(boundBaz() === globalObj); // true
 
 
 
-// ----- NOTE: Example
+// NOTE: However, the autobound 'this' in arrow functions can be useful.
+
+// Remember this example given at the beginning of the > CALLBACKS section?
+
+ghost = {
+    name: 'Casper',
+    sayBoo: function () {
+        console.log(`${this.name} says: Boo!`)
+    }
+}
+
+// 'this' works as it should in this function call
+ghost.sayBoo() // Casper says: Boo!; 'this' refers to our ghost
+
+// invoking a function with utilising 'this' as a callback from within another function (setTimeout) alters what 'this' refers to normally - reverting to the global object/window.
+setTimeout(ghost.sayBoo, 3000) // undefined says: Boo!; 'this' refers to the global object
+
+// Fixing the callback with an arrow function: 
+setTimeout(() => ghost.sayBoo(), 3000) // Casper says: Boo!
+
+// NOTE: Increasingly, with newer JavaScript syntax, declaring functions with arrow syntax will help
+// they will automatically bind 'this' to the scope in which the function is declared.
+
+// It is functionally the same as using bind()
+setTimeout(ghost.sayBoo.bind(ghost), 2000) // Casper says: Boo!
+
+
+
+// ----- NOTE: Example FIXME:
 
 const obj = {
     getThisGetter() {
@@ -406,6 +600,8 @@ const obj = {
         return getter;
     },
 };
+
+
 
 // The value of 'this' inside getThisGetter can be set in the call, which in turn sets the return value of the returned function.
 
