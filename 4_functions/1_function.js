@@ -519,7 +519,7 @@ console.log(boundAddA(1, 2, 3)); // 106
 // With arrow functions, since our add function is essentially created on the globalThis (global) scope, 
 // it will assume this is the globalThis.
 
-// See this.js > ARROW FUNCTIONS
+// See 2_this_part1.js > ARROW FUNCTIONS
 
 const objB = {
     num: 100,
@@ -549,7 +549,7 @@ console.log(boundAddB(1, 2, 3)); // 48
 
 
 // With traditional function expressions, code like this does not work as expected:
-// See > CALLBACK >> Getting 'This' Right When Passing Functions
+// See 2_this_part1.js > CALLBACKS
 
 let objC = {
     count: 10,

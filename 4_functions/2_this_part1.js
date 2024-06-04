@@ -2,20 +2,12 @@
 Table of Contents
 
 > THE VALUE OF THIS
->> Method Context
+> METHOD
 > FUNCTION
->> Typical Function
->> The value of this 
+>> The value of this
 >> Strict / Non-strict
 > CALLBACKS
 > ARROW FUNCTIONS
-> CONSTRUCTORS
->> Super
-> CLASS
->> Derived Classes
->> Bound Methods In Classes
-> GLOBAL CONTEXT
-> OBJECT CONVERSION
 > BIND
 > CALL
 > APPLY 
@@ -71,12 +63,53 @@ copyTest.runTest(); // Forty-two
 
 
 
+// ----- Global 'this' 
+
 // At the top level of a script, 'this' refers to 'globalThis' whether in strict mode or not. This is generally the same as the global object
 
 // NOTE: However, global variables can work differently depending on whether it is declared with var, let or const
 // See Cheatsheet\global_scope.js
 
 
+
+// Inside a function, 'this' defaults to the global object and therefore returns true
+
+function compare () {
+    console.log(this === globalThis)
+}
+
+compare(); // true
+
+
+
+// Here, we are using 'this' at the top level 
+
+console.log(this === globalThis);
+// When executed in a Node environment (as it is in VScode with Code Runner) it is false
+// When executed in a browser window environment it is true
+
+console.log(this); // {}
+console.log(globalThis); // Object [global] { }
+
+// Note that some source code, while looking like the global scope, is actually wrapped in a function when executed. 
+// For example, Node.js CommonJS modules are wrapped in a function and executed with the this value set to module.exports. 
+
+
+
+// In web browsers, the window object is also the global object. Run this in browser console:
+
+console.log(this === window); // true
+
+a = 37;
+console.log(window.a); // 37
+
+this.b = "MDN";
+console.log(window.b) // "MDN"
+console.log(b) // "MDN"
+
+
+
+// Another Example
 
 var a = 'Global';
 
@@ -94,6 +127,23 @@ console.log(whatsThis()); // 'Global'; this in the function isn't set, so it def
 obj.whatsThis = whatsThis;
 
 console.log(obj.whatsThis()); // 'Custom'; this in the function is set to obj
+
+// used alone, the owner is the Global object, so this refers to the Global object.
+
+
+
+// ----- 'this' in Objects
+
+// Object literals don't create a this scope — only functions (methods) defined within the object do. 
+// Using this in an object literal inherits the value from the surrounding scope.
+
+const globalThingie = this;
+
+const obj = {
+    a: this,
+};
+
+console.log(obj.a === globalThingie); // true
 
 
 
@@ -303,6 +353,10 @@ function getThis() {
 
 console.log(getThis() === globalThis); // true
 
+
+
+// ----- Object Conversion in Non-Strict
+
 // If the function is called with this set to a primitive value, this gets substituted with the primitive value's *wrapper object.
 // * wrapper object: See 9_object\object_wrapper.js
 
@@ -314,6 +368,18 @@ const primitiveZeven = 7;
 // using call() to set primitiveZeven as the value of 'this' in 'getThis'
 console.log(getThis.call(primitiveZeven)); // [Number: 7]
 console.log(typeof getThis.call(primitiveZeven)); // object
+
+
+
+// Another Example
+
+function bar() {
+    console.log(Object.prototype.toString.call(this));
+}
+
+bar.call(7); // [object Number]
+bar.call("foo"); // [object String]
+bar.call(undefined); // [object Window]
 
 
 
@@ -422,7 +488,7 @@ const obj = {
         console.log(this.name); // Outer
 
         const regularFunction = function () {
-            console.log(this.name); 
+            console.log(this.name);
         }
 
         regularFunction(); // undefined
@@ -435,13 +501,13 @@ const obj = {
 
         // fix with arrow function; See more in > ARROW FUNCTIONS to learn about arrow function's autobound feature
         const arrowFunction = () => {
-            console.log(this.name); 
+            console.log(this.name);
         }
 
         arrowFunction(); // Outer
 
     }
-    
+
 }
 
 obj.outerMethod();
@@ -592,34 +658,41 @@ setTimeout(ghost.sayBoo.bind(ghost), 2000) // Casper says: Boo!
 
 
 
-// ----- NOTE: Example FIXME:
+// ----- Another Example
 
 const obj = {
+
+    name: 'Pancake',
+
     getThisGetter() {
-        const getter = () => this; // this is permanently bound to the 'this' of its enclosing function
+        const getter = () => this.name; // this is permanently bound to the 'this' of its enclosing function
         return getter;
     },
+
 };
 
 
 
 // The value of 'this' inside getThisGetter can be set in the call, which in turn sets the return value of the returned function.
 
+// when you call getThisGetter as a method of obj, it sets 'this' to the context of obj
+const fn = obj.getThisGetter();
 
-
-// call getThisGetter as a method of obj, which sets 'this' inside the body to obj
-// returned function is assigned to a variable fn
-const fn = obj.getThisGetter(); // already being called from inside obj, with return value assigned to fn
+// the returned function is assigned to the variable fn
+console.log(fn); // [Function: getter]
 
 // Now, when calling fn, the value of 'this' returned is still the one set by the call to getThisGetter, which is obj
-console.log(fn() === obj); // true
+console.log(fn()); // Pancake
 
 
 
-// But be careful if you unbind the method of obj without calling it, because getThisGetter is still a method that has a varying 'this' value. 
+// But be careful if you unbind the method of obj by not calling it, because getThisGetter is still a method that has a varying 'this' value, depending on how it is called 
+
+// Assigning obj's getThisGetter method to fn2 only. It has not been called, and therefore its 'this' is not set to obj
+const fn2 = obj.getThisGetter;
+
 // Calling fn2()() in the following example returns globalThis, 
 // because it follows the 'this' from fn2, which is globalThis since it's called without being attached to any object.
-const fn2 = obj.getThisGetter; // assigning the getThisGetter function to fn2 only, is now not associated with obj
 console.log(fn2()() === globalThis); // true
 
 
@@ -628,337 +701,48 @@ console.log(fn2()() === globalThis); // true
 // Usually, each function expression creates its own 'this' binding, which shadows the 'this' value of the upper scope. 
 
 // Now, you can define functions as arrow functions if you don't care about the 'this' value, 
-// and only create 'this' bindings where you do (e.g. in class methods). See example with setTimeout().
-
-
-
-// ----------------------------- > CONSTRUCTORS -----------------------------
-
-// this is referring to the instantiated object
-
-class Car {
-    constructor(name, year) {
-        this.name = name;
-        this.year = year;
-    }
-}
-
-let myCar1 = new Car("Ford", 2014); // object instantiation 
-
-
-
-// When a function is used as a constructor (with the new keyword), 
-// its this is bound to the new object being constructed, no matter which object the constructor function is accessed on
-
-function C() {
-    this.a = 37;
-}
-
-var o = new C();
-console.log(o.a); // 37
-
-function C2() {
-    this.a = 37;
-    return { a: 38 };
-}
-
-o = new C2();
-console.log(o.a); // 38
-
-// In the last example (C2), because an object was returned during construction, the new object that this was bound to gets discarded. 
-// This essentially makes the statement "this.a = 37;" dead code. 
-// It's not exactly dead because it gets executed, but it can be eliminated with no outside effects.
-
-
-
-// ----------------------------- > CONSTRUCTORS >> Super
-
-// When a function is invoked in the super.method() form, 
-// the this inside the method function is the same value as the this value around the super.method() call, 
-// and is generally not equal to the object that super refers to. 
-
-// This is because super.method is not an object member access like the ones above — 
-// it's a special syntax with different binding rules. For examples, see the super reference.
-
-
-
-// When calling super.prop as a function, the this value inside the prop function is the current this, not the object that super points to. 
-// For example, the super.getName() call logs "Extended", despite the code looking like it's equivalent to Base.getName().
-
-class Base {
-    static getName() {
-        console.log(this.name);
-    }
-}
-
-class Extended extends Base {
-    static getName() {
-        super.getName();
-    }
-}
-
-Extended.getName(); // Logs "Extended"  
-
-
-
-// ----------------------------- > CLASS -----------------------------
-
-// A class can be split into two contexts: static and instance. 
-
-// Constructors, methods, and instance field initializers (public or private) belong to the instance context. 
-// Static methods, static field initializers, and static initialization blocks belong to the static context. The this value is different in each context.
-
-
-
-// The behavior of this in classes and functions is similar, since classes are functions under the hood. But there are some differences and caveats.
-
-// Within a class constructor, this is a regular object. 
-// All non-static methods within the class are added to the prototype of this
-
-// Static methods are not properties of this. They are properties of the class itself.
-
-class Example {
-    constructor() {
-        const proto = Object.getPrototypeOf(this);
-        console.log(Object.getOwnPropertyNames(proto));
-    }
-    first() { }
-    second() { }
-    static third() { }
-}
-
-new Example(); // ['constructor', 'first', 'second']
-
-
-
-// Field initializers are also evaluated in the context of the class. 
-// Instance fields are evaluated with this set to the instance being constructed. 
-// Static fields are evaluated with this set to the current class. 
-// This is why arrow functions in field initializers are bound to the class.
-
-class C {
-    instanceField = this;
-    static staticField = this;
-}
-
-const c = new C();
-console.log(c.instanceField === c); // true
-console.log(C.staticField === C); // true
-
-
-
-// ----------------------------- > CLASS >> Derived Classes
-
-// Unlike base class constructors, derived constructors have no initial this binding. 
-// Calling super() creates a this binding within the constructor and essentially has the effect of evaluating the following line of code, where Base is the base class:
-
-this = new Base();
-
-
-
-// Warning: Referring to this before calling super() will throw an error.
-
-// Derived classes must not return before calling super(), 
-// unless the constructor returns an object (so the this value is overridden) or the class has no constructor at all.
-
-class Base { }
-
-class Good extends Base { }
-
-class AlsoGood extends Base {
-    constructor() {
-        return { a: 5 };
-    }
-}
-
-class Bad extends Base {
-    constructor() { }
-}
-
-new Good(); // No constructor, therefore good
-new AlsoGood(); // returns an object, overriding the 'this' value, therefore good
-new Bad(); // ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
-
-
-
-// ----------------------------- > CLASS >> Bound Methods In Classes
-
-// Just like with regular functions, the value of this within methods depends on how they are called. 
-// Sometimes it is useful to override this behavior so that this within classes always refers to the class instance. 
-// To achieve this, bind the class methods in the constructor:
-
-class Cat {
-
-    constructor() {
-        this.sayBye = this.sayBye.bind(this); // Bind sayBye but not sayHi to show the difference
-    }
-
-    sayHi() {
-        console.log(`Hello from ${this.name}`);
-    }
-
-    sayBye() {
-        console.log(`Bye from ${this.name}`);
-    }
-
-    get name() {
-        return "Cat";
-    }
-}
-
-class Bird {
-    get name() {
-        return "Bird";
-    }
-}
-
-const cat = new Cat();
-const bird = new Bird();
-
-// The value of 'this' in methods depends on their caller
-cat.sayHi(); // Hello from Cat
-bird.sayHi = cat.sayHi;
-bird.sayHi(); // Hello from Bird
-
-// For bound methods, 'this' doesn't depend on the caller
-cat.sayBye(); // Bye from Cat
-bird.sayBye = cat.sayBye;
-bird.sayBye(); // Bye from Cat
-
-class Tiger extends Cat {
-    constructor() {
-        super();
-    }
-
-    get name() {
-        return "Tiger";
-    }
-}
-
-class Dog {
-    get name() {
-        return "Dog";
-    }
-}
-
-const tiger = new Tiger();
-const dog = new Dog();
-
-// But as you can see, in derived classes bound 'this' is now bound to the derived class that it's in, in this case 'Tiger'
-tiger.sayHi(); // Hello from Tiger
-tiger.sayBye(); // Bye from Tiger
-
-dog.sayHi = tiger.sayHi;
-dog.sayHi(); // Hello from Dog
-dog.sayBye = tiger.sayBye;
-dog.sayBye(); // Bye from Tiger
-
-
-
-// Note: Classes are always in strict mode. Calling methods with an undefined this will throw an error if the method tries to access properties on this.
-
-
-
-// Note, however, that auto-bound methods suffer from the same problem as using arrow functions for class properties: 
-// each instance of the class will have its own copy of the method, which increases memory usage. 
-// Only use it where absolutely necessary. 
-
-// You can also mimic the implementation of Intl.NumberFormat.prototype.format(): 
-// define the property as a getter that returns a bound function when accessed and saves it, so that the function is only created once and only created when necessary.
-
-
-
-// ----------------------------- > GLOBAL CONTEXT -----------------------------
-
-// In the global execution context 
-// (outside of any functions or classes; may be inside blocks or arrow functions defined in the global scope), 
-// the this value depends on what execution context the script runs in. 
-// Like callbacks, the this value is determined by the runtime environment (the caller).
-
-// At the top level of a script, this refers to globalThis whether in strict mode or not. 
-// This is generally the same as the global object — 
-// for example, if the source is put inside an HTML <script> element and executed as a script, this === window.
-
-
-
-// used alone, the owner is the Global object, so this refers to the Global object.
-
-let x = this;
-console.log(x); // {}
-
-
-
-// In web browsers, the window object is also the global object:
-console.log(this === window); // true
-
-a = 37;
-console.log(window.a); // 37
-
-this.b = "MDN";
-console.log(window.b) // "MDN"
-console.log(b) // "MDN"
-
-
-
-// If the source is loaded as a module (for HTML, this means adding type="module" to the <script> tag), this is always undefined at the top level.
-
-
-
-// Note that some source code, while looking like the global scope, is actually wrapped in a function when executed. 
-// For example, Node.js CommonJS modules are wrapped in a function and executed with the this value set to module.exports. 
-// Event handler attributes are executed with this set to the element they are attached to.
-
-
-
-// Object literals don't create a this scope — only functions (methods) defined within the object do. 
-// Using this in an object literal inherits the value from the surrounding scope.
-
-const obj1 = {
-    a: this,
-};
-
-console.log(obj1.a === window); // true
-
-
-
-// ----------------------------- > OBJECT CONVERSION -----------------------------
-
-// In non–strict mode, if a function is called with a this value that's not an object, the this value is substituted with an object. 
-// null and undefined become globalThis. 
-// Primitives like 7 or 'foo' are converted to an object using the related constructor, 
-// so the primitive number 7 is converted to a Number wrapper class and the string 'foo' to a String wrapper class.
-
-function bar() {
-    console.log(Object.prototype.toString.call(this));
-}
-
-bar.call(7); // [object Number]
-bar.call("foo"); // [object String]
-bar.call(undefined); // [object Window]
+// and only create 'this' bindings where you do (e.g. in class methods). 
 
 
 
 // ----------------------------- > BIND -----------------------------
 
-// Calling f.bind(someObject) creates a new function with the same body and scope as f, 
+// The bind() method is used to create a new function with a specific this value bound to it. 
+// In other words, it allows you to set the this value for a function, regardless of how or where the function is called.
+
+
+
+// Calling thisFunction.bind(thisArgument) creates a new function with the same body and scope as f, 
 // but the value of this is permanently bound to the first argument of bind, regardless of how the function is being called.
+
+// ----- Example
+
+function say() {
+    return this.word;
+}
+
+const hello = say.bind({ word: "bye" });
+console.log(hello()); // bye
+
+const hoi = hello.bind({ word: "doei" }); // bind() only works once
+console.log(hoi()); // bye
+
+const ciao = { word: 'ciao', say, hello, hoi };
+console.log(ciao.word, ciao.say(), ciao.hello(), ciao.hoi()); // ciao, ciao, bye, bye
 
 
 
 // ----- Example
 
-function greeting() {
-    return this.a;
+function getName() {
+    return this.name;
 }
 
-const hello = greeting.bind({ a: "bye" });
-console.log(hello()); // bye
+const poh = {
+    name: 'Francine',
+} 
 
-const hoi = hello.bind({ a: "doei" }); // bind() only works once
-console.log(hoi()); // bye
-
-const hi = { a: 37, greeting, hello, hoi };
-console.log(hi.a, hi.greeting(), hi.hello(), hi.hoi()); // 37, 37, bye, bye
+console.log((getName.bind(poh))()); // Francine
 
 
 
@@ -973,7 +757,7 @@ const burger = {
 }
 
 const sandwich = {
-    filling: "bacon"
+    filling: "bacon",
 }
 
 console.log(burger.getFilling()); // beef patty
@@ -991,16 +775,16 @@ console.log(boundGetFilling()); // bacon
 
 // ----------------------------- > CALL -----------------------------
 
-// The call() method is a predefined JavaScript method.
-// It can be used to invoke (call) a method with an owner object as an argument (parameter).
-// With call(), an object can use a method belonging to another object.
+// The call() method of Function instances calls this function with a given 'this' value and arguments provided individually.
 
-// call() provides a new value of this to the function/method. 
-// With call(), you can write a method once and then inherit it in another object, without having to rewrite the method for the new object.
+// Normally, when calling a function, the value of 'this' inside the function is the object that the function was accessed on. 
+// With call(), you can assign an arbitrary value as 'this' when calling an existing function, without first attaching the function to the object as a property. 
+// This allows you to use methods of one object as generic utility functions.
 
-// Note: While the syntax of this function is almost identical to that of apply(), 
-// the fundamental difference is that call() accepts an argument list, 
-// while apply() accepts a single array of arguments.
+
+
+// NOTE: While the syntax of this function is almost identical to that of apply(), there is a difference:
+//  call() accepts an argument list, while apply() accepts a single array of arguments.
 
 
 
@@ -1027,7 +811,7 @@ function add(c, d) {
     return this.a + this.b + c + d;
 }
 
-var someNumbers = { a: 1, b: 3 };
+let someNumbers = { a: 1, b: 3 };
 
 // The first parameter is the object to use as 'this'
 // subsequent parameters are passed as arguments in the function call
@@ -1047,12 +831,20 @@ function Food(name, price) {
     this.category = 'food';
 }
 
-const gouda = new Food('cheese', 5);
+function Cleaning(name, price, cleaningType) {
+    Product.call(this, name, price);
+    this.category = 'Cleaning Product';
+    this.cleaningType = cleaningType;
+}
 
+const gouda = new Food('cheese', 5);
 console.log(gouda); // Food { name: 'cheese', price: 5, category: 'food' }
 console.log(gouda.name); // cheese
 console.log(gouda.price); // 5
 console.log(gouda.category); // food
+
+const laundryPowder = new Cleaning('laundry powder', 7, 'clothes');
+console.log(laundryPowder); // Cleaning {   name: 'laundry powder', price: 7, category: 'Cleaning Product', cleaningType: 'clothes' }
 
 
 
@@ -1082,7 +874,7 @@ function add(c, d) {
     return this.a + this.b + c + d;
 }
 
-var someNumbers = { a: 1, b: 3 };
+someNumbers = { a: 1, b: 3 };
 
 // The first parameter is the object to use as 'this'
 // the second is an array whose members are used as the arguments in the function call
