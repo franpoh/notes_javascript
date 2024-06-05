@@ -16,7 +16,6 @@ Table of Contents
 > CALLBACK
 >> How to pass arguments properly with callbacks
 >> Inserting callback functions in functions with predefined arguments
->> Getting 'This' Right When Passing Functions
 > PURE FUNCTION
 > ARGUMENTS OBJECT
 */
@@ -762,78 +761,6 @@ arr.forEach(sayIndexAndValue)
 // Index 2 contains: boo.
 // Index 3 contains: [object Object].
 // Index 4 contains: 12.
-
-
-
-// ----------------------------- > CALLBACK >> Getting 'This' Right When Passing Functions
-
-// using functions as callbacks changes the context in which they are invoked
-// if your function relies on the this keyword to refer to the context in which you originally wrote it, 
-// NOTE: you may find that invoking it as a callback from within another function alters what this refers to normally - reverting to the global object/window.
-
-const ghost = {
-    name: 'Casper',
-    sayBoo: function () {
-        console.log(`${this.name} says: Boo!`)
-    }
-}
-
-ghost.sayBoo() // Casper says: Boo!  -- 'this' refers to our ghost
-setTimeout(ghost.sayBoo, 1000) // undefined says: Boo!  -- 'this' refers to the global object
-
-
-
-// Fix: 
-
-setTimeout(ghost.sayBoo.bind(ghost), 2000) // Casper says: Boo!
-
-// NOTE: Increasingly, with newer JavaScript syntax, declaring functions with arrow syntax will help: 
-// they will automatically bind 'this' to the scope in which the function is declared.
-
-// Arrow syntax fix:
-
-setTimeout(() => ghost.sayBoo(), 3000) // Casper says: Boo!
-
-
-
-// ----- Another Example with Explanation
-
-const obj = {
-    name: 'Alice',
-    sayHello: function () {
-        console.log(`Hello, ${this.name}`); // 'Hello, Alice'
-
-        function innerFunc() {
-            console.log(`Inside innerFunc, ${this.name}`); // 'Inside innerFunc, undefined'
-        }
-
-        innerFunc();
-    }
-};
-
-obj.sayHello();
-// Hello, Alice
-// Inside innerFunc, undefined
-
-
-
-// The reason why this inside the innerFunc reverts back to the global object (or undefined in strict mode) 
-// is because of how JavaScript determines the value of this based on the execution context and scope chain.
-
-
-
-// When you call innerFunc() inside the sayHello method, JavaScript creates a new execution context for the innerFunc function. 
-// The value of this inside a function is determined by how the function is called, not by the lexical scope where the function is defined.
-
-// In the case of innerFunc(), it is called as a regular function without any context object, so JavaScript looks up the scope chain to find the value of this. 
-// Since innerFunc is not an object method and not bound to any context object, 
-// it ends up inheriting the value of this from the global scope, which is the global object (or undefined in strict mode).
-
-
-
-// Even though innerFunc is defined inside the sayHello method, its execution context is separate from the execution context of sayHello. 
-// The sayHello method has its own this value bound to the obj object because it is called with obj.sayHello(). 
-// However, this context is not automatically inherited by innerFunc because it is called as a standalone function without any context object.
 
 
 

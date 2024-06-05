@@ -8,10 +8,9 @@ Table of Contents
 >> Strict / Non-strict
 > CALLBACKS
 > ARROW FUNCTIONS
-> BIND
-> CALL
-> APPLY 
-> WITH GETTER OR SETTER
+> BIND()
+> CALL()
+> APPLY()
 > DOM EVENT HANDLER
 > INLINE EVENT HANDLER
 */
@@ -74,7 +73,7 @@ copyTest.runTest(); // Forty-two
 
 // Inside a function, 'this' defaults to the global object and therefore returns true
 
-function compare () {
+function compare() {
     console.log(this === globalThis)
 }
 
@@ -705,15 +704,20 @@ console.log(fn2()() === globalThis); // true
 
 
 
-// ----------------------------- > BIND -----------------------------
+// ----------------------------- > BIND() -----------------------------
 
-// The bind() method is used to create a new function with a specific this value bound to it. 
-// In other words, it allows you to set the this value for a function, regardless of how or where the function is called.
+// bind() is used to create a new function with a specific 'this' value bound to it. 
+// In other words, it allows you to set the 'this' value for a function, regardless of how or where the function is called.
 
-
-
-// Calling thisFunction.bind(thisArgument) creates a new function with the same body and scope as f, 
+// Calling bind() creates a new function with the same body and scope as f, 
 // but the value of this is permanently bound to the first argument of bind, regardless of how the function is being called.
+
+function theFunction() { };
+let theObject = {};
+let newFunction = theFunction.bind(theObject); // newFunction is a new function that has the code of theFunction, with theObject bound permanently as its 'this' value
+console.log(newFunction); // [Function: bound theFunction]
+
+
 
 // ----- Example
 
@@ -740,7 +744,7 @@ function getName() {
 
 const poh = {
     name: 'Francine',
-} 
+}
 
 console.log((getName.bind(poh))()); // Francine
 
@@ -773,13 +777,18 @@ console.log(boundGetFilling()); // bacon
 
 
 
-// ----------------------------- > CALL -----------------------------
+// ----------------------------- > CALL() -----------------------------
 
-// The call() method of Function instances calls this function with a given 'this' value and arguments provided individually.
+// With call(), you can call a function on objects that the function is not a property of
+// The call() method of Function instances calls the function with a given 'this' value and arguments provided individually.
 
 // Normally, when calling a function, the value of 'this' inside the function is the object that the function was accessed on. 
 // With call(), you can assign an arbitrary value as 'this' when calling an existing function, without first attaching the function to the object as a property. 
 // This allows you to use methods of one object as generic utility functions.
+
+theFunction.call(theObject);
+theFunction.call(otherObject);
+theFunction.call(whateverObject, moreArgs);
 
 
 
@@ -805,7 +814,7 @@ getName.fullName.call(thisPerson);  // John Doe
 
 
 
-// ----- Example
+// ----- Example with moreArgs
 
 function add(c, d) {
     return this.a + this.b + c + d;
@@ -819,7 +828,7 @@ console.log(add.call(someNumbers, 5, 7)); // 16
 
 
 
-// ----- Example
+// ----- Example with moreArgs
 
 function Product(name, price) {
     this.name = name;
@@ -848,9 +857,18 @@ console.log(laundryPowder); // Cleaning {   name: 'laundry powder', price: 7, ca
 
 
 
-// ----------------------------- > APPLY -----------------------------
+// ----------------------------- > APPLY() -----------------------------
 
+// apply() works like call(), but with arrays as the argument instead
 // The apply() method calls the specified function with a given this value, and arguments provided as an array (or an array-like object).
+
+// Normally, when calling a function, the value of 'this' inside the function is the object that the function was accessed on. 
+// With call(), you can assign an arbitrary value as 'this' when calling an existing function, without first attaching the function to the object as a property. 
+// This allows you to use methods of one object as generic utility functions.
+
+theFunction.apply(theObject);
+theFunction.apply(otherObject);
+theFunction.apply(whateverObject, argsArray);
 
 
 
@@ -882,40 +900,20 @@ console.log(add.apply(someNumbers, [10, 20])); // 34
 
 
 
-// ----------------------------- > WITH GETTER OR SETTER -----------------------------
+// ----- Example
 
-// this in getters and setters is based on which object the property is accessed on, not which object the property is defined on. 
-// A function used as getter or setter has its this bound to the object from which the property is being set or gotten.
-
-const person = {
-    firstName: 'John',
-    lastName: 'Doe',
-
-    get getName() {
-        return `${this.firstName} ${this.lastName}`;
-    },
-
-    set setName(value) {
-        const [first, last] = value.split(' ');
-        this.firstName = first;
-        this.lastName = last;
-    }
+function getDetails (year, month, date) {
+    console.log(`${this.firstName} ${this.lastName} is born on ${date}/${month}/${year}`);
 }
 
-// Access the getter and setter on person object
-console.log(person.getName); // Output: "John Doe"
-person.setName = 'Jane Smith';
-console.log(person.getName); // Output: "Jane Smith"
+const thatPerson = {
+    firstName: "John",
+    lastName: "Doe",
+}
 
-// Define another object that inherits from person
-const student = Object.create(person);
-student.firstName = 'Alice';
-student.lastName = 'Brown';
+const dob = [1990, 6, 8];
 
-// Access the getter and setter on student object
-console.log(student.getName); // Output: "Alice Brown"
-student.setName = 'Bob Johnson';
-console.log(student.getName); // Output: "Bob Johnson"
+getDetails.apply(thatPerson, dob);  // John Doe is born on 8/6/1990
 
 
 
@@ -924,22 +922,17 @@ console.log(student.getName); // Output: "Bob Johnson"
 // When a function is used as an event handler, its this is set to the element on which the listener is placed 
 // (some browsers do not follow this convention for listeners added dynamically with methods other than addEventListener()).
 
-// When called as a listener, turns the related element blue
-function bluify(e) {
-    console.log(this === e.currentTarget); // Always true
 
-    console.log(this === e.target); // true when currentTarget and target are the same object
+
+// When called as a listener, turns the related element blue
+
+function bluify(event) {
+
+    console.log(this === event.currentTarget); // Always true
+    console.log(this === event.target); // true when currentTarget and target are the same object
 
     this.style.backgroundColor = "#A5D9F3";
-}
 
-// Get a list of every element in the document
-const elements = document.getElementsByTagName("*");
-
-// Add bluify as a click listener so when the
-// element is clicked on, it turns blue
-for (const element of elements) {
-    element.addEventListener("click", bluify, false);
 }
 
 
@@ -950,7 +943,7 @@ for (const element of elements) {
 
 {/* <button onclick="alert(this.tagName.toLowerCase());">Show this</button> */ }
 
-// The above alert shows button. Note, however, that only the outer code has its this set this way:
+// The above alert shows button. Note, however, that only the outer code has its 'this' set this way:
 
 {/* 
 <button onclick="alert((function () { return this; })());">
@@ -958,4 +951,4 @@ for (const element of elements) {
 </button> 
 */}
 
-// In this case, the inner function's this isn't set, so it returns the global/window object (i.e. the default object in non–strict mode where this isn't set by the call).
+// In this case, the inner function's 'this' isn't set, so it returns the global/window object (i.e. the default object in non–strict mode where 'this' isn't set by the call).

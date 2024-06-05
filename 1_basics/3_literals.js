@@ -125,6 +125,16 @@ console.log(arr); // "value"
 
 
 
+// ----- Using arrays to store other properties
+
+// Arrays can also be used like objects, to store related information.
+
+const arr = [1, 2, 3];
+arr.property = "value";
+console.log(arr.property); // "value"
+
+
+
 // ----------------------------- > ARRAY LITERAL >> Length
 
 // At the implementation level, JavaScript's arrays actually store their elements as standard object properties, using the array index as the property name.
