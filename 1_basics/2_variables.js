@@ -21,13 +21,13 @@ Table of Contents
 
 // JavaScript has three kinds of variable declarations.
 
-// ----- var
+// +++++ var
 // Declares a variable, optionally initializing it to a value.
 
-// ----- let
+// +++++ let
 // Declares a block-scoped, local variable, optionally initializing it to a value.
 
-// ----- const
+// +++++ const
 // Declares a block-scoped, read-only named constant. 
 
 // Example:
@@ -61,8 +61,8 @@ console.log(ThisVariable); // This is upper case.
 
 let whatWhat = 'what what'; // This variable has been declared, and initialized with a value
 
-// let whatWhat ----- called a declaration
-// = 'what what' ----- called an initializer
+// let whatWhat +++++ called a declaration
+// = 'what what' +++++ called an initializer
 
 console.log(whatWhat); // what what
 
@@ -90,7 +90,7 @@ console.log(popPop); // undefined
 
 
 
-// ----- var
+// +++++ var
 
 // var variables can be re-declared and updated
 // This means that we can do this within the same scope and won't get an error.
@@ -105,7 +105,7 @@ console.log(yourName); // Francine
 
 
 
-// ----- let 
+// +++++ let 
 
 // let can be updated but not re-declared.
 
@@ -126,7 +126,7 @@ console.log(myName); // Francine
 
 
 
-// ----- const
+// +++++ const
 
 // The value of a constant can't be changed through reassignment using the assignment operator, but if a constant is an object, its properties can be added, updated, or removed.
 // You will learn more about objects later. 
@@ -149,13 +149,13 @@ console.log(thisName);
 
 // A variable may belong to one of the following scopes:
 
-// ----- *Global scope: The default scope for all code running in script mode.
-// ----- Module scope: The scope for code running in module mode.
-// ----- Function scope: The scope created with a function.
+// +++++ *Global scope: The default scope for all code running in script mode.
+// +++++ Module scope: The scope for code running in module mode.
+// +++++ Function scope: The scope created with a function.
 
 // In addition, variables declared with let or const can belong to an additional scope:
 
-// ----- Block scope: The scope created with a pair of curly braces (a block).
+// +++++ Block scope: The scope created with a pair of curly braces (a block).
 
 // * Global scope: Despite the fact that var, let and const can all be global scoped, global scope means different things for var, and const and let. 
 // See Cheatsheet\global_scope.js now, or I will remind you to check it out in a later section when it becomes really relevant. 
@@ -167,7 +167,7 @@ console.log(thisName);
 
 
 
-// ----- let and const 
+// +++++ let and const 
 
 // can also be scoped to the block statement that they are declared in
 // See below for applicable scopes
@@ -187,7 +187,7 @@ function myFunction() {
 
 
 
-// ----- var 
+// +++++ var 
 
 // are not block-scoped, but only local to the function (or global scope) that the block resides within.
 // See below for applicable scopes
@@ -255,7 +255,7 @@ console.log(`From the global scope: ${greeting}`) // From the global scope: say 
 
 
 
-// ----- var
+// +++++ var
 
 // var-declared variables are hoisted, meaning you can refer to the variable anywhere in its scope, even if its declaration isn't reached yet. 
 // You can see var declarations as being "lifted" to the top of its function or global scope. 
@@ -269,7 +269,7 @@ var country = 'netherlands';
 
 
 
-// ----- let & const
+// +++++ let & const
 
 // hoisted to the top of the block, but not initialized.
 // The block of code is aware of the variable, but it cannot be used until it has been declared.

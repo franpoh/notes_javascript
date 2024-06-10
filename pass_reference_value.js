@@ -51,7 +51,7 @@ console.log(address2); // { letter: 'undelivered' }
 
 
 
-// ----- Another Example
+// +++++ Another Example
 
 // Changing the object reference in the function
 

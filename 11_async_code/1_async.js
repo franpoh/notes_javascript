@@ -103,7 +103,7 @@ callToServer();
 
 
 
-// ----- Synchronous Example
+// +++++ Synchronous Example
 // A straightforward single operation that's split into three steps, where each step depends on the last step
 
 function doStep1(init) {
@@ -130,7 +130,7 @@ doOperation(); // result: 6
 
 
 
-// ----- Callback Example
+// +++++ Callback Example
 // We rewrite the previous example using callbacks
 
 function doStep1(init, callback) {
@@ -186,7 +186,7 @@ doOperation(); // result: 6
 
 // You can start by separating out a long function into different components
 
-// ----- Instead of this:
+// +++++ Instead of this:
 
 function submitForm() {
     /* Long code for sending form details to database */
@@ -194,7 +194,7 @@ function submitForm() {
     /* Long code for displaying a welcome message */
 }
 
-// ----- Do this:
+// +++++ Do this:
 
 function submitForm() {
     /* Long code for sending form details to database */

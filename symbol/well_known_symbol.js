@@ -146,7 +146,7 @@ console.log(...iterable2) // foo bar
 
 
 
-// ----- 
+// +++++ 
 
 // An object is an iterator when it implements a next() method with the following semantics:
 
@@ -157,7 +157,7 @@ console.log(...iterable2) // foo bar
 
 
 
-// -----
+// +++++
 
 // All iterator protocol methods (next(), return(), and throw()) are expected to return an object implementing the IteratorResult interface. 
 // It must have the following properties:
@@ -171,7 +171,7 @@ console.log(...iterable2) // foo bar
 
 
 
-// -----
+// +++++
 
 // In practice, neither property is strictly required; if an object without either property is returned, it's effectively equivalent to { done: false, value: undefined }.
 
@@ -183,7 +183,7 @@ console.log(...iterable2) // foo bar
 
 
 
-// -----
+// +++++
 
 // Optionally, the iterator can also implement the return(value) and throw(exception) methods, 
 // which, when called, tells the iterator that the caller is done with iterating it and can perform any necessary cleanup (such as closing database connection).
@@ -208,7 +208,7 @@ console.log(...iterable2) // foo bar
 
 
 
-// ----- Satisfies both the Iterator Protocol and Iterable
+// +++++ Satisfies both the Iterator Protocol and Iterable
 
 const myIterator = {
     next() {
@@ -289,7 +289,7 @@ console.log(...aGeneratorObject); // 1 2 3
 
 
 
-// ----- Iterables can be defined directly inside a class or object using a computed property
+// +++++ Iterables can be defined directly inside a class or object using a computed property
 
 class Foo {
     *[Symbol.iterator]() {
@@ -324,7 +324,7 @@ console.log(...someObj); // a foo
 
 
 
-// ----- Iterating over a string
+// +++++ Iterating over a string
 
 let okIterator = "OK"[Symbol.iterator]();
 

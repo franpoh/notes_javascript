@@ -42,29 +42,29 @@ addEventListener(type, listener)
 addEventListener(type, listener, options)
 addEventListener(type, listener, useCapture)
 
-// ----- type
+// +++++ type
 // // Event types can include 'click', 'mouseover', 'keydown', 'focus', 'dblclick', etc
 
 
 
-// ----- options > capture / once / passive / signal
+// +++++ options > capture / once / passive / signal
 // An optional object that specifies characteristics about the event listener
 
-// ----- capture
+// +++++ capture
 // A boolean value indicating that events of this type will be dispatched to the registered listener 
 // before being dispatched to any EventTarget beneath it in the DOM tree. 
 // If not specified, defaults to false.
 
-// ----- once 
+// +++++ once 
 // A boolean value indicating that the listener should be invoked at most once after being added. 
 // If true, the listener would be automatically removed when invoked. If not specified, defaults to false.
 
-// ----- passive 
+// +++++ passive 
 // A boolean value that, if true, indicates that the function specified by listener will never call preventDefault(). 
 // If a passive listener does call preventDefault(), the user agent will do nothing other than generate a console warning. 
 // If not specified, defaults to false – except that in browsers other than Safari, defaults to true for the wheel, mousewheel, touchstart and touchmove events. 
 
-// ----- signal 
+// +++++ signal 
 // An AbortSignal. 
 // The listener will be removed when the given AbortSignal object's abort() method is called. 
 // If not specified, no AbortSignal is associated with the listener.
@@ -72,7 +72,7 @@ addEventListener(type, listener, useCapture)
 
 
 
-// ----- useCapture 
+// +++++ useCapture 
 // An optional boolean value indicating whether events of this type will be dispatched to the registered listener 
 // before being dispatched to any EventTarget beneath it in the DOM tree. 
 // Events that are bubbling upward through the tree will not trigger a listener designated to use capture. 
@@ -300,7 +300,7 @@ div.addEventListener("click", handleClick);
 
 
 
-// ----- Bubbling Example
+// +++++ Bubbling Example
 
 // If we added handleClick to <div>, <button> and <body> 
 

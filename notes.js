@@ -26,19 +26,19 @@ function clickButton() {
 // async and defer both instruct the browser to download the script(s) in a separate thread, while the rest of the page is downloading, 
 // so the page loading is not blocked during the fetch process.
 
-// ----- <script src="script.js"></script>
+// +++++ <script src="script.js"></script>
 // No attributes
 // the HTML file will be parsed until it comes to the script file
 // At that point, parsing will stop and a request will be made to fetch the file (if it is external)
 // The script will be executed before parsing is resumed
 
-// ----- <script src="script.js" defer></script>
+// +++++ <script src="script.js" defer></script>
 // Defer 
 // downloads the file during HTML parsing 
 // only execute after the parser has completed
 // guarantees the order of execution in which they appear in the page
 
-// ----- <script async src="script.js"></script>
+// +++++ <script async src="script.js"></script>
 // Async  
 // downloads file during HTML parsing
 // will pause the HTML parser to execute it as soon as the script is loaded
@@ -47,5 +47,5 @@ function clickButton() {
 
 // for modules: 
 
-// ----- <script type="module" src="main.js"></script>
+// +++++ <script type="module" src="main.js"></script>
 // There is no need to use the defer attribute when loading a module script; modules are deferred automatically.

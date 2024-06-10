@@ -28,24 +28,24 @@ try {
     finallyStatements
 }
 
-// ----- tryStatements
+// +++++ tryStatements
 // The statements to be executed.
 
-// ----- catchStatements
+// +++++ catchStatements
 // Statement that is executed if an exception is thrown in the try block.
 // When a catch block is used, the catch block is executed when any exception is thrown from within the try block
 
-// ----- exceptionVar (Optional)
+// +++++ exceptionVar (Optional)
 // An optional identifier or pattern to hold the caught exception for the associated catch block.
 // If the catch block does not use the exception's value, you can omit the exceptionVar and its surrounding parentheses.
 
-// ----- finallyStatements
+// +++++ finallyStatements
 // Statements that are executed before control flow exits the 'try...catch...finally' construct.
 // These statements execute regardless of whether an exception was thrown or caught.
 
 
 
-// ----- Example
+// +++++ Example
 
 try {
     const num = Math.floor(Math.random() * 10) + 1; // Generate a number 1-10
@@ -59,7 +59,7 @@ try {
 
 
 
-// ----- Example try... catch in a function
+// +++++ Example try... catch in a function
 
 function verifyNum(num) {
     try {
@@ -264,7 +264,7 @@ isValidNum(nom);
 // Immediately before the try block finishes execution normally (and no exceptions were thrown);
 // Immediately before the catch block finishes execution normally;
 // NOTE: Immediately before a control-flow statement (return, throw, break, continue) is executed in the try block or catch block. 
-// (See '----- Testing Control Flow Example')
+// (See '+++++ Testing Control Flow Example')
 
 
 
@@ -295,7 +295,7 @@ try {
 // so the finally block's return value is returned instead.
 
 
-// ----- Testing Control Flow Example
+// +++++ Testing Control Flow Example
 
 function testingFlow() {
     try {

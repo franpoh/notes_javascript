@@ -56,7 +56,7 @@ let personExample = {
     // eg key: method,
 }
 
-// ----- Example
+// +++++ Example
 
 let Pet = {
     name: "Cerberus",
@@ -178,7 +178,7 @@ console.log(personCopy.name.last)
 
 
 
-// ----- Example
+// +++++ Example
 
 let band = {
     name: "The Offspring",
@@ -255,7 +255,7 @@ console.log(birdSpotter["likes birds"]); // true
 
 
 
-// ----- Example
+// +++++ Example
 
 birdSpotter = {};
 let personality = "likes birds";
@@ -267,7 +267,7 @@ console.log(birdSpotter); // { 'likes birds': true }
 
 
 
-// ----- Example
+// +++++ Example
 
 birdSpotter = {
     name: "John",
@@ -483,7 +483,7 @@ console.log(wiener.getName()); // User's name: Werner Marschall
 
 
 
-// ----- Example
+// +++++ Example
 
 let dog = {
     name: "Pillow",

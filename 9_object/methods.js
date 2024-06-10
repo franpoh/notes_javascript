@@ -40,7 +40,7 @@ console.log(theAnswer.property1); // 42
 
 
 
-// ----- Example with Getter and Setter
+// +++++ Example with Getter and Setter
 
 function User(firstName, lastName) {
     let location = "Singapore";

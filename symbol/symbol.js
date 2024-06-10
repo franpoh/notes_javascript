@@ -62,7 +62,7 @@ person[id] = 140353;
 
 
 
-// ----- Use symbols when your requirement is one of these:
+// +++++ Use symbols when your requirement is one of these:
 
 // Enum: To allow you to define constants with semantic names and unique values.
 

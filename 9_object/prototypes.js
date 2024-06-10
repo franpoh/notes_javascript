@@ -67,7 +67,7 @@ valueOf
 
 
 
-// ----- Accessing a property 
+// +++++ Accessing a property 
 
 // JavaScript objects are dynamic "bags" of properties (referred to as own properties). 
 // JavaScript objects have a link to a prototype object. 
@@ -195,7 +195,7 @@ newPerson.greet(); // hello, my name is Francine!
 
 
 
-// ----- Another Example
+// +++++ Another Example
 
 function Animal() { }
 

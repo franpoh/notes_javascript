@@ -106,7 +106,7 @@ console.log(genYield.next()); // { value: 'snack', done: false }
 
 
 
-// ----- Another example with a yield expression that increments 
+// +++++ Another example with a yield expression that increments 
 
 function* idMaker() {
     let index = 0;
@@ -220,7 +220,7 @@ console.log(genNother.next()); // { value: undefined, done: true }
 
 
 
-// ----- A yield expression. 
+// +++++ A yield expression. 
 // In this case, the generator pauses, 
 // and the next() method return an iterator result object with two properties: value and done. 
 // The value property is the value of the expression after the yield operator, 
@@ -228,19 +228,19 @@ console.log(genNother.next()); // { value: undefined, done: true }
 
 
 
-// ----- The end of the generator function. 
+// +++++ The end of the generator function. 
 // In this case, execution of the generator ends, 
 // and the next() method returns an iterator result object where the value is undefined and done is true.
 
 
 
-// ----- A return statement. 
+// +++++ A return statement. 
 // In this case, execution of the generator ends, 
 // and the next() method returns an iterator result object where the value is the specified return value and done is true.
 
 
 
-// ----- A throw statement. 
+// +++++ A throw statement. 
 // In this case, execution of the generator halts entirely, 
 // and the next() method throws the specified exception.
 
@@ -313,7 +313,7 @@ console.log(genA.next('chicken'));
 
 function* generatorB() {
 
-    /* A. 1st next() ----- console.log(genB.next('duck'));
+    /* A. 1st next() +++++ console.log(genB.next('duck'));
 
     generator() runs until it reaches the yield expression (the 1 in yield 1;)
     yield keyword pauses generator()
@@ -322,21 +322,21 @@ function* generatorB() {
     therefore generator() is paused BEFORE evaluating the value of the yield expression 
     */
 
-    /* C. 2nd next() ----- console.log(genB.next('turkey'));
+    /* C. 2nd next() +++++ console.log(genB.next('turkey'));
 
     generator() starts again
     the value of the first yield expression is computed/replaced with the value of the argument given to next() on this call (See D) 
     */
 
     console.log('Test 1', yield 1);
-    // B. 1st next() ----- returns '{ value: 1, done: false }'
-    // D. 2nd next() ----- returns 'Test 1 turkey' 
+    // B. 1st next() +++++ returns '{ value: 1, done: false }'
+    // D. 2nd next() +++++ returns 'Test 1 turkey' 
 
-    // E. 2nd next() continues -----
+    // E. 2nd next() continues +++++
 
-    console.log('Test 1 Done') // F. 2nd next() ----- returns Test 1 Done
+    console.log('Test 1 Done') // F. 2nd next() +++++ returns Test 1 Done
 
-    /* G. 2nd next() continues -----
+    /* G. 2nd next() continues +++++
 
     execution runs until the second yield
     yield keyword pauses generator()
@@ -344,27 +344,27 @@ function* generatorB() {
     next() returns the value of the second yield (See H)
     */
 
-    const value = yield 2; // H. 2nd next() ----- returns '{ value: 2, done: false }'
+    const value = yield 2; // H. 2nd next() +++++ returns '{ value: 2, done: false }'
 
-    /* I. 3rd next() ----- console.log(genB.next('chicken'));
+    /* I. 3rd next() +++++ console.log(genB.next('chicken'));
 
     generator() starts again
     */
 
-    console.log('Test 2') // J. 3rd next() ----- returns 'Test 2'
+    console.log('Test 2') // J. 3rd next() +++++ returns 'Test 2'
 
-    /* K. 3rd next() -----
+    /* K. 3rd next() +++++
 
     the value of the second yield expression is computed/replaced with the value of the argument given to next() on this call (See L) 
     */
 
-    console.log('Test 3', value); // L. 3rd next() ----- returns 'Test 3 chicken'
+    console.log('Test 3', value); // L. 3rd next() +++++ returns 'Test 3 chicken'
 
-    // M. 3rd next() continues -----
+    // M. 3rd next() continues +++++
 
-    console.log('Test 3 Done') // N. 3rd next() ----- returns 'Test 3 Done'
+    console.log('Test 3 Done') // N. 3rd next() +++++ returns 'Test 3 Done'
 
-    /* O. 3rd next() ----- Termination of generator()
+    /* O. 3rd next() +++++ Termination of generator()
 
 
     execution runs until the end of generator()
@@ -420,7 +420,7 @@ console.log(genD.next('chicken'));
 
 
 
-// -----
+// +++++
 
 function* generatorC() {
     yield 1;
@@ -435,7 +435,7 @@ console.log(genC.next('chicken')); // { value: undefined, done: true }
 
 
 
-// -----
+// +++++
 
 function* generatorE() {
     console.log(yield 1);

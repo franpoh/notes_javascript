@@ -59,17 +59,17 @@ for (let i = 0; i < 3; i++) { // shows 0, then 1, then 2
     console.log(i);
 }
 
-// ----- initializer
+// +++++ initializer
 // this is usually a variable set to a number, which is incremented to count the number of times the loop has run. 
 // It is also sometimes referred to as a counter variable 
 // let i = 0 - Executes once upon entering the loop.
 
-// ----- condition 
+// +++++ condition 
 // this defines when the loop should stop looping. 
 // This is generally an expression featuring a comparison operator, a test to see if the exit condition has been met 
 // i < 3 - Checked before every loop iteration. Keeps going round the loop for as long as i is smaller than 3
 
-// ----- final-expression 
+// +++++ final-expression 
 // this is always evaluated (or run) each time the loop has gone through a full iteration. 
 // It usually serves to increment (or in some cases decrement) the counter variable, to bring it closer to the point where the condition is no longer true
 // i++ - Executes after the body on each iteration.
@@ -172,7 +172,7 @@ for (variable in array) {
 
 
 
-// ----- Example
+// +++++ Example
 
 const food = ["banana", "orange", "pineapple"];
 
@@ -186,7 +186,7 @@ for (let x in food) {
 
 
 
-// ----- Example
+// +++++ Example
 
 const foodie = { yellow: "banana", orange: "orange", brown: "pineapple" };
 
@@ -200,7 +200,7 @@ for (let x in foodie) {
 
 
 
-// ----- Example
+// +++++ Example
 
 let user = {
     name: "John",
@@ -215,7 +215,7 @@ for (let key in user) {
 
 
 
-// ----- Example
+// +++++ Example
 
 cats = ['Leopard', 'Serval', 'Jaguar', 'Tiger', 'Caracal', 'Lion'];
 
@@ -580,7 +580,7 @@ while (i) console.log(i--);
 
 
 
-// ----- Example
+// +++++ Example
 
 const kitties = ['Pete', 'Biggles', 'Jasmine'];
 
@@ -629,7 +629,7 @@ do {
 
 
 
-// ----- Example
+// +++++ Example
 
 const katten = ['Pete', 'Biggles', 'Jasmine'];
 

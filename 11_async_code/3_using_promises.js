@@ -53,7 +53,7 @@ submitForm(userDetails) // this returns a promise
 
 
 
-// ----- Callback Example
+// +++++ Callback Example
 
 // In the old days, doing several asynchronous operations in a row would lead to the classic callback pyramid of doom:
 
@@ -103,7 +103,7 @@ doOperation();
 
 
 
-// ----- Promise Example
+// +++++ Promise Example
 
 // With promises, we accomplish this by creating a promise chain. 
 
@@ -423,7 +423,7 @@ new Promise((resolve, reject) => {
 
 // Here are some common mistakes to watch out for when composing promise chains. 
 
-// ----- Bad example - Spot 3 mistakes
+// +++++ Bad example - Spot 3 mistakes
 
 doSomething()
     .then(function (result) {
@@ -560,10 +560,10 @@ asyncPromise();
 
 // The two events are:
 
-// ----- unhandledrejection
+// +++++ unhandledrejection
 // Sent when a promise is rejected but there is no rejection handler available.
 
-// ----- rejectionhandled
+// +++++ rejectionhandled
 // Sent when a handler is attached to a rejected promise that has already caused an unhandledrejection event.
 
 
@@ -587,7 +587,7 @@ process.on("unhandledRejection", (reason, promise) => {
 
 
 
-// ----- Example
+// +++++ Example
 
 var uncaughtError = new Promise((resolve, reject) => {
     let reqStatus = 400;
@@ -863,7 +863,7 @@ Promise.all([prom1(), prom2(), prom3()]) // An iterable (such as an Array) of pr
 
 
 
-// ----- Example
+// +++++ Example
 
 // Promise.all waits for all fulfillments (or the first rejection).
 // in the order of the promises passed, regardless of completion order
@@ -884,7 +884,7 @@ Promise.all([p1, p2, p3]).then((values) => {
 
 
 
-// ----- Example
+// +++++ Example
 
 // If the iterable contains non-promise values, they will be ignored, 
 // but still counted in the returned promise array value (if the promise is fulfilled)
@@ -1021,7 +1021,7 @@ thePromise.then(
     function (error) { /* code if some error */ }
 );
 
-// ----- Example
+// +++++ Example
 
 let p = new Promise((resolve, reject) => {
     let a = 1 + 2;
@@ -1038,7 +1038,7 @@ p.then((message) => { // anything inside .then will run for 'resolve'
     console.log('Promise unresolved, ' + message);
 }) // Promise unresolved, Failed
 
-// ----- Example of a promise inside a function
+// +++++ Example of a promise inside a function
 
 function watchTutorialPromise() {
     let userLeft = false
@@ -1066,7 +1066,7 @@ watchTutorialPromise().then(message => {
     console.log(error.name + ' ' + error.message)
 })
 
-// ----- Example of Promise with then and also async
+// +++++ Example of Promise with then and also async
 
 class Database {
     #data = [
@@ -1236,7 +1236,7 @@ async function test() {
 
 test();
 
-// ----- More Example
+// +++++ More Example
 
 function pay(isSuccess) {
     return new Promise((resolve) => {
@@ -1283,7 +1283,7 @@ async function start() {
 
 start(); // isSuccess false
 
-// ----- Even More Examples
+// +++++ Even More Examples
 
 const messages = [
     {
@@ -1332,14 +1332,14 @@ function send(to, message) {
 
 // Waiting for a Timeout
 
-// ----- Example Using Callback
+// +++++ Example Using Callback
 setTimeout(function () { myFunction("I love You !!!"); }, 3000);
 
 function myFunction(value) {
     document.getElementById("demo").innerHTML = value;
 }
 
-// ----- Example Using Promise
+// +++++ Example Using Promise
 let mijnPromise = new Promise(function (myResolve, myReject) {
     setTimeout(function () { myResolve("I love You !!"); }, 3000);
 });
@@ -1425,7 +1425,7 @@ Promise.all([promise1, promise2, promise3]).then((values) => {
 
 
 
-// ----- Another Example
+// +++++ Another Example
 
 const recordVideoOne = new Promise((resolve, reject) => {
     resolve('Video 1 Recorded')

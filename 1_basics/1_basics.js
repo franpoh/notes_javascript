@@ -57,10 +57,10 @@ console.log('Try running this individually!');
 
 // Some common errors you might see when running your code
 
-// ----- Syntax errors
+// +++++ Syntax errors
 // These are spelling errors in your code that actually cause the program not to run at all, or stop working part way through — you will usually be provided with some error messages too.
 
-// ----- Logic errors
+// +++++ Logic errors
 // These are errors where the syntax is actually correct but the code is not what you intended it to be, meaning that program runs successfully but gives incorrect results.
 
 

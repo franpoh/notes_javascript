@@ -62,7 +62,7 @@ copyTest.runTest(); // Forty-two
 
 
 
-// ----- Global 'this' 
+// +++++ Global 'this' 
 
 // At the top level of a script, 'this' refers to 'globalThis' whether in strict mode or not. This is generally the same as the global object
 
@@ -131,7 +131,7 @@ console.log(obj.whatsThis()); // 'Custom'; this in the function is set to obj
 
 
 
-// ----- 'this' in Objects
+// +++++ 'this' in Objects
 
 // Object literals don't create a this scope — only functions (methods) defined within the object do. 
 // Using this in an object literal inherits the value from the surrounding scope.
@@ -252,7 +252,7 @@ john.greet(); // Output: Hello, my name is John
 
 
 
-// ----- Let's look at another way of using 'this', where we show how the value of 'this' is the object that the function is accessed on
+// +++++ Let's look at another way of using 'this', where we show how the value of 'this' is the object that the function is accessed on
 
 function getName() {
     return this.name;
@@ -310,7 +310,7 @@ console.log(donald.getName()); // Donald Duck
 
 // ----------------------------- > FUNCTION >> Strict / Non-strict
 
-// ----- Strict Mode
+// +++++ Strict Mode
 // JavaScript strict mode does not allow default binding.
 // So, when used in a function, in strict mode, this is undefined
 
@@ -339,7 +339,7 @@ console.log(typeof getThis.call(primitiveSeven)); // number
 
 
 
-// ----- Default Non-Strict
+// +++++ Default Non-Strict
 
 // In a JavaScript function, the owner of the function is the default binding for this.
 // In non-strict mode, a special process called this substitution ensures that the value of this is always an object.
@@ -354,7 +354,7 @@ console.log(getThis() === globalThis); // true
 
 
 
-// ----- Object Conversion in Non-Strict
+// +++++ Object Conversion in Non-Strict
 
 // If the function is called with this set to a primitive value, this gets substituted with the primitive value's *wrapper object.
 // * wrapper object: See 9_object\object_wrapper.js
@@ -437,7 +437,7 @@ function logThis() {
 
 
 
-// ----- Another Example with Explanation
+// +++++ Another Example with Explanation
 
 const obj = {
 
@@ -538,7 +538,7 @@ console.log(foo() === globalObject); // true
 
 
 
-// ----- Another Example
+// +++++ Another Example
 
 const chocolate = {
     name: 'chocolate',
@@ -584,7 +584,7 @@ console.log(chocolate.getNameWithin()); // chocolate
 
 
 
-// ----- Another Example
+// +++++ Another Example
 
 const getName = function () {
     return this.name;
@@ -657,7 +657,7 @@ setTimeout(ghost.sayBoo.bind(ghost), 2000) // Casper says: Boo!
 
 
 
-// ----- Another Example
+// +++++ Another Example
 
 const obj = {
 
@@ -719,7 +719,7 @@ console.log(newFunction); // [Function: bound theFunction]
 
 
 
-// ----- Example
+// +++++ Example
 
 function say() {
     return this.word;
@@ -736,7 +736,7 @@ console.log(ciao.word, ciao.say(), ciao.hello(), ciao.hoi()); // ciao, ciao, bye
 
 
 
-// ----- Example
+// +++++ Example
 
 function getName() {
     return this.name;
@@ -750,7 +750,7 @@ console.log((getName.bind(poh))()); // Francine
 
 
 
-// ----- Example
+// +++++ Example
 
 const burger = {
     filling: "beef patty",
@@ -797,7 +797,7 @@ theFunction.call(whateverObject, moreArgs);
 
 
 
-// ----- Example
+// +++++ Example
 
 const getName = {
     fullName: function () {
@@ -814,7 +814,7 @@ getName.fullName.call(thisPerson);  // John Doe
 
 
 
-// ----- Example with moreArgs
+// +++++ Example with moreArgs
 
 function add(c, d) {
     return this.a + this.b + c + d;
@@ -828,7 +828,7 @@ console.log(add.call(someNumbers, 5, 7)); // 16
 
 
 
-// ----- Example with moreArgs
+// +++++ Example with moreArgs
 
 function Product(name, price) {
     this.name = name;
@@ -872,7 +872,7 @@ theFunction.apply(whateverObject, argsArray);
 
 
 
-// ----- Example
+// +++++ Example
 
 const numbers = [5, 6, 2, 3, 7];
 
@@ -886,7 +886,7 @@ console.log(min); // 2
 
 
 
-// ----- Example
+// +++++ Example
 
 function add(c, d) {
     return this.a + this.b + c + d;
@@ -900,7 +900,7 @@ console.log(add.apply(someNumbers, [10, 20])); // 34
 
 
 
-// ----- Example
+// +++++ Example
 
 function getDetails (year, month, date) {
     console.log(`${this.firstName} ${this.lastName} is born on ${date}/${month}/${year}`);

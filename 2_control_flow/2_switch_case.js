@@ -4,7 +4,7 @@
 
 
 
-// ----- Example
+// +++++ Example
 
 const fruit = 'Papayas'; // Try changing the fruit for testing
 
@@ -41,7 +41,7 @@ console.log('This is the code after the switch statement, for testing purposes.'
 
 
 
-// ----- Example
+// +++++ Example
 
 let animal;
 
@@ -65,7 +65,7 @@ console.log(animal); // grizzly bear
 
 
 
-// ----- This example takes advantage of the fact that if there is no break below a case clause it will continue to execute the next case clause regardless if the case meets the criteria.
+// +++++ This example takes advantage of the fact that if there is no break below a case clause it will continue to execute the next case clause regardless if the case meets the criteria.
 
 var foo = 1;
 

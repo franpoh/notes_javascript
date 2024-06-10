@@ -40,7 +40,7 @@ const notANum = Number.NaN;
 
 
 
-// ----- Number()
+// +++++ Number()
 
 // constructor that will convert a string value number into a number number
 
@@ -50,7 +50,7 @@ console.log(Number(x)); // 9.656
 
 
 
-// ----- toFixed()
+// +++++ toFixed()
 
 //  returns a string, with the number written with a specified number of decimals
 
@@ -63,7 +63,7 @@ console.log(x.toFixed(6)); // 9.656000
 
 
 
-// ----- toExponential()
+// +++++ toExponential()
 
 
 // returns a string, with a number rounded and written using exponential notation.
@@ -76,7 +76,7 @@ console.log(x.toExponential(6)); // 9.656000e+0
 
 
 
-// ----- toPrecision() 
+// +++++ toPrecision() 
 
 // Returns a string representing the number to a specified precision in fixed-point notation
 
@@ -89,7 +89,7 @@ console.log(x.toPrecision(6)); // 9.65600
 
 
 
-// ----- valueOf() 
+// +++++ valueOf() 
 
 // returns a number as a number.
 
@@ -101,7 +101,7 @@ console.log((100 + 23).valueOf()); // 123
 
 
 
-// ----- parseFloat()
+// +++++ parseFloat()
 
 // parses a string argument and returns the floating point first number.
 
@@ -113,7 +113,7 @@ console.log(parseFloat("He was 40")); // NaN
 
 
 
-// ----- parseInt()
+// +++++ parseInt()
 
 // parses a string argument and returns the first integer of the specified radix or base
 
@@ -127,7 +127,7 @@ console.log(parseInt("He was 40")); // NaN
 
 
 
-// ----- isInteger()
+// +++++ isInteger()
 
 // returns true if the argument is an integer.
 

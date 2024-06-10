@@ -13,19 +13,19 @@
 
 // NOTE: React actually removed mixin usage from their library as they consider it harmful. List of reasons include:
 
-// ----- Mixins introduce implicit dependencies 
+// +++++ Mixins introduce implicit dependencies 
 
-// ----- Mixins cause name clashes 
+// +++++ Mixins cause name clashes 
 // There is no guarantee that two particular mixins can be used together. 
 // For example, if FluxListenerMixin defines handleChange() and WindowSizeMixin defines handleChange(), you can’t use them together. 
 // You also can’t define a method with this name on your own component.
 
-// ----- Mixins cause snowballing complexity 
+// +++++ Mixins cause snowballing complexity 
 
 
 
 
-// ----- Basic Example
+// +++++ Basic Example
 
 let greetingMixin = {
     sayHi() {

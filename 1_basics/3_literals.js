@@ -96,7 +96,7 @@ console.log(random[4]); // [ 'French Roast', 'Colombian', 'Kona' ]
 
 
 
-// ----- Multidimensional Array  
+// +++++ Multidimensional Array  
 
 // Arrays can be nested, meaning that an array can contain another array as an element. 
 // Using this characteristic of JavaScript arrays, multi-dimensional arrays can be created.
@@ -111,7 +111,7 @@ console.log(random[2][2][0]); // French Roast
 
 
 
-// ----- Creating Empty Arrays
+// +++++ Creating Empty Arrays
 
 const empty1 = [];
 const empty2 = new Array();
@@ -125,7 +125,7 @@ console.log(arr); // "value"
 
 
 
-// ----- Using arrays to store other properties
+// +++++ Using arrays to store other properties
 
 // Arrays can also be used like objects, to store related information.
 
@@ -243,7 +243,7 @@ console.log(objectSpread); // { '0': 1, '1': 2, '4': 5 }
 
 
 
-// ----- Example Test of a Sparse Array
+// +++++ Example Test of a Sparse Array
 
 let empty4 = new Array(7);
 console.log(empty4); // [ <7 empty items> ]
@@ -453,7 +453,7 @@ console.log(obj['prop_42']); // 42
 
 
 
-// ----- Examples of how to create a regular expression.
+// +++++ Examples of how to create a regular expression.
 
 // Using a regular expression literal, which consists of a pattern enclosed between slashes
 const reLit = /ab+c/;
@@ -476,7 +476,7 @@ const reCon = new RegExp("ab+c");
 
 
 
-// ----- Example use for regex literal
+// +++++ Example use for regex literal
 
 function secretPassword(passphrase) {
 
@@ -496,7 +496,7 @@ secretPassword('The whale sings into the ocean'); // Your secret society is 3 do
 
 
 
-// ----- Simple example that tests if "hello" is contained at the very beginning of a string, returning a boolean result.
+// +++++ Simple example that tests if "hello" is contained at the very beginning of a string, returning a boolean result.
 
 const str = "hello world!";
 const result = /^hello/.test(str);
@@ -567,7 +567,7 @@ let whatAmI = 'template literal';
 
 
 
-// ----- Example
+// +++++ Example
 
 let song = 'Country Roads'
 let score = 9;

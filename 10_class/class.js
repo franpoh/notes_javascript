@@ -37,7 +37,7 @@ Table of Contents
 
 
 
-// ----- Example with empty body
+// +++++ Example with empty body
 
 // As you can see in the below example, a class doesn't require instance fields, methods or a custom constructor, they are optional
 
@@ -51,7 +51,7 @@ console.log(what.constructor); // Empty {}
 
 
 
-// ----- Example with just instance field
+// +++++ Example with just instance field
 
 class Bovine {
     sound = 'moo'; // this is an instance field. In this case, a public instance field
@@ -62,7 +62,7 @@ console.log(cow.sound); // moo
 
 
 
-// ----- Example with just a custom constructor
+// +++++ Example with just a custom constructor
 
 class Canine {
     constructor(sound) { // an (optional) custom class constructor. 
@@ -75,7 +75,7 @@ console.log(dog.sound); // woof
 
 
 
-// ----- Example with just method
+// +++++ Example with just method
 
 class Porcine {
     description() {
@@ -88,7 +88,7 @@ console.log(pig.description()); // It goes oink.
 
 
 
-// ----- Example with instance field, constructor and method
+// +++++ Example with instance field, constructor and method
 
 class Feline {
     breed = 'siamese';
@@ -107,7 +107,7 @@ console.log(cat.description()); // This cat is a siamese and it goes MEOW.
 
 
 
-// ----- Example with Derived Class
+// +++++ Example with Derived Class
 
 // A base class is defined using the new reserved 'class' keyword
 class Naam {
@@ -337,7 +337,7 @@ methodB(); // TypeError: Cannot read properties of undefined (reading 'b')
 
 
 
-// ----- Example For Private And Static Uses
+// +++++ Example For Private And Static Uses
 
 class Permission {
     // These are static constants that show what are the possible values when checking permission.
@@ -954,7 +954,7 @@ newPayment.pay();
 
 
 
-// ----- Example
+// +++++ Example
 
 // Create a class named "Model" which will inherit the methods from the "Car" class
 
@@ -982,7 +982,7 @@ console.log(mycar.show()); // I have a Ford, it is a Mustang
 
 
 
-// ----- Error Example
+// +++++ Error Example
 
 // the class (or function, in the case of constructor functions) that you extend must be a valid constructor function.
 
@@ -996,7 +996,7 @@ class InvalidExtension extends notAConstructor {
 
 
 
-// ----- Example
+// +++++ Example
 
 class Vehicle {
     constructor(carPlateNo, type, noOfWheels = 4) {
@@ -1038,7 +1038,7 @@ console.log(reliantRobin.inspect()); // This vehicle is a Reliant Robin (83AN) a
 
 
 
-// ----- Example
+// +++++ Example
 
 class BaseSignal {
     constructor(transmitter) {

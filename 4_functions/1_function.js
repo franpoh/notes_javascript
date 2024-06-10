@@ -24,7 +24,7 @@ Table of Contents
 
 // ----------------------------- > WHAT IS A FUNCTION -----------------------------
 
-// ----- Structure Of A Function
+// +++++ Structure Of A Function
 
 // To repeat what we learn in the basics:
 // A JavaScript function is a reusable block of code that performs a specific task or set of operations, and can optionally accept inputs (called parameters or arguments) and return a value.
@@ -50,7 +50,7 @@ myFunction(myName); // Note myName being passed into the function
 
 
 
-// ----- Return Statement
+// +++++ Return Statement
 
 // There is also the 'return' statement, which specifies the value returned by the function
 // If omitted, undefined is returned.
@@ -90,7 +90,7 @@ console.log(myFunction(5)); // The number is 5
 
 
 
-// ----- Methods 
+// +++++ Methods 
 
 // Functions that are part of objects are called methods
 
@@ -170,7 +170,7 @@ console.log(hoi); // hoi there
 
 // ----------------------------- > PARAMETERS IN FUNCTIONS -----------------------------
 
-// ----- Passing by Value, without Parameters
+// +++++ Passing by Value, without Parameters
 
 let apple = 2;
 let banana = 3;
@@ -193,7 +193,7 @@ console.log(multiple()); // 6
 
 
 
-// ----- Passing by Value, with Parameters
+// +++++ Passing by Value, with Parameters
 
 // Parameters are essentially passed to functions by value — 
 // so if the code within the body of a function assigns a completely new value to a parameter that was passed to the function, 
@@ -223,7 +223,7 @@ console.log(multiple()); // NaN
 
 
 
-// ----- Parameter Assigned a Value
+// +++++ Parameter Assigned a Value
 
 // the parameter 'britain' is assigned the default value of 5
 function multiple(africa, britain = 5) {
@@ -539,7 +539,7 @@ console.log(boundAddB(1, 2, 3)); // 48
 
 
 
-// ----- DOM Examples
+// +++++ DOM Examples
 
 // the greatest benefit of using Arrow functions is with DOM-level methods 
 // setTimeout, setInterval, addEventListener
@@ -616,7 +616,7 @@ init(); // Mozilla
 
 
 
-// ----- Another Example 
+// +++++ Another Example 
 
 function outer() {
     let animal = "Tiger";
@@ -747,7 +747,7 @@ arr.forEach(saySquared) // 1 2 3 4
 
 
 
-// ----- Another Example 
+// +++++ Another Example 
 
 function sayIndexAndValue(value, index) {
     console.log(`Index ${index} contains: ${value}.`)
@@ -818,7 +818,7 @@ myFunction(1, 2, 3);
 
 
 
-// ----- Another Example
+// +++++ Another Example
 
 function myFunction() {
     console.log(arguments);
@@ -827,7 +827,7 @@ myFunction('a', 'b'); // [Arguments] { '0': 'a', '1': 'b' }
 
 
 
-// ----- Arrow Functions
+// +++++ Arrow Functions
 
 // Arrow functions do not have their own arguments object. 
 

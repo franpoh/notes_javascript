@@ -16,7 +16,7 @@
 
 
 
-// ----- Document
+// +++++ Document
 
 // the root document object itself.
 
@@ -28,7 +28,7 @@
 
 
 
-// ----- Objects
+// +++++ Objects
 
 // All of the properties, methods, and events available for manipulating and creating web pages are organized into objects
 // For example, the document object that represents the document itself, 
@@ -36,7 +36,7 @@
 
 
 
-// ----- Node
+// +++++ Node
 
 // Every object located within a document is a node of some kind. 
 // In an HTML document, an object can be an element node but also a text node or attribute node.
@@ -44,7 +44,7 @@
 
 
 
-// ----- Element 	
+// +++++ Element 	
 
 // The element type is based on node. 
 // It refers to an element or a node of type element returned by a member of the DOM API. 
@@ -54,7 +54,7 @@
 
 
 
-// ----- NodeList
+// +++++ NodeList
 
 // an array of elements, like the kind that is returned by document.querySelectorAll().
 
@@ -64,7 +64,7 @@ list[1] // uses the typical array syntax to fetch the second item in the list
 
 
 
-// ----- Attr
+// +++++ Attr
 
 // When an attribute is returned by a member (e.g., by the createAttribute() method), 
 // it is an object reference that exposes a special (albeit small) interface for attributes. 
@@ -83,7 +83,7 @@ list[1] // uses the typical array syntax to fetch the second item in the list
 
 
 
-// ----- Example: Table Object
+// +++++ Example: Table Object
 
 // implements a specialized HTMLTableElement interface, which includes such methods as createCaption and insertRow. 
 // But since it's also an HTML element, table implements the Element interface described in the DOM Element Reference chapter. 

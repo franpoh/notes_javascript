@@ -96,7 +96,7 @@ console.log(text); // 45/4/9/16/25/
 
 
 
-// ----- Example: utilising thisArg 
+// +++++ Example: utilising thisArg 
 
 const person = {
     name: 'John Doe',
@@ -136,7 +136,7 @@ friends.forEach(person.greetFriends); // when 'person' is not provided for thisA
 
 
 
-// ----- Making full use of the arguments
+// +++++ Making full use of the arguments
 
 numArray = [45, 4, 9, 16, 25];
 text = "";
@@ -177,7 +177,7 @@ console.log(text);
 
 
 
-// ----- Example: multiplies each array value by 2
+// +++++ Example: multiplies each array value by 2
 
 numArray = [45, 4, 9, 16, 25];
 
@@ -205,7 +205,7 @@ console.log(newNumArray); // [ 45, 4, 4, 9, 16, 16, 25]
 
 
 
-// ----- Let's see the same example, but using map() instead of flatMap()
+// +++++ Let's see the same example, but using map() instead of flatMap()
 
 numArray = [45, 4, 9, 16, 25];
 
@@ -229,7 +229,7 @@ console.log(newerNumArray); // [ 45, 4, 4, 9, 16, 16, 25]
 
 
 
-// ----- Example: Creates a new array from elements with a value larger than 18
+// +++++ Example: Creates a new array from elements with a value larger than 18
 
 let ages = [45, 4, 9, 16, 25];
 let over18 = ages.filter(callbackFunction);
@@ -252,7 +252,7 @@ console.log(ages); // [ 45, 4, 9, 16, 25 ]
 
 // ----------------------------- > REDUCE() / REDUCERIGHT() -----------------------------
 
-// ----- reduce()
+// +++++ reduce()
 
 // executes a user-supplied "reducer" callback function on each element of the array, in left-to-right order, passing in the return value from the calculation on the preceding element. 
 // The final result of running the reducer across all elements of the array is a single value.
@@ -371,7 +371,7 @@ returnValue, which will become the accumulator on the next execution of the call
 
 
 
-// ----- reduceRight()
+// +++++ reduceRight()
 
 // works like reduce(), but starts with the last element
 
@@ -447,7 +447,7 @@ console.log(underAge.some((age) => age >= 18)); // false
 
 // ----------------------------- > FIND() / FINDLAST() -----------------------------
 
-// ----- find()
+// +++++ find()
 
 // returns the first element in the provided array that satisfies the provided testing function. 
 // If no values satisfy the testing function, undefined is returned. 
@@ -469,7 +469,7 @@ console.log(first); // 25
 
 
 
-// ----- findLast()
+// +++++ findLast()
 
 // iterates the array in reverse order and returns the value of the first element that satisfies the provided testing function. 
 // If no elements satisfy the testing function, undefined is returned. 
@@ -485,7 +485,7 @@ console.log(first); // 16
 
 // ----------------------------- > FINDINDEX() / FINDLASTINDEX() -----------------------------
 
-// ----- findIndex()
+// +++++ findIndex()
 
 // returns the index of the first element in an array that satisfies the provided testing function. 
 // If no elements satisfy the testing function, -1 is returned. 
@@ -524,7 +524,7 @@ console.log(anotherNumArray.findIndex(fullTestingFunction)); // -1
 
 
 
-// ----- findLastIndex()
+// +++++ findLastIndex()
 
 // iterates the array in reverse order and returns the index of the first element that satisfies the provided testing function. 
 

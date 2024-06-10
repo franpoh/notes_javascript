@@ -22,7 +22,7 @@
 
 
 
-// ----- Example
+// +++++ Example
 
 let s = 'foo';
 let sub = s.substring(1, 2);

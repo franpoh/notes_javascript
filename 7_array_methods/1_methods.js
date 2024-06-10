@@ -55,7 +55,7 @@ Table of Contents
 
 // ----------------------------- > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES -----------------------------
 
-// ----- Similar functions in 7_array_methods\1_methods.js
+// +++++ Similar functions in 7_array_methods\1_methods.js
 
 //      If you need the index of the found element in the array, use findIndex().
 //      If you need to find the index of a value, use indexOf(). (It's similar to findIndex(), but checks each element for equality with the value instead of using a testing function.)
@@ -63,7 +63,7 @@ Table of Contents
 
 
 
-// ----- Similar functions in 7_array_methods\2_iterative_methods.js
+// +++++ Similar functions in 7_array_methods\2_iterative_methods.js
 
 //      If you need to find if any element satisfies the provided testing function, use some().
 //      If you need to find all elements that satisfy the provided testing function, use filter().
@@ -101,7 +101,7 @@ console.log(numSum); // 15
 
 // ----------------------------- > INDEXOF() / LASTINDEXOF() -----------------------------
 
-// ----- indexOf() 
+// +++++ indexOf() 
 
 // returns the first index at which a given element can be found in the array
 // returns -1 if item is not present.
@@ -136,7 +136,7 @@ console.log(fruits.indexOf("Apple", 9)) // -1
 
 
 
-// ----- lastIndexOf()
+// +++++ lastIndexOf()
 
 // returns the last index at which a given element can be found in the array 
 // returns -1 if item is not present
@@ -300,7 +300,7 @@ console.log(fruits[2]); // undefined
 
 // ----------------------------- > PUSH() / POP() -----------------------------
 
-// ----- push()
+// +++++ push()
 
 // adds one or more elements to the end of an array and returns the resulting length of the array.
 
@@ -328,7 +328,7 @@ console.log(numArray); // [ 0, 1, 2, 3, 4, 'apple' ]
 
 
 
-// ----- pop()
+// +++++ pop()
 
 // removes the last element from an array and returns that element.
 
@@ -348,7 +348,7 @@ console.log(removedItem); // Pepper
 
 
 
-// ----- shift()
+// +++++ shift()
 
 // removes the first element from an array and returns that element.
 
@@ -360,7 +360,7 @@ console.log(removedElement); // Manchester
 
 
 
-// ----- unshift()
+// +++++ unshift()
 
 // adds one or more elements to the front of an array and returns the new length of the array.
 
@@ -374,7 +374,7 @@ console.log(newLength); // 7
 
 // ----------------------------- > SPLICE() / TOSPLICED() -----------------------------
 
-// ----- splice()
+// +++++ splice()
 
 // removes elements from an array and (optionally) replaces them. It returns the items which were removed from the array.
 
@@ -408,7 +408,7 @@ console.log(removedFruits); // [ 'Apple' ]
 
 
 
-// ----- toSpliced()
+// +++++ toSpliced()
 
 // the copying version of the splice() method. It returns a new array with some elements removed and/or replaced at a given index.
 
@@ -475,7 +475,7 @@ console.log(myBoys.concat("Peter")); // [ 'Emil', 'Tobias', 'Linus', 'Peter' ]
 
 // ----------------------------- > REVERSE() / TOREVERSED() -----------------------------
 
-// ----- reverse()
+// +++++ reverse()
 
 // reverses an array in place and returns the reference to the same array, the first array element now becoming the last, and the last array element becoming the first. 
 // In other words, elements order in the array will be turned towards the direction opposite to that previously stated.
@@ -487,7 +487,7 @@ console.log(cats); // [ 'jaguar', 'puma', 'leopard', 'lion', 'tiger' ]
 
 
 
-// ----- toReversed()
+// +++++ toReversed()
 
 // the copying counterpart of the reverse() method. It returns a new array with the elements in reversed order.
 
@@ -529,7 +529,7 @@ console.log(threeDeep.flat(Infinity)); // [ 0, 1, 2, 3, 4, 5 ]
 
 // ----------------------------- > SORT() / TOSORTED() -----------------------------
 
-// ----- sort()
+// +++++ sort()
 
 // sorts the elements of an array in place and returns the reference to the same array, now sorted. 
 // The default sort order is ascending, built upon converting the elements into strings, then comparing their sequences of UTF-16 code units values.
@@ -579,7 +579,7 @@ console.log([200, 7, 42, 8394, 34].sort(compareNumbers)); // [ 7, 34, 42, 200, 8
 
 
 
-// ----- toSorted()
+// +++++ toSorted()
 
 // is the copying version of the sort() method. It returns a new array with the elements sorted in ascending order.
 

@@ -69,7 +69,7 @@ if (test === 1) {
 
 
 
-// ----- Falsy values
+// +++++ Falsy values
 
 // The following values evaluate to false (also known as Falsy values):
 

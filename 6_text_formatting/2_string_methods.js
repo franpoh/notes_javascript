@@ -43,7 +43,7 @@ console.log(pancake[pancake.length - 1]); // k
 
 // ----------------------------- > INDEXOF() / LASTINDEXOF() -----------------------------
 
-// ----- Indexof()
+// +++++ Indexof()
 
 // searches string and returns the index of the first occurrence of the specified substring
 
@@ -58,7 +58,7 @@ console.log(pancakecakecake.indexOf('cake')); // -1
 
 
 
-// ----- lastIndexOf()
+// +++++ lastIndexOf()
 
 // searches string and returns the index of the last occurrence of the specified substring
 
@@ -205,7 +205,7 @@ console.log(pancakeText.endsWith("pancake")); // false
 
 
 
-// ----- replace(): replace one substring inside a string with another substring
+// +++++ replace(): replace one substring inside a string with another substring
 
 pancake = "pannenkoek";
 
@@ -219,7 +219,7 @@ console.log(pancake); // pannencake
 
 
 
-// ----- replaceAll()
+// +++++ replaceAll()
 
 pancakecakecake = 'pannenkoekkoekkoek'
 
@@ -231,7 +231,7 @@ console.log(pancakecakecake.replaceAll('koek', 'cake')); // pannencakecakecake
 
 
 
-// ----- Example with Regex
+// +++++ Example with Regex
 
 // Small explanation about the regex: /\b/(word1|word2|word3)\b/g
 
@@ -271,7 +271,7 @@ console.log(pancakeLetter.replaceAll(nonGlobalPancakeRegex, 'Generic Flat Cake')
 
 
 
-// ----- match()
+// +++++ match()
 
 pancakeText = "Hello world, welcome to the pannenkoek.";
 
@@ -302,7 +302,7 @@ console.log(pancakeMatch.index); // 28
 
 
 
-// ----- matchAll()
+// +++++ matchAll()
 
 pancakeText = "Hello world, welcome to the pannenkoek. The pannenkoek says hello too.";
 
@@ -372,7 +372,7 @@ console.log(pancakeMatchAll[1].index); // 4
 
 
 
-// ----- Example with Regex
+// +++++ Example with Regex
 
 pancakeLetter = 'Dearest Pannenkoek, it is your cousin, Pancake, dictating a letter from your long-lost sister, Pannenkoek...';
 pancakeRegex = /\b(Pancake|Pannenkoek)\b/g;
@@ -448,7 +448,7 @@ console.log(pancakeText.search('pannenkoek')); // 28
 
 
 
-// ----- Example with Regex
+// +++++ Example with Regex
 
 pancakeLetter = 'Dearest Pannenkoek, it is your cousin, Pancake, dictating a letter from your long-lost sister, Pannenkoek...';
 pancakeRegex = /\b(Pancake|Pannenkoek)\b/g;

@@ -8,7 +8,7 @@
 
 
 
-// ----- Promise Example
+// +++++ Promise Example
 
 // We will demonstrate a promise example with Fetch, which is a promise-based API
 // the Fetch API provides an interface for fetching resources (including across the network)
@@ -52,15 +52,15 @@ console.log("Started request…");
 
 // A Promise is in one of these states:
 
-// ----- Pending
+// +++++ Pending
 // Initial state, neither fulfilled nor rejected. 
 // Result is undefined.
 
-// ----- Fulfilled 
+// +++++ Fulfilled 
 // Meaning that the operation was completed successfully. 
 // Result is a value.
 
-// ----- Rejected
+// +++++ Rejected
 // Meaning that the operation failed. 
 // Result is an error object. 
 
@@ -78,7 +78,7 @@ console.log("Started request…");
 
 
 
-// ----- Typical Promise Syntax
+// +++++ Typical Promise Syntax
 
 myPromise
     .then((value) => { /* code for handling successful operation */ })
