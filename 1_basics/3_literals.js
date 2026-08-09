@@ -458,6 +458,13 @@ console.log(obj['prop_42']); // 42
 // Using a regular expression literal, which consists of a pattern enclosed between slashes
 const reLit = /ab+c/;
 
+console.log(reLit); // /ab+c/
+
+// When you console.log a regex literal, the console outputs its literal string representation (surrounded by slashes along with its flags)
+// Even though it looks like a simple string in the console, the value logged is a RegExp object instance, not a string.
+
+console.log(typeof reLit); // object
+
 // Regular expression literals provide compilation of the regular expression when the script is loaded. If the regular expression remains constant, using this can improve performance. 
 
 
@@ -528,7 +535,7 @@ console.log(result); // true
 
 // You can call any of the String object's methods on a string literal value. 
 // JavaScript automatically converts the string literal to a temporary String object, calls the method, then discards the temporary String object. 
-// NOTE: See object\object_wrapper.js
+// NOTE: See 10_object\object_wrapper.js
 
 // You can also use the length property with a string literal:
 
@@ -605,7 +612,7 @@ console.log(output);
 
 // ----------------------------- > STRING LITERALS >> Template Literals >>> Tagged Templates
 
-// NOTE: You might want to come back to this later after studying until 7_array_methods at least. 
+// NOTE: You might want to come back to this later after studying until 8_array_methods at least. 
 
 // Tagged templates are a compact syntax for specifying a template literal along with a call to a "tag" function for parsing it. 
 // A tagged template is just a more succinct and semantic way to invoke a function that processes a string and a set of relevant values. 
@@ -627,14 +634,27 @@ function makeBulletList(todo) {
 
 function printTag(strings, day, person, todo) {
 
-    // console.log(strings, day, person, todo);
+    /*
+    This is how the function can be called: 
+
+    printTag`On ${today}, ${person1} needs to do: ${todos1}`; ----- This is the tagged template
+    or 
+    printTag(["On ", ", ", " needs to do: "], today, person1, todos1); ----- Calling function as per normal
+    */
+
+    /*
+    console.log(`
+    strings: ${strings}
+    day: ${day}
+    person: ${person} 
+    todo: ${todo}`);
+    */
+
     /*     
-    [ 'On ', ', ', ' needs to do: ', '' ] 2024-04-05T09:04:50.019Z Francine [
-    'Learn JavaScript',
-    'Workout',
-    'Get my vaccination',
-    'Print materials for Heart RPG'
-    ]
+    strings: On ,, , needs to do: ,
+    day: Thu Aug 06 2026 11:41:08 GMT+0800 (Singapore Standard Time)
+    person: Francine 
+    todo: Learn JavaScript,Workout,Get my vaccination,Print materials for Heart RPG
     */
 
     console.log(`${strings[0]}${day.toLocaleDateString()}${strings[1]}${person}${strings[2]}${makeBulletList(todo)}`);
@@ -651,7 +671,7 @@ const todos1 = [
     "Print materials for Heart RPG",
 ];
 
-// printTag`On ${today}, ${person1} needs to do: ${todos1}`;
+printTag`On ${today}, ${person1} needs to do: ${todos1}`;
 /* 
 On 05/04/2024, Francine needs to do: 
         - Learn JavaScript
@@ -694,7 +714,7 @@ On 07/04/2024, Francine needs to do:
 
 // This may be reminiscent of the console.log-style interpolation:
 
-console.log("When it is %s %s needs to do: %o", today, person1, todos1); // See explanation of %s and %o in string\format_specifier.js
+console.log("When it is %s %s needs to do: %o", today, person1, todos1); // See explanation of %s and %o in 7_text_formatting\3_format_specifier.js
 /*
 When it is 2024-04-07T09:13:58.057Z 'Francine' needs to do: [
   'Learn JavaScript',

@@ -220,7 +220,7 @@ for (let key in user) {
 cats = ['Leopard', 'Serval', 'Jaguar', 'Tiger', 'Caracal', 'Lion'];
 
 for (let i = 0; i < cats.length; i++) {
-    console.log(cats[i]);
+    console.log(cats[i]); // Leopard, Serval, Jaguar, Tiger, Caracal, Lion
 }
 
 
@@ -274,31 +274,66 @@ for (const value of iterable) {
 // The combination "infinite loop + break as needed" 
 // is great for situations when a loop’s condition must be checked not in the beginning or end of the loop, but in the middle or even in several places of its body.
 
+
+
+// Simpler Example
+
+const nameList = ['chris', 'sarah', 'bill'];
+
+let searchPerson = 'chris'; // change search term here 
+
+for (const person of nameList) {
+
+    if (person === searchPerson) {
+
+        console.log(`${person} has been found.`);
+
+        break; // stop function right here if the above conditions is achieved
+
+    } else if (searchPerson === '') {
+       
+        console.log('The search term was left blank.')
+
+        break;
+
+    } else {
+        console.log('Person does not match.'); // this will return for each name that searchPerson does not matches
+    }
+}
+
+console.log('Search has come to an end.');
+
+// The break directive is activated if the searchPerson matches with a name
+// It stops the loop immediately, passing control to the first line after the loop.
+
+
+
+// More complicated Example involving multiple methods 
+
 const contacts = ['Chris:2232322', 'Sarah:3453456', 'Bill:7654322', 'Mary:9998769', 'Dianne:9384975'];
 
-let searchName = "chris"; // change search term here to lowercase name or blank
+let searchName = "ChRis"; // change search term here
 
 for (const contact of contacts) {
 
-    // array.split() is an array function that you wil learn more about in 7_array_methods\1_methods.js
+    // array.split() is an array function that you wil learn more about in 8_array_methods\1_methods.js
     const splitContact = contact.split(':'); // It splits the element at ':', therefore resulting in [ 'Chris', '2232322' ]
 
-    if (splitContact[0].toLowerCase() === searchName) { // Changing the name string to lowercase in order to match value of searchName
+    if (splitContact[0].toLowerCase() === searchName.toLowerCase()) { // Changing all name strings to lowercase as any differences in letter cases will result in no match
 
         console.log(`${splitContact[0]}'s number is ${splitContact[1]}.`);
 
         break; // stop function right here if the above conditions is achieved
 
+    } else if (searchName === '') {
+        
+        console.log('Contact not found.');
+
+        break;
     }
 }
 
-if (searchName === '') {
-    console.log('Contact not found.');
-}
-
-// The break directive is activated if the searchName matches with a contact
-// It stops the loop immediately, passing control to the first line after the loop.
-// In this case, the function after the loop will only activate if searchName is blank
+console.log('Search has come to an end.');
 
 
 
@@ -316,7 +351,7 @@ if (searchName === '') {
 // See more about the % operator at 5_expressions_operators\expressions_operators.js >> % Remainder / modulo
 
 for (let i = 0; i < 10; i++) {
-    if (i % 2 == 0) continue; // if true, skip the remaining part of the body
+    if (i % 2 == 0) continue; // if 'the number is even' is true, skip the remaining part of the body
     console.log(i); // 1, 3, 5, 7, 9
 }
 
@@ -383,44 +418,52 @@ label: for (let i = 0; i < 3; i++) {
 // Using a labeled continue with for loops
 
 // The first for statement is labeled "loop1"
-loop1: for (let i = 0; i < 3; i++) {
 
-    console.log('hi from loop 1');
+let maxValue = 2;
+
+loop1: for (let i = 0; i <= maxValue; i++) {
+
+    console.log(`hi from loop 1`);
 
     // The second for statement is labeled "loop2"
-    loop2: for (let j = 0; j < 3; j++) {
+    loop2: for (let j = 0; j <= maxValue; j++) {
 
-        console.log('hi from loop 2');
+        console.log(`hi from loop 2`);
 
         if (i === 1 && j === 1) {
+            console.log(`i === 1 && j === 1 has been found to be true, restarting loop 1`)
             continue loop1;
+        } else if (j === maxValue && i === maxValue) {
+            console.log(`Both j = ${j} and i = ${i} and have reached their max value, stopping the entire process`)
+        } else if (j === maxValue) {
+            console.log(`j = ${j} and has reached its max value, restarting loop 1`)
+        } else {
+            console.log(`Restarting loop 2, i = ${i}, j = ${j}`);
         }
-
-        console.log(`i = ${i}, j = ${j}`);
     }
 }
 
-// Logs:
-// hi from loop 1
-// hi from loop 2
-// i = 0, j = 0
-// hi from loop 2
-// i = 0, j = 1
-// hi from loop 2
-// i = 0, j = 2
-// hi from loop 1
-// hi from loop 2
-// i = 1, j = 0
-// hi from loop 2
-// hi from loop 1
-// hi from loop 2
-// i = 2, j = 0
-// hi from loop 2
-// i = 2, j = 1
-// hi from loop 2
-// i = 2, j = 2
-
-// Notice how it skips both "i = 1, j = 1" and "i = 1, j = 2".
+/* Logs:
+hi from loop 1
+hi from loop 2
+Restarting loop 2, i = 0, j = 0
+hi from loop 2
+Restarting loop 2, i = 0, j = 1
+hi from loop 2
+j = 2 and has reached its max value, restarting loop 1
+hi from loop 1
+hi from loop 2
+Restarting loop 2, i = 1, j = 0
+hi from loop 2
+i === 1 && j === 1 has been found to be true, restarting loop 1
+hi from loop 1
+hi from loop 2
+Restarting loop 2, i = 2, j = 0
+hi from loop 2
+Restarting loop 2, i = 2, j = 1
+hi from loop 2
+Both j = 2 and i = 2 and have reached their max value, stopping the entire process
+*/
 
 
 

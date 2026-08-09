@@ -44,6 +44,7 @@ if (condition) {
 
 
 // In general it's good practice to not have an if...else with an assignment like x = y as a condition:
+// This is ASSIGNMENT - we are assigning the value of y to x. This is NOT a comparision, we are not asking if x is equal to y 
 
 if (x = y) {
     // statements here
@@ -51,6 +52,19 @@ if (x = y) {
 
 // However, in the rare case you find yourself wanting to do something like that, 
 // here is a link on best practices: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/while#using_an_assignment_as_a_condition
+
+// Here is the most verbose and easy to understand alternative way to write an assignment as condition function
+
+const arrayOfBirds = ['mynah', 'eagle', 'duck'];
+const birdIterator = arrayOfBirds.values();
+
+for (
+  let currentBird = birdIterator.next().value; // assign value to currentBird
+  currentBird; // Checks if currentBird is truthy. When the iterator runs out of comments, it returns undefined (falsy). This is not best practice as it will stop upon encountering 0, "" (empty string), false, null, undefined, or NaN, but it's an example
+  currentBird = birdIterator.next().value // continue by assigning value to currentBird
+) {
+  console.log(currentBird); // mynah eagle duck
+}
 
 
 
