@@ -415,96 +415,79 @@ label: for (let i = 0; i < 3; i++) {
 
 
 
-// Using a labeled continue with for loops
+// Example with labelled loops, utilising both 'break' and 'continue'
 
-// The first for statement is labeled "loop1"
+let maxValue = 3;
 
-let maxValue = 2;
+loop1: for (let i = 0; i <= maxValue; i++) { // first loop here, labelled loop1
 
-loop1: for (let i = 0; i <= maxValue; i++) {
+    console.log(`hi from start of loop 1`);
 
-    console.log(`hi from loop 1`);
+    loop2: for (let j = 0; j <= maxValue; j++) { // second (inner} loop here, labelled loop2
 
-    // The second for statement is labeled "loop2"
-    loop2: for (let j = 0; j <= maxValue; j++) {
+        console.log(`hi from start of loop 2, i = ${i} and j = ${j}`);
 
-        console.log(`hi from loop 2`);
+        if (i === 1 && j === 1) { // condition with the result of 'continue'
 
-        if (i === 1 && j === 1) {
-            console.log(`i === 1 && j === 1 has been found to be true, restarting loop 1`)
-            continue loop1;
-        } else if (j === maxValue && i === maxValue) {
-            console.log(`Both j = ${j} and i = ${i} and have reached their max value, stopping the entire process`)
+            console.log(`i === 1 && j === 1 has been found to be true - 'continue loop1' - restart loop 1`);
+            continue loop1; 
+
+        } else if (i === 1 && j === 2) { // condition with the result of 'break' for loop2
+
+            console.log(`i === 1 && j === 2 has been found to be true - 'break loop2' - break out of loop 2, and executing rest of loop 1`);
+            break loop2;
+
+        } else if (i === 2 && j === 2) { // condition with the result of 'break' for loop1
+
+            console.log(`i === 2 && j === 2 has been found to be true - 'break loop1' - break out of loop 1 and thus ending the entire process`);
+            break loop1;
+            
         } else if (j === maxValue) {
-            console.log(`j = ${j} and has reached its max value, restarting loop 1`)
+
+            console.log(`j = ${j} and has reached its max value, reaching natural end of loop 2 and executing rest of loop 1`);
+            // There is no 'continue' here -  loop2 has reached its natural end and thus reverts back to the outer loop - loop1
+
         } else {
-            console.log(`Restarting loop 2, i = ${i}, j = ${j}`);
+
+            console.log(`Hi from end of loop 2, restarting loop 2`);
+
         }
     }
+
+    console.log(`Hi from end of loop 1, restarting loop 1!`);
 }
+
+
 
 /* Logs:
-hi from loop 1
-hi from loop 2
-Restarting loop 2, i = 0, j = 0
-hi from loop 2
-Restarting loop 2, i = 0, j = 1
-hi from loop 2
-j = 2 and has reached its max value, restarting loop 1
-hi from loop 1
-hi from loop 2
-Restarting loop 2, i = 1, j = 0
-hi from loop 2
-i === 1 && j === 1 has been found to be true, restarting loop 1
-hi from loop 1
-hi from loop 2
-Restarting loop 2, i = 2, j = 0
-hi from loop 2
-Restarting loop 2, i = 2, j = 1
-hi from loop 2
-Both j = 2 and i = 2 and have reached their max value, stopping the entire process
+hi from start of loop 1
+hi from start of loop 2, i = 0 and j = 0
+Hi from end of loop 2, restarting loop 2
+hi from start of loop 2, i = 0 and j = 1
+Hi from end of loop 2, restarting loop 2
+hi from start of loop 2, i = 0 and j = 2
+Hi from end of loop 2, restarting loop 2
+hi from start of loop 2, i = 0 and j = 3
+j = 3 and has reached its max value, reaching natural end of loop 2 and executing rest of loop 1
+Hi from end of loop 1, restarting loop 1!
+hi from start of loop 1
+hi from start of loop 2, i = 1 and j = 0
+Hi from end of loop 2, restarting loop 2
+hi from start of loop 2, i = 1 and j = 1
+i === 1 && j === 1 has been found to be true - 'continue loop1' - restart loop 1
+hi from start of loop 1
+hi from start of loop 2, i = 2 and j = 0
+Hi from end of loop 2, restarting loop 2
+hi from start of loop 2, i = 2 and j = 1
+Hi from end of loop 2, restarting loop 2
+hi from start of loop 2, i = 2 and j = 2
+i === 2 && j === 2 has been found to be true - 'break loop1' - break out of loop 1 and thus ending the entire process
 */
 
-
-
-// Using a labeled break with for loops
-
-let k, j;
-
-// The first for statement is labeled "loop1"
-loop1: for (k = 0; k < 3; k++) {
-
-    console.log('hi from loop 1');
-
-    // The second for statement is labeled "loop2"
-    loop2: for (j = 0; j < 3; j++) {
-
-        console.log('hi from loop 2');
-
-        if (k === 1 && j === 1) {
-            break loop1;
-        }
-
-        console.log(`k = ${k}, j = ${j}`);
-    }
-}
-
-// Logs:
-// hi from loop 1
-// hi from loop 2
-// k = 0, j = 0
-// hi from loop 2
-// k = 0, j = 1
-// hi from loop 2
-// k = 0, j = 2
-// hi from loop 1
-// hi from loop 2
-// k = 1, j = 0
-// hi from loop 2
-
-// Notice the difference with the previous continue example: 
-// when break loop1 is encountered, the execution of the outer loop is terminated, so there are no further logs beyond "i = 1, j = 0"; 
-// when continue loop1 is encountered, the execution of the outer loop continues at the next iteration, so only "i = 1, j = 1" and "i = 1, j = 2" are skipped.
+// Notice the difference between continue and break
+// When continue was executed on loop 1, it restarts from the top of loop 1
+// When break was executed on loop 2, it 'broke out' of loop 2 into loop 1, and executes the rest of loop 1
+// When break was executed on loop 1, it 'broke out' of loop 1, which is the outermost loop, therefore ending the entire process
 
 
 
@@ -669,6 +652,16 @@ do {
     console.log(i); // 0 1 2
     i++;
 } while (i < 3);
+
+
+
+// This code executes at least once even though the condition was falsy
+i = 7;
+
+do {
+    console.log(`Execute this at least once ${i}`); // Execute this at least once 7
+    i++;
+} while (i === 6);
 
 
 

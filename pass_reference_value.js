@@ -16,27 +16,37 @@
 // But if you actually change the value of the object variable 
 // you will see that the change does not persist, proving it's really pass by value.
 
+// NOTE: The value that is passed is the reference 'address' to the 'real' object
+// You need to access the 'real' object located at the reference 'address' to make any changes
+// You can't just make changes to the reference 'address' and expect anything to happen to the 'real' object
 
 
-// A good analogy will be delivering letters 
 
-const address1 = { letter: "undelivered" };
-const address2 = { letter: "undelivered" };
+// A good analogy will be a contractor visiting a house for painting
 
-function deliverLetter (add1, add2) { // We supply our postman with the addresses he has to deliver to
+const house1 = { wall: "white" };
+const house2 = { wall: "white" };
 
-    // he goes to address1 to deliver the letter
-    add1.letter = 'delivered'; // pointing directly to the member in the object that add1 is referencing with its value
+function paintWall (address1, address2) { // We supply our contractor with the addresses of the houses he has to paint
 
-    // he does not goes to address2, the letter never reaches its destination
-    add2 = { letter: 'delivered' }; // pointing to value of add2, which is a reference
+    // contractor goes to the house at address1 to paint the wall
+    // he goes to the address, gets into the house, and paint the wall pink
+
+    address1.wall = 'pink'; // pointing directly to the member in the object that address1 is referencing with its value
+
+    // contractor is literally saying address2 now has a house with a wall that is blue
+    // but he doesn't goes to address2 or access the house at address2 at all
+    // he's just stating address2 now has some random ass house with a blue wall
+    // in fact, because of this, address2 now is an entirely different address to a house the contractor made up
+
+    address2 = { wall: 'blue' }; // pointing to value of address2, which is a reference, and replacing it with another object entirely
 
 }
 
-deliverLetter(address1, address2);
+paintWall(house1, house2);
 
-console.log(address1); // { letter: 'delivered' } 
-console.log(address2); // { letter: 'undelivered' } 
+console.log(house1); // { wall: 'pink' }
+console.log(house2); // { wall: 'white' }
 
 // Simply put, changes to the object inside the function will affect the original object, as they both refer to the same object. 
 // However, reassigning the value of the variable holding the object originally will not affect the object referenced by the function.
@@ -48,6 +58,12 @@ console.log(address2); // { letter: 'undelivered' }
 
 // NOTE: The lesser used and known term that was coined is Call by sharing which applies to Ruby, JavaScript, Python, Java and so forth. 
 // It implies that all values are object, all values are boxed, and they copy a reference when they pass it as value.
+// In super simple terms, "Call by sharing" means that you are handing the function a duplicate address to your house, not the house itself.
+
+// Here is what that means in practice:
+// Imagine an Object in JavaScript is a house, and a variable is an address to that house.
+// When you pass an Object into a function, JavaScript makes a copy of your adress and gives it to the function. 
+// Now both you and the function have noted down the address to the exact same house.
 
 
 

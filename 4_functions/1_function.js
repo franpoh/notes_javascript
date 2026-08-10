@@ -174,6 +174,8 @@ console.log(hoi); // hoi there
 
 let apple = 2;
 let banana = 3;
+let pear = 7;
+let peach = 8;
 
 function multiple() { // no parameters 
     return apple * banana;
@@ -184,6 +186,9 @@ console.log(apple * banana); // 6
 
 // global-scoped variables 'apple' and 'banana' being passed into the function as arguments
 console.log(multiple(apple, banana)); // 6
+
+// global-scoped variables 'pear' and 'peach' being passed into the function as arguments
+console.log(multiple(pear, peach)); // 6
 
 // numerical values passed into the function as arguments
 console.log(multiple(4, 5)); // 6
