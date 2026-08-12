@@ -16,33 +16,37 @@
 // ----------------------------- > PRIMITIVES -----------------------------
 
 // Let's take a look at passing primitives into a function to better understand how passing objects into a function works
-// In this case, the value of the variable that we are about to pass into the function is a primitive, hence 'passing primitives'
+// In this case, the value of the variable that we are about to pass into the function is a string primitive, hence 'passing primitives'
 
 // Remember, we are passing by value: the data is copied and anything you do to the data inside the function will only affect it within the function scope
 
-let num = 10;
+let thisVariable = 'unchanged';
 
-function passPrimitiveValue(no) { 
-    console.log(`Before attempting change: ${no}`);
-    no = 100; // we attempt to change the value that was passed into the function here
-    console.log(`After attempting change: ${no}`); 
+function passPrimitiveValue(thisParameter) { 
+    console.log(`Before attempting change: ${thisParameter}`);
+    thisParameter = 'changed'; // we attempt to change the value that was passed into the function here
+    console.log(`After attempting change: ${thisParameter}`); 
 }
 
-passPrimitiveValue(num); // we call the function by passing the value of the variable 'num' into the function
-// Before attempting change: 10 - here, you can see it is merely a value - a copy of the value of 'num'
-// After attempting change: 100 - here, you can see the value has been changed, but as you will later see, only within the function scope
+// we call the function by passing the value of the variable 'thisVariable' into the function
+// essentially we are saying that the value of the parameter is now the same as the value of the variable - thisParameter = 'unchanged'
+// but it is NOT the same exact value, it is a copy. thisParameter and thisVariable do NOT share the same value. 
 
-console.log("num: ", num); 
-// num: 10 - no change occurs with the value of 'num' in the global scope, hence proving that what we passed into the function is just a copy
+passPrimitiveValue(thisVariable);
+// Before attempting change: 'unchanged' - here, you can see it is merely a value - a copy of the value of 'thisVariable'
+// After attempting change: 'changed' - here, you can see the value has been changed, but as you will later see, only within the function scope
+
+console.log("thisVariable: ", thisVariable); 
+// thisVariable: 'unchanged' - no change occurs with the value of 'thisVariable' in the global scope, hence proving that what we passed into the function is just a copy
 
 
 
 // It works differently if you change the value of a variable directly and not within a function
 
-let cyp = 10;
+let thisNumber = 10;
 
-cyp = 100; // directly changing the value of a variable
-console.log(`cyp: ${cyp}`); // cyp: 100
+thisNumber = 100; // directly changing the value of a variable
+console.log(`thisNumber: ${thisNumber}`); // thisNumber: 100
 
 
 

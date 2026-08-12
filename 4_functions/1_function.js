@@ -326,6 +326,22 @@ farewell('Werner'); // Bye Werner!
 
 
 
+/*
+Use a function declaration when:
+
+    you need to call the function before it is defined (since it is hoisted to the top) 
+    Readibility - the format of function declarations is common across different languages
+
+Use a function expression when:
+
+    the function should only defined before it is executed (since it is not hoisted to the top)
+    you want to control when the function is executed, using techniques like immediately-invoked function expressions (IIFE) - refer below for IIFE
+    you want to pass the function around like you would a variable, such as an argument to another function, or storing them in objects
+    passing an anonymous function into a callback function - refer below for Callback Functions
+*/
+
+
+
 // ----------------------------- > FUNCTION EXPRESSION >> IIFE (Immediately Invoked Function Expression) 
 
 // A function expression can be used as an IIFE (Immediately Invoked Function Expression) which runs as soon as it is defined.
@@ -371,13 +387,13 @@ farewell('Werner'); // Bye Werner!
 // If function name is omitted, it will be the variable name (implicit name). 
 // If function name is present, it will be the function name (explicit name). 
 
-let foo = function () { };
+let foo = function () { }; // variable name, no function name
 console.log(foo.name); // foo
 
 let foo2 = foo;
 console.log(foo2.name); // foo
 
-let bar = function baz() { };
+let bar = function baz() { }; // variable name and function name
 console.log(bar.name); // baz
 
 console.log(foo === foo2); // true

@@ -229,23 +229,20 @@ francine.introduction(); // Hi, my name is Werner Marschall, and I am 57 this ye
 
 
 
-// In typical function calls, this is implicitly passed like a parameter through the function's prefix *(the part before the dot). 
+// In typical function calls, this is implicitly passed like a parameter through the function's prefix
 
-// * the part before the dot: When you have an object with a method (a function assigned as a property of the object), and you call that method using the dot notation, the part before the dot is the prefix.
-
-const john = {
-    name: 'John',
-    greet: function () {
-        console.log(`Hello, my name is ${this.name}`);
+const person = {
+    name: 'Francine',
+    greeting: function () {
+        console.log(`Hello, I am ${this.name}`);
     }
 }
 
-john.greet(); // Output: Hello, my name is John
+// 'person' is the prefix, which 'this' is passed through like a parameter, and 'greeting' is the method being called
+person.greeting(); // Hello, I am Francine
 
-// In this case, john is the prefix, and greet is the method being called.
-
-// When you invoke a method using the dot notation like john.greet(), the JavaScript engine implicitly sets the value of this inside the greet function to the object that the method belongs to (john). 
-// This is why this.name inside the greet method correctly refers to the name property of the john object.
+// When you invoke a method using the dot notation like person.greeting(), the JavaScript engine implicitly sets the value of this inside the greeting method to the object that the method belongs to, which is person. 
+// This is why this.name inside the greeting method correctly refers to the name property of the person object.
 
 // However, it's important to note that the value of this can be changed or bound to different values using techniques like call(), apply(), bind(), or arrow functions. 
 // The behavior described above is just the default way this is set when calling a method on an object using the dot notation.
@@ -280,7 +277,7 @@ console.log(buddy.getName()); // Buddy the Also Dog
 
 // * prototype
 //      See Cheatsheet\coding\prototype.js
-//      You will also learn more in 9_object\prototypes.js
+//      You will also learn more in 10_object\prototypes.js
 
 const mickey = {
     name: "Mickey",
@@ -334,6 +331,7 @@ const primitiveSeven = 7;
 // You will see more in > CALL later.
 
 // using call() to set primitiveSeven as the value of 'this' in 'getThis'
+
 console.log(getThis.call(primitiveSeven)); // 7
 console.log(typeof getThis.call(primitiveSeven)); // number
 
@@ -357,7 +355,7 @@ console.log(getThis() === globalThis); // true
 // +++++ Object Conversion in Non-Strict
 
 // If the function is called with this set to a primitive value, this gets substituted with the primitive value's *wrapper object.
-// * wrapper object: See 9_object\object_wrapper.js
+// * wrapper object: See 10_object\object_wrapper.js
 
 const primitiveZeven = 7;
 
@@ -373,7 +371,7 @@ console.log(typeof getThis.call(primitiveZeven)); // object
 // Another Example
 
 function bar() {
-    console.log(Object.prototype.toString.call(this));
+    console.log(Object.prototype.toString.call(this)); // returns a string representing the object
 }
 
 bar.call(7); // [object Number]
