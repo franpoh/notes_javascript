@@ -539,7 +539,7 @@ console.log(boundAddA(1, 2, 3)); // 106
 // With arrow functions, since our add function is essentially created on the globalThis (global) scope, 
 // it will assume this is the globalThis.
 
-// See 2_this_part1.js > ARROW FUNCTIONS
+// See 4_functions\2_this_part1.js > ARROW FUNCTIONS
 
 const objB = {
     num: 100,
@@ -649,16 +649,16 @@ function outer() {
     return inner;
 }
 
-console.log(inner()); // Error: inner not defined 
+// console.log(inner()); // Error: inner not defined 
 
 let returnedFunc = outer();
+
 console.log(returnedFunc); // [Function: inner]
+console.log(returnedFunc()); // Rabbit
 
-const result = returnedFunc();
-console.log(`result = ${result}`); // Rabbit
+let returnedFuncFunc = outer()();
 
-const result1 = outer()();
-console.log(`result1 = ${result1}`); // Rabbit
+console.log(returnedFuncFunc); // Rabbit
 
 
 
