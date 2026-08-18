@@ -21,7 +21,7 @@ typeof foo; // 'object'
 // You can call any of the methods of the String object on a string literal value
 // JavaScript automatically converts the string literal to a temporary String object, calls the method, then discards the temporary String object. 
 // You can also use the length property with a string literal.
-// NOTE: See object\object_wrapper.js
+// NOTE: See 10_object\object_wrapper.js
 
 
 

@@ -248,17 +248,20 @@ console.log(pancakecakecake.replaceAll('koek', 'cake')); // pannencakecakecake
 //      g: 
 //      This is a flag that makes the regular expression global, meaning it will find all occurrences in the string, not just the first one.
 
-let pancakeLetter = 'Dearest Pannenkoek, it is your cousin, Pancake, dictating a letter from your long-lost sister, Pannenkoek...';
-let pancakeRegex = /\b(Pancake|Pannenkoek)\b/g;
+let pancakeLetter = 'Dearest Pannenkoek, it is your cousin, Pancake, dictating a letter from your long-lost sister, Pannenkoek...'; // Yes, their parents named both siblings Pannenkoek, because together they are the Pannenkoekens
+
+let pancakeRegex = /\b(Pancake|Pannenkoek)\b/g; // note the g at the end that makes it global
 let nonGlobalPancakeRegex = /\b(Pancake|Pannenkoek)\b/;
 
-console.log(pancakeLetter.replace(pancakeRegex, 'Generic Flat Cake')); // Dearest Generic Flat Cake, it is your cousin, Generic Flat Cake, dictating a letter from your long-lost sister, Generic Flat Cake...
+console.log(pancakeLetter.replace(pancakeRegex, 'Generic Flat Cake'));
+// Dearest Generic Flat Cake, it is your cousin, Generic Flat Cake, dictating a letter from your long-lost sister, Generic Flat Cake...
 
 // As you can see, we are using replace(), but yet it replaced all occurences, even repeated ones. 
 // This is due to the 'g' in the regex, meaning it will find all occurrences in the string, not just the first one
 // Here is an example without the 'g'
 
-console.log(pancakeLetter.replace(nonGlobalPancakeRegex, 'Generic Flat Cake')); // Dearest Generic Flat Cake, it is your cousin, Pancake, dictating a letter from your long-lost sister, Pannenkoek...
+console.log(pancakeLetter.replace(nonGlobalPancakeRegex, 'Generic Flat Cake')); 
+// Dearest Generic Flat Cake, it is your cousin, Pancake, dictating a letter from your long-lost sister, Pannenkoek...
 
 // Using a non-global regex with replaceAll() results in a TypeError!
 console.log(pancakeLetter.replaceAll(nonGlobalPancakeRegex, 'Generic Flat Cake')); // TypeError: String.prototype.replaceAll called with a non-global RegExp argument
@@ -399,11 +402,11 @@ Array [ "Pannenkoek", "Pannenkoek" ]
 
 
 
-// Once again, note that using a non-global regex will result in a TypeError
+// Once again, note that using a non-global regex with matchAll() will result in a TypeError
 
-console.log([...pancakeLetter.matchAll(pancakeRegex)]); // TypeError: String.prototype.matchAll called with a non-global RegExp argument
+console.log([...pancakeLetter.matchAll(nonGlobalPancakeRegex)]); // TypeError: String.prototype.matchAll called with a non-global RegExp argument
 
-console.log([...pancakeLetter.matchAll(nonGlobalPancakeRegex)]);
+console.log([...pancakeLetter.matchAll(pancakeRegex)]); 
 /* browser console output
 Array(3) [ (2) […], (2) […], (2) […] ]
     0: Array [ "Pannenkoek", "Pannenkoek" ]

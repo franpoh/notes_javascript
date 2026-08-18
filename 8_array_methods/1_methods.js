@@ -55,7 +55,7 @@ Table of Contents
 
 // ----------------------------- > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES -----------------------------
 
-// +++++ Similar functions in 7_array_methods\1_methods.js
+// +++++ Similar functions in 8_array_methods\1_methods.js
 
 //      If you need the index of the found element in the array, use findIndex().
 //      If you need to find the index of a value, use indexOf(). (It's similar to findIndex(), but checks each element for equality with the value instead of using a testing function.)
@@ -63,7 +63,7 @@ Table of Contents
 
 
 
-// +++++ Similar functions in 7_array_methods\2_iterative_methods.js
+// +++++ Similar functions in 8_array_methods\2_iterative_methods.js
 
 //      If you need to find if any element satisfies the provided testing function, use some().
 //      If you need to find all elements that satisfy the provided testing function, use filter().
@@ -107,7 +107,7 @@ console.log(numSum); // 15
 // returns -1 if item is not present.
 // If the item is present more than once, it returns the position of the first occurrence.
 
-// NOTE: See 7_array_methods\1_methods.js > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES
+// NOTE: See 8_array_methods\1_methods.js > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES
 
 
 
@@ -168,7 +168,7 @@ console.log(fruits.lastIndexOf("Apple", 9)); // 5
 
 // determines whether an array includes a certain value among its entries, returning true or false as appropriate. (including NaN, unlike indexOf).
 
-// NOTE: See 7_array_methods\1_methods.js > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES
+// NOTE: See 8_array_methods\1_methods.js > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES
 
 
 

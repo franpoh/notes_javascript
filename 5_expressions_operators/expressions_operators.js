@@ -184,7 +184,7 @@ console.log(5 >= 4); // true
 // Logical operators are typically used with Boolean(logical) values; when they are, they return a Boolean value.
 
 // However, the && and || operators actually return the value of one of the specified operands, 
-// so if these operators are used with non - Boolean values, they may return a non-Boolean value.
+// so if these operators are used with non-Boolean values, they may return a non-Boolean value.
 
 // Examples of expressions that can be converted to false are those that evaluate to null, 0, NaN, the empty string (""), or undefined. 
 
@@ -286,14 +286,22 @@ console.log((null || undefined) ?? "foo"); // foo
 
 
 
-let z = 1;
+// +++++ Showing examples for ??= and how short circuiting works with it
 
-console.log(z ??= y); // 1
-// Nullish coalescing assignment short-circuits, which means that the above is equivalent to
-console.log(z ?? (z = y)); // 1
+let z = "I'm x!";
+let y = "I'm y!";
+
+console.log(z ??= y); // I'm x!
+
+// ?? operator short-circuits, which means that the above is equivalent to
+console.log(z ?? (z = y)); // I'm x!
+
+// As z is a defined value, the ?? operator returns its left-hand operand, which is the value of z 
 
 z = null;
-console.log(z ??= y); // y is not defined
+
+// as z is now null, the ?? operator returns its right-hand operand, which is to assign z to y
+console.log(z ??= y); // I'm y!
 
 
 
@@ -313,7 +321,7 @@ v ??= console.log("y evaluated"); // Logs nothing
 
 // NOTE: Useful Example
 
-// You can use the nullish coalescing assignment operator to apply default values to object properties. 
+// You can use the ?? operator to apply default values to object properties. 
 // Compared to using destructuring and default values, ??= also applies the default value if the property has value null.
 
 function config(options) {
@@ -337,12 +345,12 @@ let a = 10;
 // Unary Plus +  
 // convert an operand into a number
 
-console.log("+a: ", a = +a); // 10
+console.log("+a: ", a = +a); // +a:  10
 
 // Unary Minus -
 // convert an operand into a number and negate the value after that.
 
-console.log("-a: ", a = -a); // -10
+console.log("-a: ", a = -a); // -a:  -10
 
 
 
@@ -434,7 +442,7 @@ console.log(currentStatus); // adult
 
 // * prototype
 //      See Cheatsheet\coding\prototype.js
-//      You will also learn more in 9_object\prototypes.js
+//      You will also learn more in 10_object\prototypes.js
 
 function Car(make, model, year) {
     this.make = make;

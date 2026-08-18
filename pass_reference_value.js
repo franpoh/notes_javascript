@@ -1,10 +1,9 @@
 
 // You learn about 'pass by value' and 'pass by reference'
 
-// NOTE:Pass by Value: the data is copied and anything you do to it inside the function will only persist in the function scope
+// NOTE:Pass by Value: the original data is copied and anything you do to it inside the function will only persist in the function scope
 
-// NOTE: Pass by Reference: you are given a pointer/handle/reference to the data, and it refers to the same underlying data as the original scope. 
-// So if you modify it, that can be seen outside the scope. 
+// NOTE: Pass by Reference: you are given a pointer/reference to the original data, and anything you do to it inside the function will persist outside the function scope 
 
 
 
@@ -73,14 +72,14 @@ console.log(`passingObject's changeThis: ${passingObject.changeThis}`);
 
 
 
-// Remember, pass by reference: you are given a pointer/handle/reference to the data, and it refers to the same underlying data as the original scope. 
+// Remember, pass by reference: you are given a pointer/reference to the original data, and anything you do to it inside the function will persist outside the function scope 
 // So if you modify it, that can be seen outside the scope - as it demonstrated in the above example
 
 // So this example makes it look like pass by reference - but it isn't
 
 
 
-// When the value of a variable is an object, that value is actually a reference - it is pointing to the actual value stored somewhere in memory
+// When the value of a variable is an object, that value is actually a reference - it is pointing to the actual data stored somewhere in memory
 // variable = {object} - the variable points to its value, and the value points to an object in memory
 
 // +++++ Here is an example that demonstrates how the value points to an object in memory
@@ -103,8 +102,8 @@ passObjectFunction(passingObject);
 console.log(`passingObject's changeThis: ${passingObject.changeThis}`); // passingObject's changeThis: changed
 console.log(`copyObject's changeThis: ${copyObject.changeThis}`); // copyObject's changeThis: changed
 
-// As you can see in the above example, both passingObject and copyObject were changed both in the function scope and global scope, even though we only appear to have changed the member of passingObject
-// This demonstrates how the value of both the passingObject and copyObject variable were pointing at the same object 
+// As you can see in the above example, both passingObject and copyObject were changed both in the function scope and global scope, even though we only appear to have changed the member of passingObject's object
+// This demonstrates how the value of both the passingObject and copyObject variables were pointing at the same object 
 
 
 
@@ -113,21 +112,27 @@ console.log(`copyObject's changeThis: ${copyObject.changeThis}`); // copyObject'
 // Thus we say that Javascript is always Pass by Value
 
 // +++++ Here is example that demonstrates that even though passing an object into a function looks like pass by reference
-// it is in fact pass by value - the data is copied and anything you do to it inside the function will only persist in the function scope
+// it is in fact pass by value - the original data is copied and anything you do to it inside the function will only persist in the function scope
 
 let passObjectWrong = {changeThis: 'unchanged'};
 let passObjectCorrect = {changeThis: 'unchanged'};
 
-function passObjectFunction (passObjectWrong, passObjectCorrect) { // passing in the copied values of whichever variables we call this function with
-    console.log(`Before changing passObjectWrong's changeThis: ${passObjectWrong.changeThis}`);
-    console.log(`Before changing passObjectCorrect's changeThis: ${passObjectCorrect.changeThis}`);
+function passObjectFunction (passedWrong, passedCorrect) { // passing in the copied values of whichever variables we call this function with
+
+    console.log(`Before changing passObjectWrong's changeThis: ${passedWrong.changeThis}`);
+    console.log(`Before changing passObjectCorrect's changeThis: ${passedCorrect.changeThis}`);
 
     // we attempt to change a member in the object that was passed into the function here - note the difference between the two
-    passObjectWrong = {changeThis: 'changed'}; // changing the copied value 
-    passObjectCorrect.changeThis = 'changed'; // going to the member of the object that the copied value is pointing at, and changing it
 
-    console.log(`After changing passObjectWrong's changeThis: ${passObjectWrong.changeThis}`);
-    console.log(`After changing passObjectCorrect's changeThis: ${passObjectCorrect.changeThis}`);
+    passedWrong = {changeThis: 'changed'}; 
+    // changing the copied value - the copied value is now something else entirely and no longer pointing at passObjectWrong's object
+    
+    passedCorrect.changeThis = 'changed'; 
+    // going to the member of the object that the copied value is pointing at, and changing it - we are accessing passObjectCorrect's object member directly by 'following' the pointer
+
+    console.log(`After changing passObjectWrong's changeThis: ${passedWrong.changeThis}`);
+    console.log(`After changing passObjectCorrect's changeThis: ${passedCorrect.changeThis}`);
+
 }
 
 passObjectFunction(passObjectWrong, passObjectCorrect); // here, we can see that both objects were changed in the function scope
@@ -140,10 +145,26 @@ After changing passObjectCorrect's changeThis: changed
 */ 
 
 console.log(`passObjectWrong's changeThis: ${passObjectWrong.changeThis}`);
-// passObjectWrong's changeThis: unchanged - it remains unchanged in the original variable in global scope - hence proving what we changed was merely a copied value
+// passObjectWrong's changeThis: unchanged - it remains unchanged in the original variable in global scope - hence proving what we changed in the function was merely a copied value
 
 console.log(`passObjectCorrect's changeThis: ${passObjectCorrect.changeThis}`);
 //passObjectCorrect's changeThis: changed - it has been changed in the original variable in global scope as well
+
+
+
+// NOTE: We have been talking a lot about references/pointers to objects in relation to modifying them in functions
+// But remember, if an object is assigned to a variable, that variable's value is a reference/pointer to the object, which applies even if we are not working with functions 
+
+passingObject = {nameOfObject: 'Object A'}; 
+copyObject = passingObject
+
+console.log(`What object am I pointing at: ${passingObject.nameOfObject}`); // What object am I pointing at: Object A
+console.log(`What object am I pointing at: ${copyObject.nameOfObject}`); // What object am I pointing at: Object A
+
+passingObject = {nameOfObject: 'Object B'}; // we change passObject's value as a pointer/reference to Object A to a value as a pointer/reference to Object B
+
+console.log(`What object am I pointing at: ${passingObject.nameOfObject}`); // What object am I pointing at: Object B
+console.log(`What object am I pointing at: ${copyObject.nameOfObject}`); // What object am I pointing at: Object A
 
 
 
