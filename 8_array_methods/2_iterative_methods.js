@@ -75,24 +75,27 @@ Array.iterativeMethod((value) => {
 // calls a function (a callback function) once for each array element.
 
 let numArray = [45, 4, 9, 16, 25];
-let text = "";
+let text = "The current number is";
 
 function callbackFunction(value) {
-    text += value + "/";
+    console.log(text.concat(` ${value}`));
 }
 
 numArray.forEach(callbackFunction);
+/*
+The current number is 45
+The current number is 4
+The current number is 9
+The current number is 16
+The current number is 25
+*/
 
-console.log(text); // 45/4/9/16/25/
-
-// The above code be written as a forEach argument, making it more concise
+// The above code be written as an arrow function as a forEach argument, making it more concise
 
 numArray = [45, 4, 9, 16, 25];
-text = "";
+text = "The current number is";
 
-numArray.forEach((value) => text += value + "/")
-
-console.log(text); // 45/4/9/16/25/
+numArray.forEach((value) => console.log(text.concat(` ${value}`)))
 
 
 
@@ -225,7 +228,7 @@ console.log(newerNumArray); // [ 45, 4, 4, 9, 16, 16, 25]
 
 // creates a shallow copy of a portion of a given array, filtered down to just the elements from the given array that pass the test implemented by the provided function.
 
-// NOTE: See 7_array_methods\1_methods.js > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES
+// NOTE: See 8_array_methods\1_methods.js > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES
 
 
 
@@ -323,7 +326,7 @@ function callbackFunction(accumulator, currentValue) {
     return returnValue;
 }
 
-console.log(sum);
+console.log(`The final result of running the reducer is ${sum}.`);
 /* 
 accumulator: 45, currentValue: 4
 returnValue, which will become the accumulator on the next execution of the callbackFunction: 49
@@ -333,7 +336,7 @@ accumulator: 58, currentValue: 16
 returnValue, which will become the accumulator on the next execution of the callbackFunction: 74
 accumulator: 74, currentValue: 25
 returnValue, which will become the accumulator on the next execution of the callbackFunction: 99
-99
+The final result of running the reducer is 99.
 */
 
 
@@ -354,7 +357,7 @@ function callbackFunction(accumulator, currentValue) {
     return returnValue;
 }
 
-console.log(sum);
+console.log(`The final result of running the reducer is ${sum}.`);
 /* 
 accumulator: 16, currentValue: 45
 returnValue, which will become the accumulator on the next execution of the callbackFunction: 61
@@ -366,7 +369,7 @@ accumulator: 74, currentValue: 16
 returnValue, which will become the accumulator on the next execution of the callbackFunction: 90
 accumulator: 90, currentValue: 25
 returnValue, which will become the accumulator on the next execution of the callbackFunction: 115
-115
+The final result of running the reducer is 115.
 */
 
 
@@ -393,7 +396,7 @@ function callbackFunction(accumulator, currentValue) {
     return returnValue;
 }
 
-console.log(sum);
+console.log(`The final result of running the reducer is ${sum}.`);
 /* 
 accumulator: 25, currentValue: 16
 returnValue, which will become the accumulator on the next execution of the callbackFunction: 41
@@ -403,7 +406,7 @@ accumulator: 50, currentValue: 4
 returnValue, which will become the accumulator on the next execution of the callbackFunction: 54
 accumulator: 54, currentValue: 45
 returnValue, which will become the accumulator on the next execution of the callbackFunction: 99
-99
+The final result of running the reducer is 99.
 */
 
 
@@ -433,7 +436,7 @@ console.log(adults.every(callbackFunction)); // true
 // It returns true if, in the array, it finds an element for which the provided function returns true; otherwise it returns false. 
 // It doesn't modify the array. 
 
-// NOTE: See 7_array_methods\1_methods.js > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES
+// NOTE: See 8_array_methods\1_methods.js > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES
 
 
 
@@ -452,7 +455,7 @@ console.log(underAge.some((age) => age >= 18)); // false
 // returns the first element in the provided array that satisfies the provided testing function. 
 // If no values satisfy the testing function, undefined is returned. 
 
-// NOTE: See 7_array_methods\1_methods.js > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES
+// NOTE: See 8_array_methods\1_methods.js > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES
 
 
 
@@ -490,7 +493,7 @@ console.log(first); // 16
 // returns the index of the first element in an array that satisfies the provided testing function. 
 // If no elements satisfy the testing function, -1 is returned. 
 
-// NOTE: See 7_array_methods\1_methods.js > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES
+// NOTE: See 8_array_methods\1_methods.js > SIMILAR METHODS FOR FINDING PARTICULAR ELEMENTS/INDICES
 
 
 
@@ -543,11 +546,11 @@ console.log(numArray.findLastIndex((value) => value < 18)); // 2
 
 // Create an Array Iterator object, containing the keys of the array:
 
-const array1 = ['a', 'b', 'c'];
-const iterator = array1.keys();
+let arrayOfThings = ['a', 'b', 'c'];
+let iteratorOfArray = arrayOfThings.keys();
 
-console.log(iterator); // Object [Array Iterator] {}
+console.log(iteratorOfArray); // Object [Array Iterator] {}
 
-for (const key of iterator) {
-    console.log(key);
+for (const key of iteratorOfArray) {
+    console.log(key); // 0 1 2
 }

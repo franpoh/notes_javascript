@@ -593,7 +593,7 @@ console.log(months); // [ 'March', 'Jan', 'Feb', 'Dec' ]
 
 // ----------------------------- > ACCESSING EVERY ITEM -----------------------------
 
-// See 7_array_methods/2_iteration_methods.js
+// See 8_array_methods/2_iterative_methods.js
 
 const birds = ['Parrot', 'Falcon', 'Owl'];
 

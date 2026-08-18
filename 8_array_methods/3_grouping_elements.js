@@ -90,4 +90,4 @@ console.log(inventory);
 // If you can't use a string as the key, for example, if the information to group is associated with an object that might change, then you can instead use Map.groupBy().
 // This is very similar to Object.groupBy() except that it groups the elements of the array into a *Map that can use an arbitrary value (object or primitive) as a key.
 
-// * Map: See 8_keyed_collections\map_set
+// * Map: See 9_keyed_collections\1_map.js

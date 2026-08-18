@@ -2,13 +2,12 @@
 Table of Contents
 
 > BASICS
->> Array Destructuring
->> Object Destructuring
+> REST PROPERTY
+> ARRAY & OBJECT DESTRUCTURING
 > BINDING AND ASSIGNMENT
 >> Binding
 >> Assignment
 > DEFAULT VALUE
-> REST PROPERTY
 
 > EXAMPLES
 >> Swapping Variables in One Expression
@@ -38,122 +37,171 @@ Table of Contents
 
 // The destructuring assignment syntax is a JavaScript expression 
 // that makes it possible to unpack values from arrays, or properties from objects, into distinct variables.
+
+
+
+// +++++ Array Destructuring Syntax: [array of variables] = [array of values]
+
+let [unpack1, unpack2, unpack3] = ['pack1', 'pack2', 'pack3'];
+
+console.log(unpack1); // pack1
+console.log(unpack2); // pack2
+console.log(unpack3); // pack3
+
+// +++++ Object Destructuring Syntax: {object with variables} = {object with values}
+
+let {unpackA, unpackB, unpackC} = {unpackA: 'packA', unpackB: 'packB', unpackC: 'packC'};
+
+console.log(unpackA); // packA
+console.log(unpackB); // packB
+console.log(unpackC); // packC
+
+
+
 // Destructuring makes it easy to extract only what is needed
 
+// But before we get right into destructuring, let's look at an important component of unpacking values: Rest Property
 
 
-// ----------------------------- > BASICS >> Array Destructuring
 
-let a, b, rest;
+// ----------------------------- > REST PROPERTY -----------------------------
 
-[a, b] = [10, 20];
+// You can end a destructuring pattern with a rest property: ...rest
+// This pattern will store all remaining properties of the object or array into a new object or array.
+// This is useful if you want to unpack all the values but have no idea what remains, as you have to assign a variable to each value that you are unpacking
+
+
+
+// +++++ Example with Array
+
+let [first, second, third, ...andTheRest] = [1, 2, 3, 4 ,5];
+
+console.log(first); // 1
+console.log(second); // 2 
+console.log(third); // 3
+console.log(andTheRest); // [ 4, 5 ] - note that the rest of the values is in an array
+
+
+
+// +++++ Example with Object
+
+let { cat, dog, mouse, ...restOfAnimals } = { cat: 'kitty', dog: 'rover', mouse: 'mortimer', crocodile: 'handbag', alpaca: 'dang bastard' };
+
+console.log(cat); // kitty
+console.log(dog); // rover
+console.log(mouse); // mortimer
+console.log(restOfAnimals); // { crocodile: 'handbag', alpaca: 'dang bastard' } - note that the rest of the values is in an object
+
+
+
+// +++++ Example with unequal numbers of variables vs values
+
+let [danish, salad, omelette, sausage, juice] = ['chocolate', 'caesar', 'cheese']; 
+
+console.log(danish); // chocolate
+console.log(salad); // caesar
+console.log(omelette); // cheese
+console.log(sausage); // undefined - these last two variables have no values assigned to them
+console.log(juice); // undefined
+
+
+
+// +++++ And Vice Versa
+
+let [shark, turtle, fish] = ['tiger', 'green', 'tuna', 'blue', 'moray'];
+
+console.log(shark); // tiger
+console.log(turtle); // green
+console.log(fish); // tuna
+
+// The rest of the values remain unpacked and not assigned to any variables 
+// Therefore, consider always having a 'rest' variable at the end to unpack and store any remaining values
+
+
+
+// ----------------------------- > ARRAY & OBJECT DESTRUCTURING -----------------------------
+
+// +++++ We will first take a look at Array Destructuring
+
+let a, b, restOfValues;
+
+[a, b] = [10, 20]; 
+// assigning the value 10 to the variable a, and the value 20 to the variable b
 
 console.log(a); // 10
 console.log(b); // 20
 
 
 
-[a, b, ...rest] = [10, 20, 30, 40, 50];
+[a, b, ...restOfValues] = [10, 20, 30, 40, 50]; 
+// assigning the variables 10 to a and 20 to b. 
+// the rest of the array members are assigned to the 'rest' variable restOfValues
 
 console.log(a); // 10
 console.log(b); // 20
-console.log(rest); // [30, 40, 50]
+console.log(rest); // [30, 40, 50] 
 
 
 
 const colours = ['one', 'two', 'three'];
 
-const [red, yellow, green] = colours;
+const [red, yellow, green] = colours; // assigning the members of the array 'colours' to the variables red, yellow and green in the same order
 console.log(red); // one
 console.log(yellow); // two
 console.log(green); // three
 
 
 
-let [...everythingElse] = ['carrot', 'potato', 'onion']; // using rest syntax
+let [...everythingElse] = ['carrot', 'potato', 'onion']; // using rest 
 
 console.log(everythingElse); // [ 'carrot', 'potato', 'onion' ]
 console.log(everythingElse[1]); // potato
 
 
 
-let { ...anythingElse } = { veg1: 'carrot', veg2: 'potato', veg3: 'onion' };
+// +++++ Now let's take a look at Object Destructuring
 
-console.log(anythingElse); // { veg1: 'carrot', veg2: 'potato', veg3: 'onion' }
-console.log(anythingElse.veg2); // potato
-
-
-
-// In an array destructuring from an array of length N specified on the right-hand side of the assignment
-// if the number of variables specified on the left-hand side of the assignment is greater than N
-// only the first N variables are assigned values. 
-// The values of the remaining variables will be undefined.
-
-const food = ['one', 'two'];
-
-const [danish, salad, omelette, sausage] = food;
-
-console.log(danish); // one
-console.log(salad); // two
-console.log(omelette); // undefined
-console.log(sausage);  //undefined
-
-
-
-// ----------------------------- > BASICS >> Object Destructuring
-
-({ a, b } = { a: 10, b: 20 });
+({ a, b } = { a: 10, b: 20 }); // note that we are unpacking the key-value pairs of the object by directly referencing the key of the value - in this case, 'a' and 'b'
 
 console.log(a); // 10
 console.log(b); // 20
 
 
 
-({ a, b, ...rest } = { a: 10, b: 20, c: 30, d: 40 });
+// what happens when we try to assign the values we are unpacking to another variable name?
+
+let firstNumber, secondNumber;
+
+({ firstNumber, secondNumber } = { a: 10, b: 20 }); 
+
+console.log(firstNumber); // undefined
+console.log(secondNumber); // undefined
+
+// You have to assign your preferred variable name to the key of the key-value pair 
+
+({ a: firstNumber, b: secondNumber } = { a: 10, b: 20 }); 
+
+console.log(firstNumber); // 10
+console.log(secondNumber); // 20
+
+// This demonstrates how the statement is structured - { propertyToFind: variableToAssign } = { propertyToFind: value }
+// You can see that the left-hand side mirrors the right-hand side
+
+
+
+({ a, b, ...restOfValues } = { a: 10, b: 20, c: 30, d: 40 });
 
 console.log(a); // 10
 console.log(b); // 20
-console.log(rest); // {c: 30, d: 40}
-console.log(c); // c is not defined
+console.log(restOfValues); // {c: 30, d: 40}
+console.log(restOfValues.c); // 30
+console.log(c); // error - c is not defined - it is not a global variable but a key inside the restOfValues object
 
 
 
-const person = {
-    id: 42,
-    isVerified: true,
-};
+({ ...restOfValues } = { a: 10, b: 20, c: 30, d: 40 });
 
-const { id, isVerified } = person;
-
-console.log(id); // 42
-console.log(isVerified); // true
-
-
-
-// This variable name assignment will not work
-
-const anotherPerson = {
-    id: 42,
-    isVerified: true,
-};
-
-const { firstProp, secondProp } = anotherPerson;
-console.log(firstProp); // undefined
-console.log(secondProp); // undefined
-
-
-
-// This variable name assignment will work
-// see > EXAMPLES >> Assigning To New Variable Names
-
-const otherPerson = {
-    id: 42,
-    isVerified: true,
-};
-
-const { id: oneProp, isVerified: twoProp } = otherPerson; // value of id/isVerified is being assigned to new variable names oneProp/twoProp
-console.log(oneProp); // 42
-console.log(twoProp); // true
+console.log(restOfValues); // { a: 10, b: 20, c: 30, d: 40 }
 
 
 
@@ -331,27 +379,6 @@ console.log(caper); // null
 const { bay = console.log("hey") } = { bay: 2 };
 console.log(bay); // 2 - Does not log "hey", because `bay` is defined and there's no need to evaluate the default value.
 
-
-
-// ----------------------------- > REST PROPERTY -----------------------------
-
-// You can end a destructuring pattern with a rest property ...rest. 
-// This pattern will store all remaining properties of the object or array into a new object or array.
-
-const { allspice, ...others } = { allspice: 1, borage: 2, cumin: 3 };
-console.log(others); // { borage: 2, cumin: 3 }
-
-const [first, ...others2] = [1, 2, 3];
-console.log(others2); // [ 2, 3 ]
-
-
-
-// The rest property must be the last in the pattern, and must not have a trailing comma.
-// Always consider using rest operator as the last element
-
-/* 
-const [a, ...b,] = [1, 2, 3]; // SyntaxError: rest element may not have a trailing comma
-*/
 
 
 
