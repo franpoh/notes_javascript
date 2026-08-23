@@ -3,7 +3,8 @@ Table of Contents
 
 > BASICS
 > REST PROPERTY
-> ARRAY & OBJECT DESTRUCTURING
+> ARRAY DESTRUCTURING
+> OBJECT DESTRUCTURING
 > BINDING AND ASSIGNMENT
 >> Binding
 >> Assignment
@@ -119,9 +120,7 @@ console.log(fish); // tuna
 
 
 
-// ----------------------------- > ARRAY & OBJECT DESTRUCTURING -----------------------------
-
-// +++++ We will first take a look at Array Destructuring
+// ----------------------------- > ARRAY DESTRUCTURING -----------------------------
 
 let a, b, restOfValues;
 
@@ -159,12 +158,26 @@ console.log(everythingElse[1]); // potato
 
 
 
-// +++++ Now let's take a look at Object Destructuring
+// ----------------------------- > OBJECT DESTRUCTURING -----------------------------
 
 ({ a, b } = { a: 10, b: 20 }); // note that we are unpacking the key-value pairs of the object by directly referencing the key of the value - in this case, 'a' and 'b'
 
 console.log(a); // 10
 console.log(b); // 20
+
+
+
+// NOTE: The parentheses ( ... ) around the assignment statement are required when using object literal destructuring assignment without a declaration.
+
+// { a, b } = { a: 1, b: 2 } - This is not valid stand-alone syntax
+// {a, b} on the left-hand side is considered a block and not an object literal. 
+
+// This is valid stand-alone syntax:
+// ({ a, b } = { a: 1, b: 2 }) - note the parentheses
+// const { a, b } = { a: 1, b: 2 } - note that it is declaring variables
+
+// If your coding style does not include trailing semicolons, 
+// the ( ... ) expression needs to be preceded by a semicolon, or it may be used to execute a function on the previous line.
 
 
 
@@ -205,38 +218,6 @@ console.log(restOfValues); // { a: 10, b: 20, c: 30, d: 40 }
 
 
 
-// -----------------------------
-
-// The object and array literal expressions provide an easy way to create ad hoc packages of data.
-
-const x = [1, 2, 3, 4, 5];
-
-// The destructuring assignment uses similar syntax, 
-// but on the left-hand side of the assignment to define what values to unpack from the sourced variable.
-
-const [y, z] = x;
-
-console.log(y); // 1
-console.log(z); // 2
-
-// Similarly, you can destructure arrays on the left-hand side of the assignment
-
-const objj = { d: 1, e: 2 };
-const { d, e } = objj;
-
-console.log(d); // 1
-console.log(e); // 2
-
-// Experiment
-
-const objjj = { d: 1, e: 2 };
-const { m, n } = objjj;
-
-console.log(m); // undefined    
-console.log(n); // undefined
-
-
-
 // NOTE: Destructuring patterns with other syntaxes
 // In many syntaxes where the language binds a variable for you, you can use a destructuring pattern as well. These include:
 
@@ -265,7 +246,10 @@ console.log(n); // undefined
 // In binding patterns, the pattern starts with a declaration keyword (var, let, or const). 
 // Then, each individual property must either be bound to a variable or further destructured.
 
-const objA = { apple: 1, banana: { cherry: 2 } };
+const objA = { 
+    apple: 1, 
+    banana: { cherry: 2 } 
+};
 
 // Two variables are bound: apple and date
 // banana and cherry remains undefined
@@ -285,7 +269,10 @@ console.log(cherry); // Error : not defined
 // so if you want some variables to be re-assignable but others to be read-only, 
 // you may have to destructure twice — once with let, once with const.
 
-const objB = { avocado: 1, brinjal: { carrot: 2 } };
+const objB = { 
+    avocado: 1, 
+    brinjal: { carrot: 2 } 
+};
 
 const { avocado } = objB; // avocado is constant
 
@@ -310,40 +297,32 @@ console.log(daikon); // 5
 // which may either be declared beforehand with var or let, or is a property of another object — 
 // in general, anything that can appear on the left-hand side of an assignment expression.
 
+
+
+// +++++ Example assigning object members to array members
+
 const no = [];
 
 const objNo = { a: 1, b: 2 };
 
-({ a: no[0], b: no[1] } = objNo);
+({ a: no[1], b: no[2] } = objNo); // The properties `a` and `b` of objNo are assigned to properties of `no`
 
-// The properties `a` and `b` of objNo are assigned to properties of `no`
-console.log(no[0]); // 1
-console.log(no[1]); // 2
-
-
-
-// NOTE: The parentheses ( ... ) around the assignment statement are required when using object literal destructuring assignment without a declaration.
-
-// { a, b } = { a: 1, b: 2 } is not valid stand-alone syntax, as the {a, b} on the left-hand side is considered a block and not an object literal. 
-// However, ({ a, b } = { a: 1, b: 2 }) is valid, as is const { a, b } = { a: 1, b: 2 }.
-
-// If your coding style does not include trailing semicolons, 
-// the ( ... ) expression needs to be preceded by a semicolon, or it may be used to execute a function on the previous line.
+console.log(no); // [ <1 empty item>, 1, 2 ]
+console.log(no[0]); // undefined
+console.log(no[1]); // 1
+console.log(no[2]); // 2
 
 
+// +++++ Example assigning array members to object members
 
-// Note that the equivalent binding pattern of the code above is not valid syntax:
+const arrNum = [1, 2]
 
-/* 
-const numbers = [];
-const obj = { a: 1, b: 2 };
-const { a: numbers[0], b: numbers[1] } = obj;
-*/
+let objNum = { a: 0, b: 0 };
 
-// This is equivalent to:
-// const numbers[0] = obj.a;
-// const numbers[1] = obj.b;
-// Which definitely is not valid.
+[ objNum.a, objNum.b ] = arrNum; 
+
+console.log(objNum.a); // 1
+console.log(objNum.b); // 2
 
 
 
@@ -448,48 +427,86 @@ console.log(c); // 1
 
 // ----------------------------- > EXAMPLES >> Using A Binding Pattern As The Rest Property
 
-// The rest property of array destructuring assignment can be another array or object binding pattern. 
-// The inner destructuring destructures from the array created after collecting the rest elements, 
-// so you cannot access any properties present on the original iterable in this way.
+// Remember what we learned in the section > BINDING AND ASSIGNMENT >> Binding ?
 
-const [een, twee, ...{ length }] = [1, 2, 3, 4, 5]; // See > ACCESSING OBJECT PROPERTY WITH DESTRUCTURING for { length } explanation
-
-console.log(een, twee); // 1 2
-console.log(length); // 3
+// In binding patterns, the pattern starts with a declaration keyword (var, let, or const). 
+// Then, each individual property must either be bound to a variable or further destructured. 
 
 
 
-const [crabapple, ...pear] = [1, 2, 3];
-
-console.log(crabapple); // 1
-console.log(pear); // [2, 3]
+// The rest property of array destructuring assignment can be an Array binding pattern or Object binding pattern
+// NOTE: However, there is a big difference between the Array rest ...[] and Object rest ...{}
 
 
 
-const [plum, mango, ...[cherry, starfruit]] = [1, 2, 3, 4];
-console.log(plum, mango, cherry, starfruit); // 1 2 3 4
+// In Array Destructuring: You can put another nested pattern (an array ...[...] or an object ...{...}) directly inside the rest operator.  
+
+let [arrA, arrB, ...[ restArray ]] = [1, 2, 3];
+let [arr1, arr2, ...{ object }] = [1, 2 , 3];
 
 
+
+// In Object Destructuring: The rest operator must be a plain variable name (an identifier). You cannot nest another pattern inside an object rest operator. 
+
+// const { appel, ...{ restOfFruit } } = { appel: 1, banaan: 2, orange: 3 }; 
+// SyntaxError: `...` must be followed by an identifier in declaration contexts
+
+let { appel, ...restOfFruit } = { appel: 1, banaan: 2, orange: 3 }; // only a plain variable name for the rest operator is valid
+
+
+
+// +++++ Simple Examples with Array binding pattern
+
+const [plum, mango, ...[cherry, starfruit]] = [1, 2, 3, 4]; // ...[cherry, starfruit] is a new, temporary array and cannot be accessed outside of this line
+
+console.log(plum); // 1
+console.log(mango); // 2
+console.log(cherry); // 3
+console.log(starfruit); // 4
 
 // These binding patterns can even be nested, as long as each rest property is the last in the list.
 
 const [angelica, bellflower, ...[cornflower, dandelion, ...[elder, frangipani]]] = [1, 2, 3, 4, 5, 6];
+
 console.log(angelica, bellflower, cornflower, dandelion, elder, frangipani); // 1 2 3 4 5 6
 
 
 
-// On the other hand, object destructuring can only have an identifier as the rest property.
+// +++++ Example with Object binding pattern
 
-/* 
-const { appel, ...{ banaan } } = { a: 1, b: 2 }; 
-*/
-// SyntaxError: `...` must be followed by an identifier in declaration contexts
+// We extract the first two elements of the array into een and twee
+// Collect the rest of the elements (3, 4, 5) into a new, temporary array
+// it then extracts the .length property off that newly created rest array using ...{ length }
 
-/* 
-let aardappel, bitterballen;
-({ aardappel, ...{ bitterballen } } = { a: 1, b: 2 }); 
-*/
-// SyntaxError: `...` must be followed by an assignable reference in assignment contexts
+const [een, twee, ...{ length }] = [1, 2, 3, 4, 5]; 
+
+console.log(een, twee); // 1 2
+console.log(length); // 3
+
+// What is going on? Why are we getting the .length property of this temporary array instead of assigning the rest of the array members to an object named length?
+// See > ACCESSING OBJECT PROPERTY WITH DESTRUCTURING for more { length } explanation
+
+
+
+// Remember that I pointed out a temporary array earlier?
+// There is a reason why when you use ...{ length }, it returns the length of the new, temporary array rather than the original array
+
+// This is because the binding pattern operates on the new temporary array made by the rest property 
+// Therefore, any custom/extra properties attached to the original array are lost. 
+
+// +++++ Example demonstrating the loss of properties attached to the original array
+
+let fruitArray = ["banana", "blueberry", "pear"]; 
+
+fruitArray.fruitLocation = "fruit basket"; // assigning the array a 'fruitLocation' property
+console.log(fruitArray.fruitLocation); // fruit basket
+
+let [ bunch, box, piece, ... { fruitLocation } ] = fruitArray;
+
+console.log(bunch); // banana
+console.log(box); // blueberry
+console.log(piece); // pear
+console.log(fruitLocation); // undefined - this is because the new, temporary array does not have the fruitLocation property that the original fruitArray has
 
 
 
@@ -859,15 +876,6 @@ console.log(prot); // "456"
 
 ({ length } = ['oops', 'gasp', 'shout', 'sun']); // length: Gets or sets the length of the array.
 console.log(length); // 4
-
-
-
-// Starting with the basic object destructuring:
-
-({ one, two } = { one: 'oops', two: 'gasp' });
-console.log(one); // oops
-
-
 
 // Taking a look under the hood of an array
 
