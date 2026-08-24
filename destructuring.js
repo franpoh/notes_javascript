@@ -7,16 +7,15 @@ Table of Contents
 > OBJECT DESTRUCTURING
 > BINDING AND ASSIGNMENT
 >> Binding
+>> Using A Binding Pattern As The Rest Property
 >> Assignment
+> ACCESSING OBJECT PROPERTY WITH DESTRUCTURING
 > DEFAULT VALUE
 
 > EXAMPLES
 >> Swapping Variables in One Expression
 >> Parsing An Array Returned From A Function
 >> Ignoring Some Returned Values
->> Using A Binding Pattern As The Rest Property
->> Unpacking Values From A Regular Expression Match
->> Using Array Destructuring On Any Iterable
 >> Assigning To New Variable Names
 >> Assigning To New Variables Names And Providing Default Values
 >> Unpacking Fields From Objects Passed As A Function Parameter
@@ -28,8 +27,6 @@ Table of Contents
 >> Destructuring Primitive Values
 >> Combined Array and Object Destructuring
 >> The Prototype Chain Is Looked Up When The Object Is Deconstructed 
-
-> ACCESSING OBJECT PROPERTY WITH DESTRUCTURING
 */
 
 
@@ -289,6 +286,91 @@ console.log(daikon); // 5
 
 
 
+// ----------------------------- > BINDING AND ASSIGNMENT >> Using A Binding Pattern As The Rest Property
+
+// Remember what we learned in the section > BINDING AND ASSIGNMENT >> Binding ?
+
+// In binding patterns, the pattern starts with a declaration keyword (var, let, or const). 
+// Then, each individual property must either be bound to a variable or further destructured. 
+
+
+
+// The rest property of array destructuring assignment can be an Array binding pattern or Object binding pattern
+// NOTE: However, there is a big difference between the Array rest ...[] and Object rest ...{}
+
+
+
+// In Array Destructuring: You can put another nested pattern (an array ...[...] or an object ...{...}) directly inside the rest operator.  
+
+let [arrA, arrB, ...[ restArray ]] = [1, 2, 3];
+let [arr1, arr2, ...{ object }] = [1, 2 , 3];
+
+
+
+// In Object Destructuring: The rest operator must be a plain variable name (an identifier). You cannot nest another pattern inside an object rest operator. 
+
+// const { appel, ...{ restOfFruit } } = { appel: 1, banaan: 2, orange: 3 }; 
+// SyntaxError: `...` must be followed by an identifier in declaration contexts
+
+let { appel, ...restOfFruit } = { appel: 1, banaan: 2, orange: 3 }; // only a plain variable name for the rest operator is valid
+
+
+
+// +++++ Simple Examples with Array binding pattern
+
+const [plum, mango, ...[cherry, starfruit]] = [1, 2, 3, 4]; // ...[cherry, starfruit] is a new, temporary array and cannot be accessed outside of this line
+
+console.log(plum); // 1
+console.log(mango); // 2
+console.log(cherry); // 3
+console.log(starfruit); // 4
+
+// These binding patterns can even be nested, as long as each rest property is the last in the list.
+
+const [angelica, bellflower, ...[cornflower, dandelion, ...[elder, frangipani]]] = [1, 2, 3, 4, 5, 6];
+
+console.log(angelica, bellflower, cornflower, dandelion, elder, frangipani); // 1 2 3 4 5 6
+
+
+
+// +++++ Example with Object binding pattern
+
+// We extract the first two elements of the array into een and twee
+// Collect the rest of the elements (3, 4, 5) into a new, temporary array
+// it then extracts the .length property off that newly created rest array using ...{ length }
+
+const [een, twee, ...{ length }] = [1, 2, 3, 4, 5]; 
+
+console.log(een, twee); // 1 2
+console.log(length); // 3
+
+// What is going on? Why are we getting the .length property of this temporary array instead of assigning the rest of the array members to an object named length?
+// See > ACCESSING OBJECT PROPERTY WITH DESTRUCTURING for more { length } explanation
+
+
+
+// Remember that I pointed out a temporary array earlier?
+// There is a reason why when you use ...{ length }, it returns the length of the new, temporary array rather than the original array
+
+// This is because the binding pattern operates on the new temporary array made by the rest property 
+// Therefore, any custom/extra properties attached to the original array are lost. 
+
+// +++++ Example demonstrating the loss of properties attached to the original array
+
+let fruitArray = ["banana", "blueberry", "pear"]; 
+
+fruitArray.fruitLocation = "fruit basket"; // assigning the array a 'fruitLocation' property
+console.log(fruitArray.fruitLocation); // fruit basket
+
+let [ bunch, box, piece, ... { fruitLocation } ] = fruitArray;
+
+console.log(bunch); // banana
+console.log(box); // blueberry
+console.log(piece); // pear
+console.log(fruitLocation); // undefined - this is because the new, temporary array does not have the fruitLocation property that the original fruitArray has
+
+
+
 // ----------------------------- > BINDING AND ASSIGNMENT >> Assignment
 
 // In assignment patterns, the pattern does not start with a keyword. 
@@ -323,6 +405,28 @@ let objNum = { a: 0, b: 0 };
 
 console.log(objNum.a); // 1
 console.log(objNum.b); // 2
+
+
+
+// ----------------------------- > ACCESSING OBJECT PROPERTY WITH DESTRUCTURING -----------------------------
+
+({ length } = ['oops', 'gasp', 'shout', 'sun']); // length: Gets or sets the length of the array.
+console.log(length); // 4
+
+// Taking a look under the hood of an array
+
+// Typing ['oops', 'gasp', 'shout', 'sun'] into the browser console will give you:
+
+// Array(4) [ "oops", "gasp", "shout", "sun" ]
+// 0: "oops"
+// 1: "gasp"
+// 2: "shout"
+// 3: "sun"
+// length: 4
+// <prototype>: Array []
+
+// Therefore, you can see { length } as
+// ({ length } = {0: 'oops', 1: 'gasp', 2: 'shout', 3: 'sun', length: 4});
 
 
 
@@ -425,176 +529,6 @@ console.log(c); // 1
 
 
 
-// ----------------------------- > EXAMPLES >> Using A Binding Pattern As The Rest Property
-
-// Remember what we learned in the section > BINDING AND ASSIGNMENT >> Binding ?
-
-// In binding patterns, the pattern starts with a declaration keyword (var, let, or const). 
-// Then, each individual property must either be bound to a variable or further destructured. 
-
-
-
-// The rest property of array destructuring assignment can be an Array binding pattern or Object binding pattern
-// NOTE: However, there is a big difference between the Array rest ...[] and Object rest ...{}
-
-
-
-// In Array Destructuring: You can put another nested pattern (an array ...[...] or an object ...{...}) directly inside the rest operator.  
-
-let [arrA, arrB, ...[ restArray ]] = [1, 2, 3];
-let [arr1, arr2, ...{ object }] = [1, 2 , 3];
-
-
-
-// In Object Destructuring: The rest operator must be a plain variable name (an identifier). You cannot nest another pattern inside an object rest operator. 
-
-// const { appel, ...{ restOfFruit } } = { appel: 1, banaan: 2, orange: 3 }; 
-// SyntaxError: `...` must be followed by an identifier in declaration contexts
-
-let { appel, ...restOfFruit } = { appel: 1, banaan: 2, orange: 3 }; // only a plain variable name for the rest operator is valid
-
-
-
-// +++++ Simple Examples with Array binding pattern
-
-const [plum, mango, ...[cherry, starfruit]] = [1, 2, 3, 4]; // ...[cherry, starfruit] is a new, temporary array and cannot be accessed outside of this line
-
-console.log(plum); // 1
-console.log(mango); // 2
-console.log(cherry); // 3
-console.log(starfruit); // 4
-
-// These binding patterns can even be nested, as long as each rest property is the last in the list.
-
-const [angelica, bellflower, ...[cornflower, dandelion, ...[elder, frangipani]]] = [1, 2, 3, 4, 5, 6];
-
-console.log(angelica, bellflower, cornflower, dandelion, elder, frangipani); // 1 2 3 4 5 6
-
-
-
-// +++++ Example with Object binding pattern
-
-// We extract the first two elements of the array into een and twee
-// Collect the rest of the elements (3, 4, 5) into a new, temporary array
-// it then extracts the .length property off that newly created rest array using ...{ length }
-
-const [een, twee, ...{ length }] = [1, 2, 3, 4, 5]; 
-
-console.log(een, twee); // 1 2
-console.log(length); // 3
-
-// What is going on? Why are we getting the .length property of this temporary array instead of assigning the rest of the array members to an object named length?
-// See > ACCESSING OBJECT PROPERTY WITH DESTRUCTURING for more { length } explanation
-
-
-
-// Remember that I pointed out a temporary array earlier?
-// There is a reason why when you use ...{ length }, it returns the length of the new, temporary array rather than the original array
-
-// This is because the binding pattern operates on the new temporary array made by the rest property 
-// Therefore, any custom/extra properties attached to the original array are lost. 
-
-// +++++ Example demonstrating the loss of properties attached to the original array
-
-let fruitArray = ["banana", "blueberry", "pear"]; 
-
-fruitArray.fruitLocation = "fruit basket"; // assigning the array a 'fruitLocation' property
-console.log(fruitArray.fruitLocation); // fruit basket
-
-let [ bunch, box, piece, ... { fruitLocation } ] = fruitArray;
-
-console.log(bunch); // banana
-console.log(box); // blueberry
-console.log(piece); // pear
-console.log(fruitLocation); // undefined - this is because the new, temporary array does not have the fruitLocation property that the original fruitArray has
-
-
-
-// ----------------------------- > EXAMPLES >> Unpacking Values From A Regular Expression Match
-
-// When the regular expression *exec() method finds a match, 
-// it returns an array containing first the entire matched portion of the string 
-// and then the portions of the string that matched each parenthesized group in the regular expression. 
-
-// Destructuring assignment allows you to unpack the parts out of this array easily, ignoring the full match if it is not needed.
-
-// * exec(): executes a search for a match in a specified string and returns a result array, or null.
-
-function parseProtocol(url) {
-    const parsedURL = /^(\w+):\/\/([^/]+)\/(.*)$/.exec(url);
-    if (!parsedURL) {
-        return false;
-    }
-    console.log(parsedURL);
-    /* 
-    [
-        'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
-        'https',
-        'developer.mozilla.org',
-        'en-US/docs/Web/JavaScript',
-        index: 0,
-        input: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
-        groups: undefined
-    ] 
-    */
-
-    const [, protocol, fullhost, fullpath] = parsedURL;
-    return protocol;
-}
-
-console.log(parseProtocol("https://developer.mozilla.org/en-US/docs/Web/JavaScript")); // "https"
-
-
-
-// ----------------------------- > EXAMPLES >> Using Array Destructuring On Any Iterable
-
-// Array destructuring calls the iterable protocol of the right-hand side. 
-// Therefore, any iterable, not necessarily arrays, can be destructured.
-
-const [andy, ben] = new Map([[1, 2], [3, 4],]);
-console.log(andy, ben); // [1, 2] [3, 4]
-
-
-
-// Non-iterables cannot be destructured as arrays.
-
-const objt = { 0: "a", 1: "b", length: 2 };
-const [avery, benoit] = objt; // TypeError: objt is not iterable
-
-
-
-// Iterables are only iterated until all bindings are assigned.
-
-const num = {
-    *[Symbol.iterator]() {
-        for (const v of [0, 1, 2, 3]) {
-            console.log(v);
-            yield v;
-        }
-    },
-};
-
-const [t, u] = num; // 0 1
-console.log(`t: ${t}, u: ${u}`); // t: 0, u: 1
-
-
-
-// The rest binding is eagerly evaluated and creates a new array, instead of using the old iterable.
-
-const obje = {
-    *[Symbol.iterator]() {
-        for (const v of [0, 1, 2, 3]) {
-            console.log(v);
-            yield v;
-        }
-    },
-};
-
-const [i, j, ...theRest] = obje; // 0 1 2 3
-console.log(theRest); // [2, 3] 
-
-
-
 // ----------------------------- > EXAMPLES >> Assigning To New Variable Names
 
 // A property can be unpacked from an object and assigned to a variable with a different name than the object property.
@@ -648,9 +582,6 @@ const user = {
         lastName: 'Doe'
     }
 };
-
-const { id: nric } = user;
-console.log(nric); // 42
 
 
 
@@ -785,7 +716,7 @@ for (const { name: n, family: { father: f } } of people) {
 
 // *Computed property names, like on object literals, can be used with destructuring.
 
-// * Computed property names: see object/object.js > SQUARE BRACKET NOTATION >> Computed Property Names
+// * Computed property names: see 10_object/object.js > SQUARE BRACKET NOTATION >> Computed Property Names
 
 const key1 = "z";
 const { [key1]: too } = { z: "far" };
@@ -872,22 +803,3 @@ console.log(prot); // "456"
 
 
 
-// ----------------------------- > ACCESSING OBJECT PROPERTY WITH DESTRUCTURING -----------------------------
-
-({ length } = ['oops', 'gasp', 'shout', 'sun']); // length: Gets or sets the length of the array.
-console.log(length); // 4
-
-// Taking a look under the hood of an array
-
-// Typing ['oops', 'gasp', 'shout', 'sun'] into the browser console will give you:
-
-// Array(4) [ "oops", "gasp", "shout", "sun" ]
-// 0: "oops"
-// 1: "gasp"
-// 2: "shout"
-// 3: "sun"
-// length: 4
-// <prototype>: Array []
-
-// Therefore, you can see { length } as
-// ({ length } = {0: 'oops', 1: 'gasp', 2: 'shout', 3: 'sun', length: 4});
