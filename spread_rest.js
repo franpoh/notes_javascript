@@ -5,27 +5,42 @@ Table of Contents
 >> In Function Calls
 >> In Array Literals
 >> Spread In Object Literals
->> In Calling Constructors
-> REST ... 
+> REST ... as a Function Parameter 
 */
 
 
 
 // Spread syntax and Rest syntax looks exactly the same: ...iterableObject
 
-// Spread syntax "expands" an iterable object into its elements
+// Spread syntax unpacks an iterable collection into its individual elements
+// Rest syntax packs multiple individual elements into a single iterable collection.
 
-// Rest syntax collects multiple elements and "condenses" them into a single iterable object.
+// The spread and rest operator (...) is not an expression that returns a standalone value on its own. 
+// It is a syntactic operation that packs, or unpacks data into a surrounding container.
+
+// Here is a simple example demonstrating how the spread and rest syntax can be used:
 
 const spreadOfValues = [1, 2, 3, 4, 5];
 
-function exampleOfBoth (a, b, ...restOfValues) { // usage of Rest syntax here with ...restOfValues
+function exampleOfBoth (a, b, ...restOfValues) { // usage of Rest syntax here with ...restOfValues. This collects any leftover elements that were not assigned to the parameter a or b and assign them to the parameter restOfValues
     console.log(`The first number is ${a}, the second number is ${b}, and the rest of the numbers is ${restOfValues}`);
 }
 
-exampleOfBoth(...spreadOfValues); // usage of Spread syntax here with ...spreadOfValues
+// usage of Spread syntax here with ...spreadOfValues. This unpacks all elements from the array spreadOfValues and pass them into the function exampleOfBoth as individual elements.
+exampleOfBoth(...spreadOfValues); // The first number is 1, the second number is 2, and the rest of the numbers is 3,4,5
 
-// The first number is 1, the second number is 2, and the rest of the numbers is 3,4,5
+
+
+// As you will see in the previous and following examples, the spread and rest syntax will always be enclosed by brackets creating a collection
+
+// function (...example)
+// [...array]
+// {...object}
+
+// This creates a brand-new collection in memory that can be used for packing or unpacking individual elements
+// The collection can then be assigned to a variable or function parameter
+
+// function (): See 4_functions\1_function.js > ARGUMENTS OBJECT
 
 
 
@@ -213,62 +228,128 @@ console.log(b); // [ [ [ 'z', 'b' ], [ 'c', 'd' ] ], 'x' ]
 
 let obj1 = { foo: 'bar', x: 42 };
 let obj2 = { foo: 'baz', y: 13 };
+let obj3 = { fee: 'bee', z: 67 };
+
+let mergedObj = {...obj1, ...obj3};
+console.log('mergedObj', mergedObj); // mergedObj { foo: 'bar', x: 42, fee: 'bee', z: 67 }
+
+
 
 // A single spread creates a shallow copy of the original object (but without non-enumerable properties and without copying the prototype), similar to copying an array.
 
 let clonedObj = { ...obj1 }; 
 console.log("clonedObj: ", clonedObj); // clonedObj:  { foo: 'bar', x: 42 }
 
+
+
 // When one object is spread into another object, or when multiple objects are spread into one object, and properties with identical names are encountered, 
 // the property takes the last value assigned while remaining in the position it was originally set.
 
-let mergedObj = { ...obj1, ...obj2 }; 
-console.log("mergedObj: ", mergedObj); // mergedObj:  { foo: 'baz', x: 42, y: 13 }
+let overlapObj = { ...obj1, ...obj2 }; 
+console.log("overlapObj: ", overlapObj); // overlapObj:  { foo: 'baz', x: 42, y: 13 }
 
 
 
+// +++++ Example: You can make an element present or absent in an object literal, depending on a condition, using a conditional operator.
 
+let isSummer = false;
+let isWinter = true;
 
-// Objects themselves are not iterable, but they become iterable when used in an Array, or with iterating functions such as map(), reduce(), and assign(). 
-// When merging 2 objects together with the spread operator, it is assumed another iterating function is used when the merging occurs.
+const fruits = {
+    apple: 10,
+    banana: 5,
+    ...(isSummer ? { watermelon: 30 } : {}), 
+    ...(isWinter ? { winterpeen: 20 } : {}),
+};
 
-// Spread syntax (other than in the case of spread properties) can be applied only to iterable objects:
+console.log(fruits); // { apple: 10, banana: 5, winterpeen: 20 }
 
-let obj = { 'key1': 'value1' };
-let array = [...obj]; // TypeError: obj is not iterable
-
-
-
-// ----------------------------- > SPREAD ... >> In Calling Constructors
-
-// When calling a constructor with new it's not possible to directly use an array and apply() (apply() does a [[Call]] and not a [[Construct]]). 
-// However, an array can be easily used with new thanks to spread syntax:
-
-let dateFields = [2022, 4, 10];
-
-console.log(new Date(...dateFields)); 
+// The case where the condition is false is an empty object, so that nothing gets spread into the final object.
+// Note the difference between using spread and the alternative method shown below
 
 
 
-// ----------------------------- > REST ... -----------------------------
+// In this case, the watermelon/winterpeen properties are always present and will be visited by methods such as Object.keys()
 
-// See about the rest syntax in destructuring.js
+isSummer = false;
+isWinter = true;
+
+const fruits1 = {
+    apple: 10,
+    banana: 5,
+    watermelon: isSummer ? 30 : undefined, // alternative way to write without spread, but less efficient and neat
+    winterpeen: isWinter ? 20 : undefined,
+};
+
+console.log(fruits1); // { apple: 10, banana: 5, watermelon: undefined, winterpeen: 20 }
 
 
 
-// rest syntax example
+// Because primitives can be spread into objects as well, 
+// and from the observation that all falsy values do not have enumerable properties, 
+// you can simply use a logical AND operator:
+
+isSummer = false;
+isWinter = true;
+
+const fruits2 = {
+  apple: 10,
+  banana: 5,
+  ...(isSummer && { watermelon: 30 }),
+  ...(isWinter && { winterpeen: 20 }),
+};
+
+console.log(fruits2); // { apple: 10, banana: 5, winterpeen: 20 }
+
+// In this case, if isSummer is any falsy value, no property will be created on the fruits object.
+
+
+
+// ----------------------------- > REST ... as a Function Parameter -----------------------------
+
+// Rest Syntax
 
 function f(a, b, ...theArgs) {
-    // ...
+    // code
 }
 
 // The rest parameter (...) allows a function to treat an indefinite number of arguments as an array:
 
-function sum(...args) {
+function sum(...args) { // there is no need to define a number of parameters that is equal to the number of arguments that will be passed into the function
+
+    console.log(args); // [ 4, 9, 16, 25, 29, 100, 66, 77 ]
+
     let sum = 0;
+
     for (let arg of args) sum += arg;
+
     return sum;
 }
 
-let x = sum(4, 9, 16, 25, 29, 100, 66, 77); 
-console.log("x: ", x); // x:  326
+let total = sum(4, 9, 16, 25, 29, 100, 66, 77); 
+console.log(total); // 326
+
+
+
+// There are certain limitations to the rest parameter:
+
+// A function definition can only have one rest parameter.
+// The rest parameter must be the last parameter in the function definition.
+// Trailing commas are not allowed after the rest parameter.
+// The rest parameter cannot have a default value.
+
+
+
+// NOTE: Rest parameters are Array instances, meaning methods like sort(), map(), forEach() or pop() can be applied on it directly.
+
+function everythingIsEars (...theseCanBeEars) {
+    return theseCanBeEars.map((notEars) => notEars.slice(1));
+}
+
+console.log(everythingIsEars('tear', 'fear', 'near', 'pear', 'rear'));
+
+
+
+// NOTE: For the uses of the the Rest property in destructuring, please see destructuring.js > REST PROPERTY
+
+

@@ -454,28 +454,36 @@ callback = callback || (() => { });
 // Arrow functions can have either a "concise body" or the usual "block body".
 
 // In a concise body, only an expression is specified, which becomes the implicit return value. 
-// In a block body, you must use an explicit return statement.
 
 let conciseFunction = () => 'Pancake'; // concise body syntax, implied "return"
 console.log(conciseFunction()); // Pancake
+
+// In a block body, you must use an explicit return statement.
 
 let blockFunction = () => { return 'Pancake'; }; // with block body, explicit "return" needed
 console.log(blockFunction()); // Pancake
 
 
 
-// Returning object literals using the concise body syntax (params) => { object: literal } does not work as expected.
+// +++++ Returning object literals using the concise body syntax (params) => { object: literal } does not work as expected.
 
-let brokenFunction = () => { foo: 1 }; // Calling func() returns undefined!
-console.log(brokenFunction()); // undefined
+const func = () => { foo: 1 }; 
+console.log(func()); // undefined
 
-// This is because JavaScript only sees the arrow function as having a concise body if the token following the arrow is not a left brace, 
-// so the code inside braces ({}) is parsed as a sequence of statements, where foo is a label, not a key in an object literal.
+// This does not work because JavaScript will interpret the curly braces as the function body rather than an object
+// Therefore, there is no implicit return and the function will return undefined
 
-// To fix this, wrap the object literal in parentheses:
+// To fix this, you can return either using concise body implicitly or block body explicitly
 
-let workingFunction = () => ({ foo: 1 });
-console.log(workingFunction()); // { foo: 1 }
+// To return object literals using the concise body syntax you have to wrap the braces in parentheses
+
+let workingFunction1 = () => ({ foo: 1 });
+console.log(workingFunction1()); // { foo: 1 }
+
+// Otherwise, you can return explicitly by using the return keyword
+
+let workingFunction2 = () => { return { foo: 1 } };
+console.log(workingFunction2()); // { foo: 1 }
 
 
 
