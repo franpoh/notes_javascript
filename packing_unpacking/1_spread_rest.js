@@ -350,6 +350,6 @@ console.log(everythingIsEars('tear', 'fear', 'near', 'pear', 'rear'));
 
 
 
-// NOTE: For the uses of the the Rest property in destructuring, please see destructuring.js > REST PROPERTY
+// NOTE: For the uses of the the Rest property in destructuring, please see packing_unpacking\2_destructuring.js > REST PROPERTY
 
 
