@@ -20,7 +20,6 @@ Table of Contents
 // ----------------------------- > GENERATOR FUNCTION -----------------------------
 
 // The function* declaration (function keyword followed by an asterisk) defines a generator function, which returns a Generator object. 
-
 // The Generator object is returned by a generator function and it conforms to both the iterable protocol and the iterator protocol.
 
 // function* declarations are hoisted to the top of their scope and can be called anywhere in their scope.
@@ -36,6 +35,7 @@ const gen = generator();
 // this console.log is just to show that calling a generator function will contruct a Generator object
 console.log(gen); // Object [Generator] {}
 
+// next() is a method in the generator object
 // when next() is called, the generator function's body is executed until the first yield expression, where it pauses
 // then next() returns an object with two properties done and value
 console.log(gen.next()); // { value: 10, done: false }
@@ -51,25 +51,79 @@ console.log(gen.next()); // { value: undefined, done: true }
 
 
 
-// Generators are functions that can be exited and later re-entered.
-// Their context (variable bindings) will be saved across re-entrances.
-// (This is with regards to a SINGLE code run)
+// You can also pass arguments into a generator function using parameters
 
-// This means unlike typical functions which will rerun from the top when called
-// generator functions won't rerun the function from the top again, just from where it was paused
-// Once it has run, it's done
-// (Of course if you rerun the whole code again then it'll start from the top)
-
-function* generatorOnce(i) {
-    yield i;
+function* generatorOnce(a, b) {
+    yield a;
+    yield a * b;
 }
 
 // You can pass arguments into generatorOnce() here
-const genOnce = generatorOnce(10);
+const genOnce = generatorOnce(10, 2);
 
 // You can also provide a parameter to the next method to send a value to the generator, see examples below
 console.log(genOnce.next()); // { value: 10, done: false }
+console.log(genOnce.next()); // { value: 20, done: false }
 console.log(genOnce.next()); // { value: undefined, done: true }
+
+
+
+// Generators are functions that can be exited and later re-entered.
+// Their context (variable bindings) will be saved across re-entrances.
+
+// NOTE: Therefore, an important part of running the generator function 
+// without creating a new generator object and rerunning from the start each time 
+// is assigning the generator object to a variable
+
+// This means unlike typical functions which will rerun from the top when called
+// generator functions won't rerun the function from the top again, just from where it was paused
+// Once it has finished running all of the code in the function body, it's done
+
+// This enables you to run the generator function to the first yield
+// saving where it pauses to your generator object in memory
+// and restarting from your saved point the next time you call next()
+
+
+
+// Let's see what will happen if we ran a generator function without binding it to a variable first
+
+function* generatorNot() {
+    yield 10;
+    yield 20;
+}
+
+// The below result is because it is creating a new generator object every time we call generatorNot().next()
+
+// Essentially, it creates a new generator object #1 and runs it until the first yield
+// However, instead of saving this generator object #1 in memory, it trashes it
+console.log(generatorNot().next()); // { value: 10, done: false }
+
+// The next generatorNot().next() creates a new generator object #2 and starts the process all over again from the first line of code until it reaches the first yield
+console.log(generatorNot().next()); // { value: 10, done: false }
+
+// And it starts over again with creating a generator object #3 and returns the first yield. No progress is made. 
+console.log(generatorNot().next()); // { value: 10, done: false }
+
+
+
+// Now let's explain how assigning the generator object to a variable works
+
+function* generatorYes() {
+    yield 10;
+    yield 20;
+}
+
+// By assigning the created generator object to a variable, we are saving a reference to the generator object in memory
+let genYes = generatorYes(); // A new generator object #1 is created and a reference to it is saved to variable genYes
+
+// Calling genYes.next(); we are able to reference generator object #1, run the code until the first yield, and save this point to generator object #1 
+console.log(genYes.next()); // { value: 10, done: false }
+
+// Calling genYes.next() again enables us to refer to generator object #1, continue running the code from the saved point and save the new point at which we stopped to generator object #1 
+console.log(genYes.next()); // { value: 20, done: false }
+
+// We are able to make progress and run all of the code in the function body to the end
+console.log(genYes.next()); // { value: undefined, done: true }
 
 
 
