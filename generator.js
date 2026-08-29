@@ -5,7 +5,6 @@ Table of Contents
 >> yield
 > GENERATOR OBJECT
 >> next()
->>> How Calling The next() Method With An Argument Works
 >> return
 > EXAMPLES
 */
@@ -35,7 +34,7 @@ const gen = generator();
 // this console.log is just to show that calling a generator function will contruct a Generator object
 console.log(gen); // Object [Generator] {}
 
-// next() is a method in the generator object
+// next() is a method in the generator object's iterator prototype
 // when next() is called, the generator function's body is executed until the first yield expression, where it pauses
 // then next() returns an object with two properties done and value
 console.log(gen.next()); // { value: 10, done: false }
@@ -258,21 +257,11 @@ console.log(genNother.next()); // { value: undefined, done: true }
 
 // ----------------------------- > GENERATOR OBJECT >> next()
 
-// The next() method returns an object with a value property containing the yielded value 
-// and a done property which indicates whether the generator has yielded its last value, as a boolean.  
-// You can also provide a parameter to the next method to send a value to the generator. 
-
-
-
-// -----------------------------
-
 // When the iterator's next() method is called, the generator resumes execution, and runs until it reaches:
-// A yield expression
-// The end of the generator function
-// A return statement
-// A throw statement
-
-
+//      A yield expression
+//      The end of the generator function
+//      A return statement
+//      A throw statement
 
 // +++++ A yield expression. 
 // In this case, the generator pauses, 
@@ -280,19 +269,13 @@ console.log(genNother.next()); // { value: undefined, done: true }
 // The value property is the value of the expression after the yield operator, 
 // and done is false, indicating that the generator function has not fully completed.
 
-
-
 // +++++ The end of the generator function. 
 // In this case, execution of the generator ends, 
 // and the next() method returns an iterator result object where the value is undefined and done is true.
 
-
-
 // +++++ A return statement. 
 // In this case, execution of the generator ends, 
 // and the next() method returns an iterator result object where the value is the specified return value and done is true.
-
-
 
 // +++++ A throw statement. 
 // In this case, execution of the generator halts entirely, 
@@ -300,207 +283,111 @@ console.log(genNother.next()); // { value: undefined, done: true }
 
 
 
-// -----------------------------
+// The next() method returns an object with a value property containing the yielded value 
+// and a done property which indicates whether the generator has yielded its last value, as a boolean.  
+// You can also provide a parameter to the next method to send a value to the generator. 
+
+
+
+// +++++ NOTE: Important Example for how Calling the next() method with an argument works
 
 // Calling the next() method with an argument will resume the generator function execution, 
 // replacing the yield expression where an execution was paused with the argument from next().
 
-function* logGenerator() {
-    console.log(0);
-    console.log(1, yield);
-    console.log(2, yield);
-    console.log(3, yield);
+// It is slightly confusing, so a few console.logs have been inserted so you can see where we are step-by-step
+
+function* test() {
+    console.log(`Pausing at first yield`);
+    const yieldOne = yield 'Original value for yieldOne';
+
+    console.log(`Pausing at second yield. This is the value of yieldOne: ${yieldOne}`);
+    const yieldTwo = yield 'Original value for yieldTwo';
+
+    console.log(`Pausing at third yield. This is the the value of yieldTwo: ${yieldTwo}`);
+    const yieldThree = yield 'Original value for yieldThree';
+
+    console.log(`Ending this function, this is the value of yieldThree: ${yieldThree}`);
 }
 
-const genArg = logGenerator();
+const testing = test();
 
-// the first call of next executes from the start of the function until the first yield statement
-genArg.next(); // 0
-genArg.next("pretzel"); // 1 pretzel
-genArg.next("california"); // 2 california
-genArg.next("mayonnaise"); // 3 mayonnaise
+console.log(`This is the first next`);
+console.log(testing.next('Argument for first next'));
+// This is the first next
+// Pausing at first yield
+// { value: 'Original value for yieldOne', done: false }
 
+console.log(`This is the second next`);
+console.log(testing.next('Argument for second next'));
+// This is the second next
+// Pausing at second yield. This is the value of yieldOne: Argument for Second Next
+// { value: 'Original value for yieldTwo', done: false }
 
+console.log(`This is the third next`);
+console.log(testing.next('Argument for third next'));
+// This is the third next
+// Pausing at third yield. This is the the value of yieldTwo: Argument for Third Next
+// { value: 'Original value for yieldThree', done: false }
 
-// ----------------------------- > GENERATOR OBJECT >> next() >>> How Calling The next() Method With An Argument Works
-
-// NOTE: This section is important because this mechanic was confusing for me, so read carefully 
-
-
-
-// The first call does not log anything, because the generator was not yielding anything initially.
-
-function* generatorA() {
-    console.log('Test 1', yield 1);
-    console.log('Test 1 Done')
-
-    const value = yield 2;
-    console.log('Test 2')
-
-    console.log('Test 3', value);
-    console.log('Test 3 Done')
-}
-
-const genA = generatorA();
-
-// NOTE: No log at this step: the first value sent through `next` is lost
-console.log(genA.next('duck')); 
-// { value: 1, done: false }
-
-console.log(genA.next('turkey')); 
-// Test 1 turkey 
-// Test 1 Done 
-// { value: 2, done: false }
-
-console.log(genA.next('chicken')); 
-// Test 2 
-// Test 3 chicken 
-// Test 3 Done 
+console.log(`This is the fourth next`);
+console.log(testing.next('Argument for Fourth Next'));
+// This is the fourth next
+// Ending this function, this is the value of yieldThree: Argument for Fourth Next
 // { value: undefined, done: true }
 
+// NOTE: As you can see, the argument for the first next() was completely ignored and appeared nowhere in the values that were returned
+
+// Remember, the code runs until it reaches a yield, at which point it returns that yield's object and then pauses until next() is called again
+// NOTE: Therefore, observe that with the subsequent nexts, this are the steps it takes:
+//      1. the next() argument replaces the yield expression where code execution is currently frozen
+//      2. Code execution resumes from that exact spot until it reaches the next yield
+//      3. It returns the object of that yield and pauses code execution
+
+// Simply put, you can say that the next() argument replaces the 'previous' yield expression entirely. It is no longer a yield expression.  
+
+// This is why the argument for the first next() is ignored and lost
+// With the first next(), we are running the code from the start, there is no 'previous' yield expression to replace
 
 
-// -----------------------------
 
-// NOTE: Here is the same example as above, but with step-by-step comments
-// Click on the arrows on the left to drop down comments
+// +++++ A Practical Example making use of the mechanic
 
-function* generatorB() {
+// Observe that this has a 'question and answer' quality to it
 
-    /* A. 1st next() +++++ console.log(genB.next('duck'));
+function* pizzaOrder() {
+    console.log("Order started...");
 
-    generator() runs until it reaches the yield expression (the 1 in yield 1;)
-    yield keyword pauses generator()
+    // 1. Pauses at `yield`. 
+    // When resumed via next(argument), the `yield "What size?"` expression is replaced by the argument.
+    const size = yield "What size?";
 
-    the value of the expression following the yield keyword is returned as the value returned by next() (See B)
-    therefore generator() is paused BEFORE evaluating the value of the yield expression 
-    */
+    console.log(`Selected size: ${size}`);
 
-    /* C. 2nd next() +++++ console.log(genB.next('turkey'));
+    // 2. Pauses at the next `yield`.
+    const topping = yield "What topping?";
 
-    generator() starts again
-    the value of the first yield expression is computed/replaced with the value of the argument given to next() on this call (See D) 
-    */
+    console.log(`Selected topping: ${topping}`);
 
-    console.log('Test 1', yield 1);
-    // B. 1st next() +++++ returns '{ value: 1, done: false }'
-    // D. 2nd next() +++++ returns 'Test 1 turkey' 
-
-    // E. 2nd next() continues +++++
-
-    console.log('Test 1 Done') // F. 2nd next() +++++ returns Test 1 Done
-
-    /* G. 2nd next() continues +++++
-
-    execution runs until the second yield
-    yield keyword pauses generator()
-
-    next() returns the value of the second yield (See H)
-    */
-
-    const value = yield 2; // H. 2nd next() +++++ returns '{ value: 2, done: false }'
-
-    /* I. 3rd next() +++++ console.log(genB.next('chicken'));
-
-    generator() starts again
-    */
-
-    console.log('Test 2') // J. 3rd next() +++++ returns 'Test 2'
-
-    /* K. 3rd next() +++++
-
-    the value of the second yield expression is computed/replaced with the value of the argument given to next() on this call (See L) 
-    */
-
-    console.log('Test 3', value); // L. 3rd next() +++++ returns 'Test 3 chicken'
-
-    // M. 3rd next() continues +++++
-
-    console.log('Test 3 Done') // N. 3rd next() +++++ returns 'Test 3 Done'
-
-    /* O. 3rd next() +++++ Termination of generator()
-
-
-    execution runs until the end of generator()
-    next() returns { value: undefined, done: true } to signal termination
-
-    This probably made more sense to who invented this because the number of calls to next() is one more times the number of yield statements 
-    (there's also the last one returning { value: undefined, done: true } to signal termination), 
-    so if the argument of the first call would not have been ignored, then argument of the last call would have had to be ignored.
-    */
-
+    return `Order ready: 1 ${size} ${topping} pizza!`;
 }
 
-const genB = generatorB();
+// Instantiate the generator
+const order = pizzaOrder();
 
-// No log at this step: the first value sent through `next` is lost
-console.log(genB.next('duck')); 
-// { value: 1, done: false }
+// Step 1: Start execution (runs until it hits the first yield)
+console.log(order.next());
+// Generator output: "Order started..."
+// Returned object:  { value: 'What size?', done: false }
 
-console.log(genB.next('turkey')); 
-// Test 1 turkey 
-// Test 1 Done 
-// { value: 2, done: false }
+// Step 2: Pass "Large" INTO the paused yield
+console.log(order.next("Large"));
+// Generator output: "Selected size: Large"   
+// Returned object:  { value: 'What topping?', done: false }
 
-console.log(genB.next('chicken')); 
-// Test 2 
-// Test 3 chicken 
-// Test 3 Done 
-// { value: undefined, done: true }
-
-
-
-// -----------------------------
-
-// More experiments
-
-function* generatorD() {
-    console.log(yield 1);
-    console.log(yield 2);
-}
-
-const genD = generatorD();
-
-console.log(genD.next('duck')); 
-// { value: 1, done: false }
-
-console.log(genD.next('turkey')); 
-// turkey
-// { value: 2, done: false }
-
-console.log(genD.next('chicken')); 
-// chicken
-// { value: undefined, done: true }
-
-
-
-// +++++
-
-function* generatorC() {
-    yield 1;
-    yield 2;
-}
-
-const genC = generatorC();
-
-console.log(genC.next('duck')); // { value: 1, done: false }
-console.log(genC.next('turkey')); // { value: 2, done: false }
-console.log(genC.next('chicken')); // { value: undefined, done: true }
-
-
-
-// +++++
-
-function* generatorE() {
-    console.log(yield 1);
-    console.log(yield 2);
-}
-
-const genE = generatorE();
-
-genE.next('duck'); 
-genE.next('turkey'); // turkey
-genE.next('chicken'); // chicken
+// Step 3: Pass "Pepperoni" INTO the second paused yield
+console.log(order.next("Pepperoni"));
+// Generator output: "Selected topping: Pepperoni" 
+// Returned object:  { value: 'Order ready: 1 Large Pepperoni pizza!', done: true }
 
 
 
@@ -524,6 +411,63 @@ const genReturn = yieldAndReturn();
 console.log(genReturn.next()); // { value: "Y", done: false }
 console.log(genReturn.next()); // { value: "R", done: true }
 console.log(genReturn.next()); // { value: undefined, done: true }
+
+
+
+// ----------------------------- > GENERATOR OBJECT >> throw -----------------------------
+
+// Calling gen.throw(error) inserts a throw error statement into the generator function body where it is currently paused
+// which informs the generator of an error condition and allows it to handle the error, or perform cleanup and close itself.
+
+// Whether your application crashes or continues smoothly depends entirely on whether that paused yield statement lives inside a try...catch block inside the generator.
+
+
+
+// +++++ Example with unhandled error
+
+// If the generator is paused at a yield that is not wrapped in a try...catch block, 
+// injecting an error destroys the generator's execution state and bubbles the error up to the caller.
+// In this case, it passes the error up the chain until it hits the main program and crashes it
+
+function* unhandledGenerator() {
+    yield "Step 1";
+    yield "Step 2"; // Never reached
+}
+
+const unhandledGen = unhandledGenerator();
+
+console.log(unhandledGen.next()); // { value: 'Step 1', done: false }
+console.log(unhandledGen.throw(new Error("Something broke!"))); // Uncaught Error: Something broke!
+
+// Generator is now closed/done.
+
+
+
+// +++++ Example with handled error
+
+// If the yield statement is wrapped in a try...catch block, the error is caught inside the generator function. 
+// Execution automatically moves into the catch block and continues downward to the next yield or return.
+
+function* handledGenerator() {
+    try {
+        yield "Attempting task...";
+    } catch (err) {
+        console.log(`Handled inside generator: ${err.message}`);
+    }
+
+    yield "Fallback step execution"; // Resumes here after catch
+}
+
+const handledGen = handledGenerator();
+
+// Advance to the first yield inside the try block
+console.log(handledGen.next());
+// { value: 'Attempting task...', done: false }
+
+// Inject an error into the paused yield statement
+console.log(handledGen.throw(new Error("Network Timeout")));
+// Logs inside generator: "Handled inside generator: Network Timeout"
+// Returns next yield: { value: 'Fallback step execution', done: false }
 
 
 
