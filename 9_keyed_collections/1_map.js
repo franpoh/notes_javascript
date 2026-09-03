@@ -4,11 +4,13 @@ Table of Contents
 > MAPS
 >> Benefits of using Map over a normal Object
 >> Iterating through a Map
+> WEAKMAP 
 */
 
 
 
-// Map and Set objects are collections of data which are indexed by a key; Map and Set objects contain elements which are iterable in the order of insertion.
+// Map and Set objects are collections of data which are indexed by a key
+// Map and Set objects contain elements which are iterable in the order of insertion
 
 
 
@@ -48,9 +50,15 @@ Table of Contents
 
 
 // These three tips can help you to decide whether to use a Map or an Object:
-//      Use maps over objects when keys are unknown until run time, and when all keys are the same type and all values are the same type.
-//      Use maps if there is a need to store primitive values as keys because object treats each key as a string whether it's a number value, boolean value or any other primitive value.
-//      Use objects when there is logic that operates on individual elements.
+//      Use maps over objects when keys are unknown until run time, especially if the keys come from external input.
+//      Maps support keys and values of any type and do not require keys to be serializable to strings or symbols.
+//      Use objects when the shape is known ahead of time and *all keys are expressible as strings.
+
+
+
+// * all keys are expressible as strings: 
+//      Keys ARE expressible as strings: Predictable, named properties like 'userId', 'status', or 'configOptions' - Use an Object {}.
+//      Keys ARE NOT expressible as strings: Raw object references (DOM elements, class instances, functions) or cases where number 1 and string '1' must stay separate. - Use a Map.
 
 
 
@@ -75,6 +83,7 @@ console.log(fruitBasket); // Map(3) { 'apples' => 500, 'bananas' => 300, 'orange
 const fruitBowl = new Map();
 
 fruitBowl.set("apples", 500); // set() - add elements to a Map 
+fruitBowl.set("bananas", 300);
 fruitBowl.set("oranges", 200);
 
 console.log(fruitBowl); // Map(3) { 'apples' => 500, 'bananas' => 300, 'oranges' => 200 }
@@ -110,6 +119,7 @@ const fruitTray = new Map([
 // only makes a shallow copy, the objects inside are not copied so references are the same between the two arrays
 const fruitClone = new Map(fruitTray); // clone() - clone a Map
 
+console.log(fruitTray); // Map(3) { 'apples' => 500, 'bananas' => 300, 'oranges' => 200 }
 console.log(fruitClone); // Map(3) { 'apples' => 500, 'bananas' => 300, 'oranges' => 200 }
 console.log(fruitTray === fruitClone); // false (the data itself is not cloned)
 
@@ -135,12 +145,13 @@ const fruitCup = new Map([
 
 const fruitSpoon = new Map([
     ["apples", 500],
+    ["bananas", 1000],
     ["kiwis", 100],
 ]);
 
 const fruitMerge = new Map([...fruitCup, ...fruitSpoon]); // merge() - merge maps while maintaining key uniqueness
 
-console.log(fruitMerge); // Map(4) { 'apples' => 500,'bananas' => 300, 'oranges' => 200, 'kiwis' => 100 }
+console.log(fruitMerge); // Map(4) { 'apples' => 500,'bananas' => 1000, 'oranges' => 200, 'kiwis' => 100 }
 
 
 
@@ -153,28 +164,51 @@ const fruitColours = new Map([
 ]);
 
 
-
-for (const fruit of fruitColours.keys()) { // keys() - Returns an iterator object with the keys in a Map
+// keys() - Returns an iterator object with the keys in a Map
+for (const fruit of fruitColours.keys()) { 
     console.log(fruit); // apples bananas oranges
 }
 
-
-
-for (const fruit of fruitColours.values()) { // values() - Returns an iterator object of the values in a Map
+// values() - Returns an iterator object of the values in a Map
+for (const fruit of fruitColours.values()) { 
     console.log(fruit); // red yellow orange
 }
 
-
-
-for (const fruit of fruitColours.entries()) { // entries() - Returns an iterator object with the [key, value] pairs in a Map
+// entries() - Returns an iterator object with the [key, value] pairs in a Map
+for (const fruit of fruitColours.entries()) { 
     console.log(fruit); // [ 'apples', 'red' ] [ 'bananas', 'yellow' ] [ 'oranges', 'orange' ]
 }
 
-
-
-fruitColours.forEach((value, key) => { // forEach() - Invokes a callback for each key/value pair in a Map
+// forEach() - Invokes a callback for each key/value pair in a Map
+fruitColours.forEach((value, key) => { 
     console.log(`${key} = ${value}.`) // apples = red. bananas = yellow. oranges = orange.
 });
 
+
+
+// ----------------------------- > WEAKMAP -----------------------------
+
+// A WeakMap is a collection of key/value pairs:
+
+// whose keys must be objects or non-registered symbols, 
+
+// with values of any arbitrary JavaScript type, 
+
+// and which does not create strong references to its keys. 
+// That is, an object's presence as a key in a WeakMap does not prevent the object from being garbage collected. 
+// Once an object used as a key has been collected, its corresponding values in any WeakMap become candidates for garbage collection as well — as long as they aren't strongly referred to elsewhere. 
+
+// The only primitive type that can be used as a WeakMap key is symbol — more specifically, non-registered symbols — 
+// because non-registered symbols are guaranteed to be unique and cannot be re-created.
+
+
+
+// The WeakMap API is essentially the same as the Map API. 
+// However, a WeakMap doesn't allow observing the liveness of its keys, which is why it doesn't allow enumeration. 
+// So there is no method to obtain a list of the keys in a WeakMap. If there were, the list would depend on the state of garbage collection, introducing non-determinism.
+
+
+
+// One use case of WeakMap objects is to store private data for an object, or to hide implementation details. 
 
 

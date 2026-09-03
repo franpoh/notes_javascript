@@ -42,10 +42,12 @@ Table of Contents
 
 
 // You will be seeing this a lot
+
 console.log('Hello World!'); 
+
 console.log('Try running this individually!');
 
-// the log() method writes (logs) a message to the console, and is useful for testing purposes.
+// the console.log() method writes (logs) a message to the console, and is useful for testing purposes.
 // You will see the output in the 'Output' section of the terminal
 // You can open a new terminal by going to 'Terminal' in the navigation bar and selecting 'New Terminal'
 
@@ -106,19 +108,48 @@ Hello world! */
 // ----------------------------- > DATA TYPES >> Functions
 
 // Functions are the other fundamental elements of the language. 
-// A JavaScript function is a reusable block of code that performs a specific task or set of operations, and can optionally accept inputs (called parameters or arguments) and return a value.
 
+// A JavaScript function is a reusable block of code that performs a specific task or set of operations, 
+// Functions can optionally accept inputs (called parameters or arguments) and return a value.
 
+// This is the syntax for writing a function:
 
-// Defining the function name (myFunction) and the code it will run when called/activated
-
-function myFunction(/* parameters go here, but leaving it out for now */) {
-    // Code that the function will run is written inside here
-    let myName = 'Francine';
-    console.log(myName);
+function functionName (/* Optional parameters go in here */) {
+    // This is the function body
+    // Code goes here
+    // This is where we also handle any parameters that is passed into the function
 }
 
-// Calling the function, check the output
+// We call a function like this:
 
-myFunction(); // Francine
+functionName(/*Optional arguments go in here*/);
+
+// Arguments: The values we are passing into the function
+// Parameters: The 'placeholders' that reference the arguments passed into the function
+
+
+
+// +++++ Here is an example function without any parameters or arguments
+
+function sayName () {
+    console.log('Name');
+}
+
+sayName(); // Name
+
+// +++++ Here is an example function with a parameter and argument
+
+function sayMyName (name) {
+    console.log(name);
+}
+
+sayMyName('Francine'); // Francine
+
+// +++++ Here is an example function with multiple parameters and arguments
+
+function sayFullName (name1, name2) {
+    console.log(name1, name2);
+}
+
+sayFullName('Francine', 'Poh'); // Francine Poh
 

@@ -135,6 +135,19 @@ console.log(arr.property); // "value"
 
 
 
+// +++++ Storing arrays in objects
+
+let thisPerson = {
+    name: 'Francine',
+    hobbies: ['birding', 'cycling', 'reading']
+}
+
+console.log(thisPerson.name); // Francine
+console.log(thisPerson.hobbies); // [ 'birding', 'cycling', 'reading' ]
+console.log(thisPerson.hobbies[1]); // cycling
+
+
+
 // ----------------------------- > ARRAY LITERAL >> Length
 
 // At the implementation level, JavaScript's arrays actually store their elements as standard object properties, using the array index as the property name.
@@ -338,7 +351,7 @@ This is an element: apple
 
 
 
-// The following is an example of an object literal. 
+// +++++ The following is an example of an object literal. 
 
 let car = {
     type: "Sedan",
@@ -354,7 +367,7 @@ console.log(car.colour); // Red
 
 
 
-// Additionally, you can use a numeric or string literal for the name of a property or nest an object inside another. 
+// +++++ Additionally, you can use a numeric or string literal for the name of a property or nest an object inside another. 
 
 // The following example uses these options.
 
@@ -371,7 +384,7 @@ console.log(car[7]); // Mazda
 
 
 
-// Object property names can be any string, including the empty string. 
+// +++++ Object property names can be any string, including the empty string. 
 // If the property name would not be a valid JavaScript identifier or number, it must be enclosed in quotes.
 
 // Property names that are not valid identifiers cannot be accessed as a dot (.) property.
@@ -390,6 +403,32 @@ console.log(unusualPropertyNames.!); // SyntaxError: Unexpected token !
 
 console.log(unusualPropertyNames[""]); // An empty string
 console.log(unusualPropertyNames["!"]); // Bang!
+
+
+
+// +++++ Objects can have their own functions, called methods
+
+let person = {
+    firstName: 'Francine',
+    surname: 'Poh',
+
+    greetings: function () {
+        console.log('Hello! I am a person.');
+    },
+
+    sayFullName: function () {
+        console.log(this.firstName, this.surname); // You will learn more about 'this' in 4_functions\2_this_part1.js
+    },
+
+    whatHobby: function (hobby) {
+        console.log('My favourite hobby is', hobby);
+    }
+
+}
+
+person.greetings(); // Hello! I am a person.
+person.sayFullName(); // Francine Poh
+person.whatHobby('cycling'); // My favourite hobby is cycling
 
 
 
