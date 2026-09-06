@@ -25,58 +25,87 @@ Table of Contents
 // Create a new Set and use add() to add values
 // Create a new Set and use add() to add variables
 
-const test = new Set(); // new Set() - Creates a new Set
-console.log(test); // Set(0) {}
-
-const letters = new Set(["a", "b", "c"]); // create new Set by passing in an array
-console.log(letters); // Set(3) { 'a', 'b', 'c' }
-console.log(letters);
 
 
+// +++++ set() - Creates a new empty Set
 
-letters.add("d"); // add() - Adds a new element to the Set 
-letters.add("e");
-letters.add("f"); // If you add equal elements, only the first will be saved:
-letters.add("f"); // not added
+const newSet = new Set(); 
+console.log(newSet); // Set(0) {}
 
-console.log(letters); // Set(6) { 'a', 'b', 'c', 'd', 'e', 'f' }
+// create new Set and passing in an array
+
+const vegetables = new Set(["carrot", "lettuce", "zucchini"]); 
+console.log(vegetables); Set(3) // { 'carrot', 'lettuce', 'zucchini' }
 
 
 
-letters.delete("e"); // delete() - Removes an element from a Set
-console.log(letters); // Set(5) { 'a', 'b', 'c', 'd', 'f' }
+// +++++ add() - Adds a new element to the Set 
+
+const moreVeg = new Set(["carrot", "lettuce", "zucchini"]);
+console.log(moreVeg); // Set(3) { 'carrot', 'lettuce', 'zucchini' }
+
+moreVeg.add("broccoli"); 
+moreVeg.add("radish"); // If you add equal elements, only the first will be saved:
+moreVeg.add("radish"); // not added
+
+console.log(moreVeg); // Set(5) { 'carrot', 'lettuce', 'zucchini', 'broccoli', 'radish' }
 
 
 
-console.log(letters.has("a")); // has() - Returns true if a value exists - true
-console.log(letters.has("e")); // false
+// +++++ size() - Returns the number of Set elements
+
+const sizeVeg = new Set(["carrot", "lettuce", "zucchini"]);
+console.log(sizeVeg.size); // 3
 
 
 
-letters.clear(); // clear() - Removes all elements from a Set
-console.log(letters); // Set(0) {}
+// +++++ delete() - Removes an element from a Set
+
+const lessVeg = new Set(["carrot", "lettuce", "zucchini"]);
+
+console.log(lessVeg); // Set(3) { 'carrot', 'lettuce', 'zucchini' }
+
+lessVeg.delete("lettuce"); 
+console.log(lessVeg); // Set(2) { 'carrot', 'zucchini' }
 
 
 
-const moreLetters = new Set(["f", "r", "a", "n"]);
+// +++++ has() - Returns true if a value exists - true
 
-let text = "";
+const gotVeg = new Set(["carrot", "lettuce", "zucchini"]);
 
-moreLetters.forEach(function (value) { // forEach() - invokes a callback for each element
-    text += value;
+console.log(gotVeg.has("lettuce")); // true
+console.log(gotVeg.has("broccoli")); // false
+
+
+
+// +++++ clear() - Removes all elements from a Set
+
+const noVeg = new Set(["carrot", "lettuce", "zucchini"]);
+
+noVeg.clear(); 
+console.log(noVeg); // Set(0) {}
+
+
+
+// ----------------------------- > SETS >> Iterating through a Set
+
+const spellName = new Set(["f", "r", "a", "n"]);
+
+let myName = "";
+
+spellName.forEach(function (value) { // forEach() - invokes a callback for each element
+    myName += value;
 })
 
-console.log(text); // fran
+console.log(myName); // fran
 
 
 
-const names = new Set(["francine", "werner"]);
+const waterbirds = new Set(["heron", "duck", "swan"]);
 
-names.add("poh");
-names.add("marschall");
-
-for (const item of names.values()) { // values() - returns a new set iterator object that contains the values for each element in the Set object in insertion order.
-    console.log(item); // francine werner poh marschall
+for (const bird of waterbirds.values()) { // values() - returns a new set iterator object that contains the values for each element in the Set object in insertion order.
+    console.log(bird); // heron duck swan
 }
 
 
@@ -87,25 +116,66 @@ for (const item of names.values()) { // values() - returns a new set iterator ob
 
 const numbers = new Set([1, 2, 3, 4, 5]);
 
-for (const item of numbers.values()) { // values()
+// Here, we return the values of the numbers set by using values()
+
+for (const item of numbers.values()) { 
     console.log(item); // 1 2 3 4 5
 }
 
-// A Set has no keys, therefore while using keys()
+// A Set has no keys, therefore while using keys(), it returns the same as values()
 
-for (const item of numbers.keys()) { // keys() - returns the same as values(), which makes Sets compatible with Map
+for (const item of numbers.keys()) { 
     console.log(item); // 1 2 3 4 5 
 }
 
-// While using entries()
-
-for (const item of numbers.entries()) { // entries() - returns an Iterator with the [value,value] pairs instead of [key,value] pairs from a Set
+// While using entries(), it returns an Iterator with [value,value] pairs instead of [key,value] pairs from a Set
+for (const item of numbers.entries()) { 
     console.log(item); // [ 1, 1 ] [ 2, 2 ] [ 3, 3 ] [ 4, 4 ] [ 5, 5 ]
 }
 
+// The reason why this property makes Sets compatible with Map:
+// it allows generic functions to handle both Sets and Maps interchangeably without having to check for the type of data structure first
 
 
-// Adding variables to a set
+
+// +++++ Example of a function that works with both Sets and Maps
+
+const duckSet = new Set(["Mallard", "Lesser Whistling Duck", "Gadwell"]);
+const heronMap = new Map([
+    ["small", "Yellow Bittern"],
+    ["medium", "Little Egret"],
+    ["large", "Grey Heron"]
+]);
+
+console.log(duckSet); // Set(3) { 'Mallard', 'Lesser Whistling Duck', 'Gadwell' }
+console.log(heronMap); // Map(3) { 'small' => 'Yellow Bittern', 'medium' => 'Little Egret', 'large' => 'Grey Heron' }
+
+function whatNum (thisThing) {
+
+    let thisKey = "The list of keys are as follows: ";
+    let thisValue = "The list of values are as follows: ";
+    let counter = 1;
+
+    for (const [value, key] of thisThing.entries()) {
+
+        let counterCheck = thisThing.size === counter;
+
+        thisKey += !counterCheck ? `${key}, ` : `and ${key}.`;
+        thisValue += !counterCheck ? `${value}, ` : `and ${value}.`
+
+        counter++;
+    }
+
+    console.log(thisKey, thisValue);
+
+}
+
+whatNum(duckSet); // The list of keys are as follows: Mallard, Lesser Whistling Duck, and Gadwell. The list of values are as follows: Mallard, Lesser Whistling Duck, and Gadwell.
+whatNum(heronMap); // The list of keys are as follows: Yellow Bittern, Little Egret, and Grey Heron. The list of values are as follows: small, medium, and large.
+
+
+
+// +++++ Example of adding variables to a set
 
 const lettering = new Set();
 

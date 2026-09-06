@@ -2,7 +2,6 @@
 Table of Contents
 
 > MAPS
->> Benefits of using Map over a normal Object
 >> Iterating through a Map
 > WEAKMAP 
 */
@@ -24,7 +23,7 @@ Table of Contents
 
 
 
-// ----------------------------- > MAPS >> Benefits of using Map over a normal Object
+// +++++ Benefits of using Map over a normal Object +++++
 
 // A map does not contain any keys by default. It only contains what is explicitly put into it.
 // An Object has a prototype, so it contains default keys that could collide with your own keys if you're not careful. 
@@ -64,13 +63,15 @@ Table of Contents
 
 // -----------------------------
 
-const fruits = new Map(); // new Map() - Create a Map
+// +++++ new Map() - Create a Map
+
+const fruits = new Map(); 
 
 console.log(fruits); // Map(0) {}
 
+// You can create a Map by passing an Array to the new Map() constructor
 
-
-const fruitBasket = new Map([ // You can create a Map by passing an Array to the new Map() constructor:
+const fruitBasket = new Map([ 
     ["apples", 500],
     ["bananas", 300],
     ["oranges", 200]
@@ -78,11 +79,24 @@ const fruitBasket = new Map([ // You can create a Map by passing an Array to the
 
 console.log(fruitBasket); // Map(3) { 'apples' => 500, 'bananas' => 300, 'oranges' => 200 }
 
+// The keys have to be unique, but the values can be repeated
 
+const fruitPlate = new Map ([
+    ["apples", 500],
+    ["bananas", 500],
+    ["oranges", 200],
+    ["oranges", 100]
+]);
+
+console.log(fruitPlate); // Map(3) { 'apples' => 500, 'bananas' => 500, 'oranges' => 100 } - oranges is not repeated, and it retains the latest value given
+
+
+
+// +++++ set() - add elements to a Map 
 
 const fruitBowl = new Map();
 
-fruitBowl.set("apples", 500); // set() - add elements to a Map 
+fruitBowl.set("apples", 500); 
 fruitBowl.set("bananas", 300);
 fruitBowl.set("oranges", 200);
 
@@ -90,25 +104,35 @@ console.log(fruitBowl); // Map(3) { 'apples' => 500, 'bananas' => 300, 'oranges'
 
 
 
-fruitBowl.set("apples", 1000); // set() can also be used to change existing Map values
+// set() can also be used to change existing Map values
+
+fruitBowl.set("apples", 1000); 
 
 console.log(fruitBowl); // Map(3) { 'apples' => 1000, 'bananas' => 300, 'oranges' => 200 }
 
 
 
-// get() - Returns the value associated to the passed key
-console.log(fruitBowl.get("oranges")); // 200
+const fruitBox = new Map([ 
+    ["apples", 500],
+    ["bananas", 300],
+    ["oranges", 200]
+]);
+
+// +++++ get() - Returns the value associated to the passed key
+console.log(fruitBox.get("oranges")); // 200
 
 
 
-// has() - Returns true if a key exists in a Map
-console.log(fruitBowl.has("oranges")); // true
+// +++++ has() - Returns true if a key exists in a Map
+console.log(fruitBox.has("oranges")); // true
 
 
-// size - Returns the number of Map elements
-console.log(fruitBowl.size); // 3
+// +++++ size - Returns the number of Map elements
+console.log(fruitBox.size); // 3
 
 
+
+// +++++ Copying a Map
 
 const fruitTray = new Map([
     ["apples", 500],
@@ -117,7 +141,7 @@ const fruitTray = new Map([
 ]);
 
 // only makes a shallow copy, the objects inside are not copied so references are the same between the two arrays
-const fruitClone = new Map(fruitTray); // clone() - clone a Map
+const fruitClone = new Map(fruitTray); 
 
 console.log(fruitTray); // Map(3) { 'apples' => 500, 'bananas' => 300, 'oranges' => 200 }
 console.log(fruitClone); // Map(3) { 'apples' => 500, 'bananas' => 300, 'oranges' => 200 }
@@ -125,17 +149,23 @@ console.log(fruitTray === fruitClone); // false (the data itself is not cloned)
 
 
 
-fruitTray.delete("apples"); // delete() - Removes a Map element specified by a key
+// +++++ delete() - Removes a Map element specified by a key
+
+fruitTray.delete("apples"); 
 
 console.log(fruitTray); // Map(2) { 'bananas' => 300, 'oranges' => 200 }
 
 
 
-fruitTray.clear(); // clear() - Removes all the elements from a Map
+// +++++ clear() - Removes all the elements from a Map
+
+fruitTray.clear(); 
 
 console.log(fruitTray); // Map(0) {}
 
 
+
+// +++++ merge() - merge maps while maintaining key uniqueness
 
 const fruitCup = new Map([
     ["apples", 500],
@@ -149,7 +179,7 @@ const fruitSpoon = new Map([
     ["kiwis", 100],
 ]);
 
-const fruitMerge = new Map([...fruitCup, ...fruitSpoon]); // merge() - merge maps while maintaining key uniqueness
+const fruitMerge = new Map([...fruitCup, ...fruitSpoon]); 
 
 console.log(fruitMerge); // Map(4) { 'apples' => 500,'bananas' => 1000, 'oranges' => 200, 'kiwis' => 100 }
 
