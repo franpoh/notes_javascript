@@ -3,6 +3,7 @@ Table of Contents
 
 > SETS
 >> A Set have no Keys
+>> WEAKSET
 */
 
 
@@ -29,14 +30,13 @@ Table of Contents
 
 // +++++ set() - Creates a new empty Set
 
-const newSet = new Set(); 
+const newSet = new Set();
 console.log(newSet); // Set(0) {}
 
 // create new Set and passing in an array
 
-const vegetables = new Set(["carrot", "lettuce", "zucchini"]); 
+const vegetables = new Set(["carrot", "lettuce", "zucchini"]);
 console.log(vegetables); Set(3) // { 'carrot', 'lettuce', 'zucchini' }
-
 
 
 // +++++ add() - Adds a new element to the Set 
@@ -44,7 +44,7 @@ console.log(vegetables); Set(3) // { 'carrot', 'lettuce', 'zucchini' }
 const moreVeg = new Set(["carrot", "lettuce", "zucchini"]);
 console.log(moreVeg); // Set(3) { 'carrot', 'lettuce', 'zucchini' }
 
-moreVeg.add("broccoli"); 
+moreVeg.add("broccoli");
 moreVeg.add("radish"); // If you add equal elements, only the first will be saved:
 moreVeg.add("radish"); // not added
 
@@ -65,7 +65,7 @@ const lessVeg = new Set(["carrot", "lettuce", "zucchini"]);
 
 console.log(lessVeg); // Set(3) { 'carrot', 'lettuce', 'zucchini' }
 
-lessVeg.delete("lettuce"); 
+lessVeg.delete("lettuce");
 console.log(lessVeg); // Set(2) { 'carrot', 'zucchini' }
 
 
@@ -83,8 +83,46 @@ console.log(gotVeg.has("broccoli")); // false
 
 const noVeg = new Set(["carrot", "lettuce", "zucchini"]);
 
-noVeg.clear(); 
+noVeg.clear();
 console.log(noVeg); // Set(0) {}
+
+
+
+// +++++ Converting between Array and Set
+
+// You can create an Array from a Set using Array.from or the spread syntax.
+
+const mySet = new Set(["apple", "banana", "cherry"]);
+
+// Using Array.from
+const arrayFrom = Array.from(mySet); 
+console.log(arrayFrom); // [ "apple", "banana", "cherry" ]
+
+// Using spread syntax
+const arraySpread = [...mySet];
+console.log(arraySpread); // [ "apple", "banana", "cherry" ]
+
+
+
+// Also, the Set constructor accepts an Array to convert in the other direction.
+// Note: Set objects store unique values—so any duplicate elements from an Array are deleted when converting!
+
+const arrayDupe = ["apple", "banana", "banana", "cherry"];
+const setNoDupe = new Set(arrayDupe);
+
+console.log(setNoDupe); // Set(3) { 'apple', 'banana', 'cherry' } - duplicate "banana" removed
+
+
+
+// +++++ Array and Set compared
+
+// Traditionally, a set of elements has been stored in arrays in JavaScript in a lot of situations.
+// The Set object, however, has some advantages:
+
+// Deleting Array elements by value - (arr.splice(arr.indexOf(val), 1)) - is very slow.
+// Set objects let you delete elements by their value. With an array, you would have to splice based on an element's index.
+
+// Set objects store unique values.You don't have to manually keep track of duplicates.
 
 
 
@@ -118,18 +156,18 @@ const numbers = new Set([1, 2, 3, 4, 5]);
 
 // Here, we return the values of the numbers set by using values()
 
-for (const item of numbers.values()) { 
+for (const item of numbers.values()) {
     console.log(item); // 1 2 3 4 5
 }
 
 // A Set has no keys, therefore while using keys(), it returns the same as values()
 
-for (const item of numbers.keys()) { 
+for (const item of numbers.keys()) {
     console.log(item); // 1 2 3 4 5 
 }
 
 // While using entries(), it returns an Iterator with [value,value] pairs instead of [key,value] pairs from a Set
-for (const item of numbers.entries()) { 
+for (const item of numbers.entries()) {
     console.log(item); // [ 1, 1 ] [ 2, 2 ] [ 3, 3 ] [ 4, 4 ] [ 5, 5 ]
 }
 
@@ -150,7 +188,7 @@ const heronMap = new Map([
 console.log(duckSet); // Set(3) { 'Mallard', 'Lesser Whistling Duck', 'Gadwell' }
 console.log(heronMap); // Map(3) { 'small' => 'Yellow Bittern', 'medium' => 'Little Egret', 'large' => 'Grey Heron' }
 
-function whatNum (thisThing) {
+function whatBird(thisThing) {
 
     let thisKey = "The list of keys are as follows: ";
     let thisValue = "The list of values are as follows: ";
@@ -170,21 +208,61 @@ function whatNum (thisThing) {
 
 }
 
-whatNum(duckSet); // The list of keys are as follows: Mallard, Lesser Whistling Duck, and Gadwell. The list of values are as follows: Mallard, Lesser Whistling Duck, and Gadwell.
-whatNum(heronMap); // The list of keys are as follows: Yellow Bittern, Little Egret, and Grey Heron. The list of values are as follows: small, medium, and large.
+whatBird(duckSet); // The list of keys are as follows: Mallard, Lesser Whistling Duck, and Gadwell. The list of values are as follows: Mallard, Lesser Whistling Duck, and Gadwell.
+whatBird(heronMap); // The list of keys are as follows: Yellow Bittern, Little Egret, and Grey Heron. The list of values are as follows: small, medium, and large.
 
 
 
 // +++++ Example of adding variables to a set
 
-const lettering = new Set();
+const cats = new Set();
 
-const a = "1";
-const b = "2";
-const c = "3";
+const small = "house cat";
+const medium = "leopard";
+const large = "tiger";
 
-lettering.add(a);
-lettering.add(b);
-lettering.add(c);
+cats.add(small);
+cats.add(medium);
+cats.add(large);
 
-console.log(lettering); // Set(3) { '1', '2', '3' }
+console.log(cats); // Set(3) { 'house cat', 'leopard', 'tiger' }
+
+
+
+// ----------------------------- > WEAKSET -----------------------------
+
+// WeakSet objects are collections of garbage-collectable values, including objects and non-registered symbols. 
+// A value in the WeakSet may only occur once. It is unique in the WeakSet's collection.
+
+let firstName = { firstName: "Francine" };
+let lastName = { lastName: "Poh" };
+
+let thisWeakSet = new WeakSet([firstName, lastName]);
+console.log(thisWeakSet.has(firstName)); // true
+
+// thisWeakSet.add("This is a string"); // TypeError: Invalid value used in weak set - weaksets only allows objects and non-registered symbols
+
+// References to objects in weaksets are held weakly. 
+// If there is no other reference to an object stored in the WeakSet, they can be garbage collected. 
+// That also means that there is no list of current objects stored in the collection.
+
+firstName = null;
+console.log(thisWeakSet.has(firstName)); // false - and the entry will be garbage collected
+
+// Since there is no list of current objects stored in the collection, WeakSets are not enumerable and don't have a size method. 
+
+
+
+// The use cases of WeakSet objects are limited. 
+// They will not leak memory, so it can be safe to use DOM elements as a key and mark them for tracking purposes, for example.
+
+
+
+// +++++ NOTE: Both the key equality of Map objects and the value equality of Set objects are based on the 
+// SameValueZero algorithm:
+
+// Equality works like the identity comparison operator ===.
+// -0 and +0 are considered equal.
+// NaN is considered equal to itself (contrary to ===).
+
+console.log(NaN === NaN); // false
