@@ -67,7 +67,8 @@ console.log('Try running this individually!');
 
 
 
-// What's with all the green words and the backslashes? Those are comments, text which are excluded from code execution.
+// What's with all the green (or whatever colour your theme is using) words and the backslashes? 
+// These are comments, text which are excluded from code execution.
 // Comments can be used to explain JavaScript code, and to make it more readable. They can also be used to prevent execution, when testing alternative code.
 
 // Two backslashes for a single line comment
@@ -85,19 +86,37 @@ Hello world! */
 
 // The latest ECMAScript standard defines eight data types:
 
+// +++++ Seven data types that are primitives:
+
+// Boolean: true and false.
+true
+false
+
+// null: A special keyword denoting a null value. (Because JavaScript is case-sensitive, null is not the same as Null, NULL, or any other variant.)
+null
+
+// undefined: A top-level property whose value is not defined.
+undefined
+
+// Number: An integer or floating point number. 
+67
+3.14
+
+// String: A sequence of characters that represent a text value.
+"Hello World"
+
+// BigInt: An integer with arbitrary precision. 
+9007199254740992n
+
+// Symbol: A data type whose instances are unique and immutable. You can read the topic on this later. 
+
+// +++++ and Object, a non-primitive that consists of a list of properties - key: value - within curly braces {}
+
+{ key1: value1, key2, value2, key3, value3 }
+
+// This is a very simplistic way to represent an object, and we will learn more about it later
 
 
-// Seven data types that are primitives:
-
-// Boolean.     true and false.
-// null.        A special keyword denoting a null value. (Because JavaScript is case-sensitive, null is not the same as Null, NULL, or any other variant.)
-// undefined.   A top-level property whose value is not defined.
-// Number.      An integer or floating point number. For example: 42 or 3.14159.
-// String.      A sequence of characters that represent a text value. For example: "Howdy".
-// BigInt.      An integer with arbitrary precision. For example: 9007199254740992n.
-// Symbol.      A data type whose instances are unique and immutable.
-
-// and Object
 
 // NOTE: We will pay more attention to the first 5 primitives and object, and get to BigInt and Symbol later
 

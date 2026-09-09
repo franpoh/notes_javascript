@@ -14,34 +14,20 @@ Table of Contents
 */
 
 
-// An object is a collection of related data and/or functionality 
-// which usually consists of several variables and functions — which are called properties and methods when they are inside objects.
-// encapsulate related functions and variables into efficient packages and act as handy data containers
 
-// used to store keyed collections of various data and more complex entities.
-// Every object has a constructor property, which was used to create that object
+// JavaScript is designed on an object-based paradigm. 
 
-// can be created with figure brackets {…} with an optional list of properties. 
-// A property is a 'key: value' pair, where key is a string (also called a 'property name'), and value can be anything.
+// An object is a collection of properties, and a property is an association between a name (or key) and a value. 
+// A property's value can be a function, in which case the property is known as a method.
 
-// properties for static values
-// methods for dynamic values
+const favouriteCup = {
+    colour: "blue",
+    volumeML: 200,
+    drink: "tea" 
+}
 
-// Object is like storage
-// Key is like file name
-// Value is the file itself
-
-
-
-// Do Not Declare Strings, Numbers, and Booleans as Objects
-
-// When a JavaScript variable is declared with the keyword "new", the variable is created as an object:
-
-x = new String(); // Declares x as a String object
-y = new Number(); // Declares y as a Number object
-z = new Boolean(); // Declares z as a Boolean object
-
-// Avoid String, Number, and Boolean objects. They complicate your code and slow down execution speed.
+// An object can be created with figure brackets {…} with an optional list of properties. 
+// A property is a 'key: value' pair, where key is a string (also called a 'property name'), and value can be anything..
 
 
 

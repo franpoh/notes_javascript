@@ -258,11 +258,40 @@ console.log(thisWeakSet.has(firstName)); // false - and the entry will be garbag
 
 
 
-// +++++ NOTE: Both the key equality of Map objects and the value equality of Set objects are based on the 
-// SameValueZero algorithm:
+// +++++ NOTE: Both the key equality of Map objects and the value equality of Set objects are based on the *Same-value-zero equality
+// Map and Set use Same-value-zero equality internally to locate keys and entries.
+
+// * Same-value-zero: Same-value equality determines whether two values are functionally identical in all contexts. 
+// Same-value-zero is similar to same-value equality, but +0 and -0 are considered equal.
 
 // Equality works like the identity comparison operator ===.
-// -0 and +0 are considered equal.
+
+const thisColour = { colour: "yellow" };
+
+const testSet = new Set(["red", "green", NaN, thisColour]);
+
+const testMap = new Map ([
+    ["red", "apple"],
+    ["green", "durian"],
+    ["nothing", NaN],
+    [ thisColour, "banana" ]
+]);
+
 // NaN is considered equal to itself (contrary to ===).
 
-console.log(NaN === NaN); // false
+console.log(NaN === NaN); // false - usual behaviour, see Cheatsheet\coding\nan.js
+console.log(testSet.has(NaN)); // true
+
+// Remember, Map and Set use SameValueZero internally - .has(), .get(), and .delete() - to locate keys and entries. 
+// However, once .get() hands the value back to your code, standard JavaScript rules take over for whatever operator you use next.
+
+console.log(testMap.get("nothing") === NaN); // false
+
+// Same-value-zero equality means that for object values, equality is based on object identity. They are compared by reference, not by value.
+
+console.log(testSet.has({ colour: "yellow" })); // false
+console.log(testSet.has(thisColour)); // true
+
+console.log(testMap.get({ colour: "yellow" })); // undefined
+console.log(testMap.get(thisColour)); // banana
+

@@ -1,19 +1,20 @@
 /* 
 Table of Contents
 
-> ARRAY LITERAL
->> Length
->> Sparse Arrays 
-> BOOLEAN LITERALS
-> NUMERIC LITERALS
-> OBJECT LITERALS
->> Enhanced Object Literals
-> REGEXP LITERALS
 > STRING LITERALS
 >> Escaping Characters In A String
 >> Template Literals
 >> Split A Traditional String Over Multiple Lines
 >>> Tagged Templates
+> NUMERIC LITERALS
+> BOOLEAN LITERALS
+> ARRAY LITERAL
+>> Length
+>> Sparse Arrays 
+> OBJECT LITERALS
+>> Enhanced Object Literals
+> REGEXP LITERALS
+
 */
 
 
@@ -22,32 +23,283 @@ Table of Contents
 
 // This section describes the following types of literals:
 
-// Array literals
-const array = [value1, value2, value3];
+// String literals
+'Hello I am a string.'
+
+// Numeric literals
+1, 28, 545;
 
 // Boolean literals
 true;
 false;
 
-// Numeric literals
-1, 28, 545;
+// Array literals
+const array = [value1, value2, value3];
 
 // Object literals
 const object = {
-    property1: value1,
-    property2: value2,
-    property3: value3,
+    key1: value1,
+    key2: value2,
+    key3: value3,
 }
 
 // RegExp literals
 const regExp = /ab+c/;
 
-// String literals
-'Hello I am a string.'
-
 
 
 // NOTE: Although this page is about literals, we will also be going through some stuff about these data types, not just about literals. 
+// So feel free, at any moment, if you don't understand anything to leave it for now and come back to it later
+
+
+
+// ----------------------------- > STRING LITERALS -----------------------------
+
+// A string literal is zero or more characters enclosed in double (") or single (') quotation marks. 
+// A string must be delimited by quotation marks of the same type (that is, either both single quotation marks, or both double quotation marks).
+
+
+
+// The following are examples of string literals:
+
+'foo'
+"bar"
+'1234'
+'one line \n another line'
+"Joyo's cat"
+
+
+
+// You should use string literals unless you specifically need to use a String object.
+
+
+
+// You can call any of the String object's methods on a string literal value. 
+// JavaScript automatically converts the string literal to a temporary String object, calls the method, then discards the temporary String object. 
+// NOTE: See 10_object\object_wrapper.js
+
+// You can also use the length property with a string literal:
+
+// Will print the number of symbols in the string including whitespace.
+console.log("Joyo's cat".length); // 10
+
+
+
+// ----------------------------- > STRING LITERALS >> Escaping Characters In A String
+
+// Escaping characters means that we do something to them to make sure they are recognized as text, not part of the code.
+// In JavaScript, we do this by putting a backslash just before the character.
+
+const bigmouth = 'I\'ve got no right to take my place…';
+console.log(bigmouth); // I've got no right to take my place…
+
+
+
+// ----------------------------- > STRING LITERALS >> Template Literals
+
+// Template literals are also available, a newer syntax that provides more flexible, easier to read strings
+// Template literals are enclosed by the back-tick (`) (grave accent) character instead of double or single quotes.
+
+// Template literals provide syntactic sugar for constructing strings. (This is similar to string interpolation features in Perl, Python, and more.)
+
+
+
+// To turn a standard string literal into a template literal, you have to replace the quote marks (' ', or " ") with backtick characters (` `).
+
+`I'm a template literal`;
+
+// to include a variable or expression inside the string, you include it inside a ${ } construct, which is called a placeholder.
+
+let whatAmI = 'template literal';
+`I'm a ${whatAmI}`;
+
+
+
+// +++++ Example
+
+let song = 'Country Roads'
+let score = 9;
+let highestScore = 10;
+
+// Old way of outputting a string with a combination of strings and variables
+let oldOutput = 'I like the song "' + song + '". I gave it a score of ' + (score / highestScore * 100) + '%.';
+console.log(oldOutput); // I like the song "Country Roads". I gave it a score of 90%.
+
+// Template Literal:
+let newOutput = `I like the song "${song}". I gave it a score of ${score / highestScore * 100}%.`;
+console.log(newOutput); // I like the song "Country Roads". I gave it a score of 90%.
+
+
+
+// ----------------------------- > STRING LITERALS >> Split A Traditional String Over Multiple Lines
+
+// \n – a newline character, used to split a string onto new lines in a traditional string literal
+
+output = 'Roses are Red, \nViolets are Blue, \nThis is a String Literal Example, \nPoetry poetry poetry';
+console.log(output);
+
+
+
+// Template literals respect the line breaks in the source code, so newline characters are no longer needed. This would achieve the same result:
+
+output = `Roses are Red, 
+Violets are Blue, 
+This is a Template Literal Example, 
+Poetry poetry poetry`;
+
+console.log(output);
+
+
+
+// ----------------------------- > STRING LITERALS >> Template Literals >>> Tagged Templates
+
+// NOTE: You might want to come back to this later after studying until 8_array_methods at least. 
+
+// Tagged templates are a compact syntax for specifying a template literal along with a call to a "tag" function for parsing it. 
+// A tagged template is just a more succinct and semantic way to invoke a function that processes a string and a set of relevant values. 
+// The name of the template tag function precedes the template literal — as in the following example, where the template tag function is named print. 
+// The print function will interpolate the arguments and serialize any objects or arrays that may come up, avoiding the pesky [object Object].
+
+
+
+function makeBulletList(todo) {
+    let list = ``;
+
+    todo.forEach((item) => {
+        list += `
+        - ${item}`
+    })
+
+    return list;
+}
+
+function printTag(strings, day, person, todo) {
+
+    /*
+    This is how the function can be called: 
+
+    printTag`On ${today}, ${person1} needs to do: ${todos1}`; ----- This is the tagged template
+    or 
+    printTag(["On ", ", ", " needs to do: "], today, person1, todos1); ----- Calling function as per normal
+    */
+
+    /*
+    console.log(`
+    strings: ${strings}
+    day: ${day}
+    person: ${person} 
+    todo: ${todo}`);
+    */
+
+    /*     
+    strings: On ,, , needs to do: ,
+    day: Thu Aug 06 2026 11:41:08 GMT+0800 (Singapore Standard Time)
+    person: Francine 
+    todo: Learn JavaScript,Workout,Get my vaccination,Print materials for Heart RPG
+    */
+
+    console.log(`${strings[0]}${day.toLocaleDateString()}${strings[1]}${person}${strings[2]}${makeBulletList(todo)}`);
+}
+
+const today = new Date();
+
+const person1 = 'Francine';
+
+const todos1 = [
+    "Learn JavaScript",
+    "Workout",
+    "Get my vaccination",
+    "Print materials for Heart RPG",
+];
+
+printTag`On ${today}, ${person1} needs to do: ${todos1}`;
+/* 
+On 05/04/2024, Francine needs to do: 
+        - Learn JavaScript
+        - Workout
+        - Get my vaccination
+        - Print materials for Heart RPG
+*/
+
+const tomorrow = new Date(today);
+tomorrow.setDate(today.getDate() + 1);
+
+const person2 = 'Werner';
+
+const togos2 = [
+    "Jordy's",
+    "Gimsel",
+    "Oogstmarkt",
+    "Donner",
+];
+
+printTag`When it is ${tomorrow}, ${person2} should go to ${togos2}`
+/* 
+When it is 06/04/2024, Werner should go to 
+        - Jordy's
+        - Gimsel
+        - Oogstmarkt
+        - Donner
+*/
+
+// Since tagged template literals are just sugar of function calls, you can re-write the above as an equivalent function call:
+
+printTag(["On ", ", ", " needs to do: "], today, person1, todos1);
+/* 
+On 07/04/2024, Francine needs to do: 
+        - Learn JavaScript
+        - Workout
+        - Get my vaccination
+        - Print materials for Heart RPG
+*/
+
+// This may be reminiscent of the console.log-style interpolation:
+
+console.log("When it is %s %s needs to do: %o", today, person1, todos1); // See explanation of %s and %o in 7_text_formatting\3_format_specifier.js
+/*
+When it is 2024-04-07T09:13:58.057Z 'Francine' needs to do: [
+  'Learn JavaScript',
+  'Workout',
+  'Get my vaccination',
+  'Print materials for Heart RPG',
+  [length]: 4
+]
+*/
+
+
+// You can see how the tagged template reads more naturally than a traditional "formatter" function, where the variables and the template itself have to be declared separately.
+
+
+
+// ----------------------------- > NUMERIC LITERALS -----------------------------
+
+// JavaScript numeric literals include *integer literals in different bases as well as *floating-point literals in base-10.
+
+// *integer: a whole number (not a fractional number) that can be positive, negative, or zero
+67
+
+// *floating-point: a positive or negative whole number with a decimal point
+3.14
+
+// You will learn more about the operations you can perform on numbers in a later topic 5_expressions_operators\expressions_operators.js
+
+
+// When working with numbers, you might sometimes see the result/error NaN. It means 'Not a Number'.
+// Learn more about it (perhaps later) at Cheatsheet\coding\nan.js
+
+
+
+// For more information on numeric literals: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#numeric_literals
+
+
+
+// ----------------------------- > BOOLEAN LITERALS -----------------------------
+
+// The Boolean type has two literal values: true and false.
+
+// NOTE: Do not confuse the primitive Boolean values true and false with the true and false values of the Boolean object.
+// The Boolean object is a wrapper around the primitive Boolean data type.
+// We will learn about object wrappers a bit later down the line
 
 
 
@@ -312,39 +564,15 @@ This is an element: apple
 
 
 
-// ----------------------------- > BOOLEAN LITERALS -----------------------------
-
-// The Boolean type has two literal values: true and false.
-
-// NOTE: Do not confuse the primitive Boolean values true and false with the true and false values of the Boolean object.
-// The Boolean object is a wrapper around the primitive Boolean data type.
-
-
-
-// ----------------------------- > NUMERIC LITERALS -----------------------------
-
-// JavaScript numeric literals include *integer literals in different bases as well as *floating-point literals in base-10.
-
-// Note that the language specification requires numeric literals to be unsigned.
-// Nevertheless, code fragments like -123.4 are fine, being interpreted as a *unary-operator applied to the numeric literal 123.4.
-
-
-
-// *integer: a whole number (not a fractional number) that can be positive, negative, or zero
-// *floating-point: a positive or negative whole number with a decimal point
-// *unary-operator: See JAVASCRIPT\math\operator.js\> UNARY OPERATORS
-
-
-
-// When working with numbers, you might sometimes see the result/error NaN. It means 'Not a Number'.
-
-// For more information on numeric literals: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#numeric_literals
-
-
-
 // ----------------------------- > OBJECT LITERALS -----------------------------
 
 // An object literal is a list of zero or more pairs of property names and associated values of an object, enclosed in curly braces ({}).
+
+let thisObject = {
+    key1: 1,
+    key2: "two",
+    key3: { droste: "three" }
+}
 
 // Warning: Do not use an object literal at the beginning of a statement!
 // This will lead to an error (or not behave as you expect), because the { will be interpreted as the beginning of a block.
@@ -549,223 +777,6 @@ const result = /^hello/.test(str);
 
 console.log(result); // true
 
-
-
-// ----------------------------- > STRING LITERALS -----------------------------
-
-// A string literal is zero or more characters enclosed in double (") or single (') quotation marks. 
-// A string must be delimited by quotation marks of the same type (that is, either both single quotation marks, or both double quotation marks).
-
-
-
-// The following are examples of string literals:
-
-'foo'
-"bar"
-'1234'
-'one line \n another line'
-"Joyo's cat"
-
-
-
-// You should use string literals unless you specifically need to use a String object.
-
-
-
-// You can call any of the String object's methods on a string literal value. 
-// JavaScript automatically converts the string literal to a temporary String object, calls the method, then discards the temporary String object. 
-// NOTE: See 10_object\object_wrapper.js
-
-// You can also use the length property with a string literal:
-
-// Will print the number of symbols in the string including whitespace.
-console.log("Joyo's cat".length); // 10
-
-
-
-// ----------------------------- > STRING LITERALS >> Escaping Characters In A String
-
-// Escaping characters means that we do something to them to make sure they are recognized as text, not part of the code.
-// In JavaScript, we do this by putting a backslash just before the character.
-
-const bigmouth = 'I\'ve got no right to take my place…';
-console.log(bigmouth); // I've got no right to take my place…
-
-
-
-// ----------------------------- > STRING LITERALS >> Template Literals
-
-// Template literals are also available, a newer syntax that provides more flexible, easier to read strings
-// Template literals are enclosed by the back-tick (`) (grave accent) character instead of double or single quotes.
-
-// Template literals provide syntactic sugar for constructing strings. (This is similar to string interpolation features in Perl, Python, and more.)
-
-
-
-// To turn a standard string literal into a template literal, you have to replace the quote marks (' ', or " ") with backtick characters (` `).
-
-`I'm a template literal`;
-
-// to include a variable or expression inside the string, you include it inside a ${ } construct, which is called a placeholder.
-
-let whatAmI = 'template literal';
-`I'm a ${whatAmI}`;
-
-
-
-// +++++ Example
-
-let song = 'Country Roads'
-let score = 9;
-let highestScore = 10;
-
-// Old way of outputting a string with a combination of strings and variables
-let oldOutput = 'I like the song "' + song + '". I gave it a score of ' + (score / highestScore * 100) + '%.';
-console.log(oldOutput); // I like the song "Country Roads". I gave it a score of 90%.
-
-// Template Literal:
-let newOutput = `I like the song "${song}". I gave it a score of ${score / highestScore * 100}%.`;
-console.log(newOutput); // I like the song "Country Roads". I gave it a score of 90%.
-
-
-
-// ----------------------------- > STRING LITERALS >> Split A Traditional String Over Multiple Lines
-
-// \n – a newline character, used to split a string onto new lines in a traditional string literal
-
-output = 'Roses are Red, \nViolets are Blue, \nThis is a String Literal Example, \nPoetry poetry poetry';
-console.log(output);
-
-
-
-// Template literals respect the line breaks in the source code, so newline characters are no longer needed. This would achieve the same result:
-
-output = `Roses are Red, 
-Violets are Blue, 
-This is a Template Literal Example, 
-Poetry poetry poetry`;
-
-console.log(output);
-
-
-
-// ----------------------------- > STRING LITERALS >> Template Literals >>> Tagged Templates
-
-// NOTE: You might want to come back to this later after studying until 8_array_methods at least. 
-
-// Tagged templates are a compact syntax for specifying a template literal along with a call to a "tag" function for parsing it. 
-// A tagged template is just a more succinct and semantic way to invoke a function that processes a string and a set of relevant values. 
-// The name of the template tag function precedes the template literal — as in the following example, where the template tag function is named print. 
-// The print function will interpolate the arguments and serialize any objects or arrays that may come up, avoiding the pesky [object Object].
-
-
-
-function makeBulletList(todo) {
-    let list = ``;
-
-    todo.forEach((item) => {
-        list += `
-        - ${item}`
-    })
-
-    return list;
-}
-
-function printTag(strings, day, person, todo) {
-
-    /*
-    This is how the function can be called: 
-
-    printTag`On ${today}, ${person1} needs to do: ${todos1}`; ----- This is the tagged template
-    or 
-    printTag(["On ", ", ", " needs to do: "], today, person1, todos1); ----- Calling function as per normal
-    */
-
-    /*
-    console.log(`
-    strings: ${strings}
-    day: ${day}
-    person: ${person} 
-    todo: ${todo}`);
-    */
-
-    /*     
-    strings: On ,, , needs to do: ,
-    day: Thu Aug 06 2026 11:41:08 GMT+0800 (Singapore Standard Time)
-    person: Francine 
-    todo: Learn JavaScript,Workout,Get my vaccination,Print materials for Heart RPG
-    */
-
-    console.log(`${strings[0]}${day.toLocaleDateString()}${strings[1]}${person}${strings[2]}${makeBulletList(todo)}`);
-}
-
-const today = new Date();
-
-const person1 = 'Francine';
-
-const todos1 = [
-    "Learn JavaScript",
-    "Workout",
-    "Get my vaccination",
-    "Print materials for Heart RPG",
-];
-
-printTag`On ${today}, ${person1} needs to do: ${todos1}`;
-/* 
-On 05/04/2024, Francine needs to do: 
-        - Learn JavaScript
-        - Workout
-        - Get my vaccination
-        - Print materials for Heart RPG
-*/
-
-const tomorrow = new Date(today);
-tomorrow.setDate(today.getDate() + 1);
-
-const person2 = 'Werner';
-
-const togos2 = [
-    "Jordy's",
-    "Gimsel",
-    "Oogstmarkt",
-    "Donner",
-];
-
-printTag`When it is ${tomorrow}, ${person2} should go to ${togos2}`
-/* 
-When it is 06/04/2024, Werner should go to 
-        - Jordy's
-        - Gimsel
-        - Oogstmarkt
-        - Donner
-*/
-
-// Since tagged template literals are just sugar of function calls, you can re-write the above as an equivalent function call:
-
-printTag(["On ", ", ", " needs to do: "], today, person1, todos1);
-/* 
-On 07/04/2024, Francine needs to do: 
-        - Learn JavaScript
-        - Workout
-        - Get my vaccination
-        - Print materials for Heart RPG
-*/
-
-// This may be reminiscent of the console.log-style interpolation:
-
-console.log("When it is %s %s needs to do: %o", today, person1, todos1); // See explanation of %s and %o in 7_text_formatting\3_format_specifier.js
-/*
-When it is 2024-04-07T09:13:58.057Z 'Francine' needs to do: [
-  'Learn JavaScript',
-  'Workout',
-  'Get my vaccination',
-  'Print materials for Heart RPG',
-  [length]: 4
-]
-*/
-
-
-// You can see how the tagged template reads more naturally than a traditional "formatter" function, where the variables and the template itself have to be declared separately.
 
 
 
