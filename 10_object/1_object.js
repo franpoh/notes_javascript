@@ -2,9 +2,7 @@
 Table of Contents
 
 > OBJECT LITERALS
-> OBJECTS AS OBJECT PROPERTIES
 > SQUARE BRACKET NOTATION
->> Computed Property Names
 > SETTING OBJECT MEMBERS
 > CONSTRUCTOR
 > CLASS
@@ -18,24 +16,48 @@ Table of Contents
 // JavaScript is designed on an object-based paradigm. 
 
 // An object is a collection of properties, and a property is an association between a name (or key) and a value. 
-// A property's value can be a function, in which case the property is known as a method.
+
+const thisObject = {
+    key1: "Key One",
+    key2: 2,
+    key3: { innerKey: "Key Three" }
+}
+
+// +++++ Example
 
 const favouriteCup = {
     colour: "blue",
     volumeML: 200,
-    drink: "tea" 
+    drink: { 
+        drinkBase: "black tea",
+        drinkAddition: "milk"
+    }
 }
 
-// An object can be created with figure brackets {…} with an optional list of properties. 
-// A property is a 'key: value' pair, where key is a string (also called a 'property name'), and value can be anything..
+// A property's value can be a function, in which case the property is known as a method.
+
+const favouriteDrink = {
+
+    temperature: "hot",
+    
+    drink: { 
+        drinkBase: "black tea",
+        drinkAddition: "milk"
+    },
+
+    drinkMethod: function(name) {
+        console.log(`${name}'s favourite ${this.temperature} drink is ${this.drink.drinkBase} with ${this.drink.drinkAddition}.`);
+    }
+
+}
+
+favouriteDrink.drinkMethod("Francine"); // Francine's favourite hot drink is black tea with milk.
 
 
 
 // ----------------------------- > OBJECT LITERALS -----------------------------
 
-// comma-separated list of key-value pairs wrapped in curly braces.
-
-// It is referred to as an object literal as we've literally written out the object contents as we've come to create it. 
+// You can create an object using an object initializer. Object initializers are also called object literals.
 
 let personExample = {
     // eg key: value,
@@ -44,81 +66,78 @@ let personExample = {
 
 // +++++ Example
 
-let Pet = {
-    name: "Cerberus",
-    breed: "Hellhound",
-    origin: "Hades",
-    hobby: "guarding the gates of hell",
-    colour: ['black', 'red'],
+let bird = {
+    breed: "Large-tailed Nightjar",
+    hobby: "being unbothered",
+    colour: ['brown', 'black'],
 
     // Methods are functions stored as object properties
     // demonstrating 2 different ways to write methods
 
-    about() { // simpler syntax
-        console.log(`My name is ${this.name} and I am a ${this.breed}.`)
+    colouration() { // simpler syntax
+        console.log(`My feathers are ${this.colour[0]} and ${this.colour[1]}.`)
     },
 
     intro: function () {
-        console.log(`I am from ${this.origin}, my hobby is ${this.hobby}, and today I am wearing a ${this.colour[0]} collar.`)
+        console.log(`My hobby is ${this.hobby}.`)
     },
 }
 
-Pet.about(); // My name is Cerberus and I am a Hellhound.
-Pet.intro(); // I am from Hades, my hobby is guarding the gates of hell, and today I am wearing a black collar.
+// access the object's properties and methods using dot notation - objectName.keyName
+
+console.log(bird.breed); // Large-tailed Nightjar
+
+bird.colouration(); // My feathers are brown and black.
+bird.intro(); // My hobby is being unbothered.
 
 
 
-// Above, you accessed the object's properties and methods using dot notation. 
+// +++++ Create an empty object
 
-// The object name (person) acts as the namespace — it must be entered first to access anything inside the object. 
-// Next you write a dot, then the item you want to access
-
-console.log(Pet.name);
-console.log(Pet.origin);
+let emptyUser = {};  // "object literal" syntax. Usually, the figure brackets {...} are used. 
+console.log(emptyUser); // {}
 
 
 
-// You can create an empty object
+// +++++ Put properties into objects as 'key: value' pairs within curly brackets:
 
-let userA = new Object(); // "object constructor" syntax
-let userB = {};  // "object literal" syntax. Usually, the figure brackets {...} are used. 
-
-console.log(userA); // {}
-console.log(userB); // {}
-
-
-
-// put some properties into {...} as 'key: value' pairs:
-
-userB = {     // an object
+emptyUser = {     // an object
     name: "John",  // by key "name" store value "John"
     age: 30        // by key "age" store value 30
 };
 
-console.log(userB); // { name: 'John', age: 30 }
+console.log(emptyUser); // { name: 'John', age: 30 }
 
 
 
-// NOTE: use 'delete' to remove a property
+// +++++ delete - to remove a property
 
-delete userB.age;
-console.log(userB); // { name: 'John' }
+let userName = {
+    name: "John",
+    age: 30,
+};
+
+delete userName.age;
+console.log(userName); // { name: 'John' }
 
 
 
-// We can also use multiword property names, but then they must be quoted
+// +++++ We can also use multiword property names, but then they must be quoted
 
-let userD = {
+let birder = {
     name: "John",
     age: 30,
     "likes birds": true  // multiword property name must be quoted
 };
 
+// property is accessed using square bracket notation, which you will learn more about below
+console.log(birder["likes birds"]); // true
 
 
-// The last property in the list may end with a comma
 
-let userE = {
+// +++++ The last property in the list may end with a comma
+
+let userComma = {
     name: "John",
     age: 30,
 }
@@ -128,29 +147,71 @@ let userE = {
 
 
 
-// when using existing variables as values for property names, there's a special property value shorthand to make it shorter
+// +++++ when using existing variables as values for property names, there's a special property value shorthand to make it shorter
 
-let name;
+let name = "John";
 
 let genericUser = {
     name, // same as name:name
     age: 30
 };
 
-console.log(genericUser); // { name: undefined, age: 30 }
+console.log(genericUser); // { name: 'John', age: 30 }
 
 
 
-// ----------------------------- > OBJECTS AS OBJECT PROPERTIES -----------------------------
+// +++++ You can also create an object without assigning it to a variable
+// If you do not need to refer to this object elsewhere, you do not need to assign it to a variable. 
 
-// An object property can itself be an object.
-
-// Instead of writing this
-let person = {
-    name: ['Bob', 'Smith']
+function oneTimeUse ({ name, age }) {
+    console.log(`This function will return ${name} and ${age} only once.`);
 }
 
-// You can write this 
+oneTimeUse({ name: "John Doe", age: 30 }); // This function will return John Doe and 30 only once.
+
+// Note that you may need to wrap the object literal in parentheses if the object appears where a statement is expected, 
+// so as not to have the literal be confused with a block statement.
+
+const genUser = () => ({ name: "John Doe", age: 30 }); // parentheses needed, otherwise the object will be interpreted as code within curly brackets
+// const jankyUser = () => { name: "John Doe", age: 30 }; // SyntaxError: Unexpected token ':'
+
+console.log(genUser()); // { name: 'John Doe', age: 30 }
+console.log(`My name is ${genUser().name} and my age is ${genUser().age}.`); // My name is John Doe and my age is 30.
+
+
+
+// +++++ Object initializers are expressions
+// Each object initializer results in a new object being created whenever the statement in which it appears is executed. 
+// Identical object initializers create distinct objects that do not compare to each other as equal.
+
+let originalJohn = {
+    name: "John",
+    age: 30,
+}
+
+let evilJohn = {
+    name: "John",
+    age: 30,
+}
+
+console.log(originalJohn === evilJohn); // false
+
+
+
+// +++++ An object property can also be an object - droste droste droste droste
+
+// Instead of writing this:
+let person = {
+    firstName: "Bob",
+    lastName: "Smith",
+}
+
+// Or this, in an array:
+let personArray = {
+    name: ["Bob", "Smith"],
+}
+
+// You can write this - an object within an object
 let personCopy = {
     name: {
         first: 'Bob',
@@ -166,24 +227,29 @@ console.log(personCopy.name.last)
 
 // +++++ Example
 
-let band = {
-    name: "The Offspring",
-    nationality: "American",
-    genre: "Skate Punk",
-    members: 5,
-    formed: 1984,
-    split: false,
-    albums: { // sub-namespace
-        name: ["Smash", "Ixnay on the Hombre"],
-        released: [1994, 1997],
-    }
+let pets = {
+    household: "Smith", 
+    totalPets: 5,
+    typesOfPets: {
+        cat: ["Pickles", "Kitty"],
+        dog: ["Honchen", "Ruffles", "Chips"],
+    },
 }
+
+console.log(
+    `The ${pets.household} family has ${pets.totalPets} pets.
+Their cats are named ${pets.typesOfPets.cat[0]} and ${pets.typesOfPets.cat[1]}.
+Their dogs are named ${pets.typesOfPets.dog[0]}, ${pets.typesOfPets.dog[1]} and ${pets.typesOfPets.dog[2]}.`
+);
+// The Smith family has 5 pets.
+// Their cats are named Pickles and Kitty.
+// Their dogs are named Honchen, Ruffles and Chips.
 
 
 
 // ----------------------------- > SQUARE BRACKET NOTATION -----------------------------
 
-//  Bracket notation provides an alternative way to access object properties. Instead of using dot notation like this:
+//  Bracket notation provides an alternative way to access object properties.
 
 let werner = {
     age: 56,
@@ -193,15 +259,15 @@ let werner = {
     }
 };
 
+// Instead of using dot notation like this:
 console.log(werner.age); // 56
 console.log(werner.name.first); // Werner
 
 // You can instead use brackets:
-
 console.log(werner["age"]); // 56
 console.log(werner["name"]["first"]); // Werner
 
-// basically the same as accessing the items in an array
+// It is basically the same as accessing the items in an array
 // instead of using an index number to select an item, you are using the name associated with each member's value. 
 
 // objects are sometimes called associative arrays — they map strings to values in the same way that arrays map numbers to values.
@@ -209,86 +275,97 @@ console.log(werner["name"]["first"]); // Werner
 
 
 // Dot notation is generally preferred over bracket notation because it is more succinct and easier to read. 
+
 // However there are some cases where you have to use brackets. 
 // For example, if an object property name is held in a variable, then you can't use dot notation to access the value, but you can access the value using bracket notation. 
 
-// In the example below, the logProperty() function can use person[propertyName] to retrieve the value of the property named in propertyName.
-
-const thatPerson = {
-    name: ["Bob", "Smith"],
-    age: 32,
-};
-
-function logProperty(propertyName) {
-    console.log(thatPerson[propertyName]);
+let accessUser = {
+    name: "John",
+    age: 30,
 }
 
-logProperty("name"); // ["Bob", "Smith"]
-logProperty("age"); // 32
+const propName = "name"; // object property name held in a variable
+
+// JavaScript literally searches the accessUser object for a key named "propName". 
+// Because no property named "propName" exists on the object, it returns undefined
+console.log(accessUser.propName); // undefined
+
+// JavaScript first resolves the variable propName to its string value ("name"). 
+// It then evaluates accessUser["name"], successfully retrieving "John".
+console.log(accessUser[propName]); // John
 
 
 
-// For multiword properties, the dot access doesn't work:
-{/* user.likes birds = true */ } // read as ‘user.likes', unexpected error ‘birds'
-// There's an alternative 'square bracket notation' that works with any string:
+// +++++ Another Example using a function
 
-let birdSpotter = {};
-
-birdSpotter["likes birds"] = true;
-
-console.log(birdSpotter); // { 'likes birds': true }
-console.log(birdSpotter["likes birds"]); // true
-
-
-
-// +++++ Example
-
-birdSpotter = {};
-let personality = "likes birds";
-
-// same as user["likes birds"] = true;
-birdSpotter[personality] = true;
-
-console.log(birdSpotter); // { 'likes birds': true }
-
-
-
-// +++++ Example
-
-birdSpotter = {
+let thatUser = {
     name: "John",
-    personality: "likes birds"
+    age: 30,
 };
 
-let askPersonality = "personality";
-let askName = "name";
+function logProperty (obj, propName) {
+    console.log(obj[propName]);
+}
 
-// access by variable
-console.log(birdSpotter[askPersonality]); // likes birds
-
-// The dot notation cannot be used in a similar way:
-console.log(birdSpotter.askName) // undefined
+logProperty(thatUser, "name"); // John
+logProperty(thatUser, "age"); // 30
 
 
 
-// ----------------------------- > SQUARE BRACKET NOTATION >> Computed Property Names
+// +++++ For multiword or numeric properties, the dot access doesn't work, so we use bracket notation instead
+
+// Property names with spaces or hyphens
+
+const user = { 
+    "first-name": "Francine", 
+    "last name": "Poh",
+    5: "What is this number doing here?",
+};
+
+console.log(user["first-name"]); // "Francine"
+console.log(user["last name"]); // Poh
+console.log(user[5]); // What is this number doing here?
+
+
+
+// +++++ We can also use bracket notation to iterate over dynamic object keys:
+
+const thatPerson = {
+    name: "John",
+    age: "30",
+    "likes birds": "Especially nightjars",
+}
+
+for (let key in thatPerson) {
+  console.log(thatPerson[key]); // Evaluates each key dynamically during iteration
+}
+
+// John 30 Especially nightjars
+
+
+
+// +++++ Computed Property Names
 
 // The object initializer syntax also supports computed property names. 
 // That allows you to put an expression in brackets [], that will be computed and used as the property name. 
+// Essentially, computed Property Names allow you to use a variable or JavaScript expression directly inside an object literal {} to define a key at creation time. 
 
-// This is reminiscent of the bracket notation of the property accessor syntax
-
-let bag = ['binoculars,sketchbook,pencil'];
+let bag = ['binoculars, sketchbook, pencil'];
 
 birdSpotter = {
     name: "John",
     personality: "likes birds",
-    [bag]: "full",
+    [bag]: "full", // We are putting the variable/expression 'bag' in [] to be computed and used as the property name
 };
 
-console.log(birdSpotter); // { name: 'John', personality: 'likes birds', 'binoculars,sketchbook,pencil': 'full' }
+console.log(birdSpotter); 
+// { 
+//     name: 'John', 
+//     personality: 'likes birds', 
+//     'binoculars,sketchbook,pencil': 'full' 
+// }
 console.log(birdSpotter[bag]); // full
-console.log(birdSpotter['binoculars,sketchbook,pencil']); // full
+console.log(birdSpotter['binoculars, sketchbook, pencil']); // full
 
 
 
@@ -296,46 +373,79 @@ console.log(birdSpotter['binoculars,sketchbook,pencil']); // full
 
 // set (update) the value of object members by declaring the member you want to set (using dot or bracket notation)
 
-let francine = {};
+let thisPerson = {
+    name: "John",
+    age: "30",
+}
 
-francine.age = 33;
-francine.name = {}; // This needs to be declared first, going straight to the below lines will result in undefined error
-francine['name']['first'] = 'Francine';
-francine.name.last = 'Poh'
+console.log(thisPerson); // { name: 'John', age: '30' }
 
-console.log(francine); // { age: 33, name: { first: 'Francine', last: 'Poh' } }
-console.log(francine.age); // 33
-console.log(francine['name']['first']); // Francine
+thisPerson.name = "Francine";
+thisPerson.age = 36;
+
+console.log(thisPerson); // { name: 'Francine', age: 36 }
 
 
 
 // Setting members doesn't just stop at updating the values of existing properties and methods; 
 // you can also create completely new members.
 
-francine = {};
+let thePerson = {};
 
-francine['eyes'] = 'brown';
-francine.farewell = function () { console.log("Bye everybody!"); }
+console.log(thePerson); // {}
 
-console.log(francine); // { eyes: 'brown', farewell: [Function (anonymous)] }
-console.log(francine['eyes']); // brown
-francine.farewell(); // Bye everybody!
+thePerson.age = 33; // creating the new key and value at the same time
+thePerson.name = {}; // This needs to be declared first, going straight to the below lines will result in undefined error
+
+// two methods for accomplishing the same thing
+thePerson['name']['first'] = 'Francine';
+thePerson.name.last = 'Poh'
+
+console.log(thePerson); // { age: 33, name: { first: 'Francine', last: 'Poh' } }
 
 
 
-// One useful aspect of bracket notation is that it can be used to set not only member values dynamically, but member names too. 
+// +++++ One useful aspect of bracket notation is that it can be used to set not only member values dynamically, but member names too. 
+// Dot notation (thisObject.exactPropertyName = exactValue) forces you to hardcode the exact property name and/or value you want to update or create. 
+// Bracket notation allows the property name itself to be determined by a variable or expression.
 
-francine = {};
+let whatPerson = {
+    name: "Francine",
+};
 
 let myDataName = 'height';
 let myDataValue = '1.69m';
-francine[myDataName] = myDataValue; // adding new member name and value to the person object
+whatPerson[myDataName] = myDataValue; // adding new member name and value to the person object
 
-console.log(francine); // { height: '1.69m' }
-console.log(francine.height); // 1.69m
+console.log(whatPerson); // { name: 'Francine', height: '1.69m' }
+console.log(whatPerson.height); // 1.69m
 
-// Adding a property to an object using the method above isn't possible with dot notation, 
-// which can only accept a literal member name, not a variable value pointing to a name.
+
+
+// The most common use case for this dual-dynamic behavior is handling form inputs in web applications. 
+// A single generic function can update any field on an existing state object:
+
+const userForm = {
+  username: "Francine",
+  theme: "light"
+};
+
+function updateFormField(existingObj, fieldName, newValue) {
+  existingObj[fieldName] = newValue; // Both the member name (fieldName) AND the member value (newValue) are dynamic
+}
+
+// Updating an existing member:
+updateFormField(userForm, "theme", "dark");
+
+// Creating a brand new member on the existing object:
+updateFormField(userForm, "notificationsEnabled", true);
+
+console.log(userForm);
+// {
+//   username: 'Francine',
+//   theme: 'dark',
+//   notificationsEnabled: true
+// }
 
 
 
