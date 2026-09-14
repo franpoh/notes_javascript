@@ -179,6 +179,49 @@ console.log(myName.getFullName); // Fran Poh
 
 
 
+// NOTE: Public properties do not have to be declared before the constructor.
+
+// When you assign this.value = value inside the constructor, JavaScript automatically creates that public property on the instance if it doesn't already exist.
+// Declaring public properties at the top of the class is purely optional. 
+
+// However, developers often write it as a visual "document" of what properties the class has, or to set a default value.
+// By declaring a public field, you can ensure the field is always present, and the class definition is more self-documenting.
+
+class Student extends Person {
+  // Optional for public fields:
+  // major; 
+
+  constructor(name, major) {
+    super(name);
+    this.major = major; // ✅ Fully valid! Creates the property dynamically.
+  }
+}
+
+// 2. Private Properties (this.#gpa) — Declaration is Mandatory
+
+// Unlike public properties, private fields (prefixed with #) must be declared at the top of the class body before they can be accessed anywhere inside the class.
+
+class Student extends Person {
+  // 🚨 Mandatory! Must be declared here first:
+  #gpa; 
+
+  constructor(name, gpa) {
+    super(name);
+    this.#gpa = gpa; // ✅ Works because #gpa was declared above.
+    
+    // this.#score = 100; 
+    // ❌ SyntaxError: Private field '#score' must be declared in an enclosing class
+  }
+}
+
+// Summary
+
+//     this.property (Public): Optional to declare at the top.
+
+//     this.#property (Private): Required to declare at the top.
+
+
+
 // ----------------------------- > CLASS EXPRESSION AND DECLARATION -----------------------------
 
 // Classes are "special functions", 

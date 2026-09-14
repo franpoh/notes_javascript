@@ -453,17 +453,24 @@ console.log(userForm);
 
 // This is a basic function demonstrating a constructor-like process to create a new object
 
-function createPerson(name) {
-    const obj = {};
-    obj.name = name;
-    obj.introduceSelf = function () {
-        console.log(`Hi! I'm ${this.name}.`);
+function createPerson (name) {
+
+    const obj = {}; // create empty object
+
+    obj.name = name; // create a key and assign the 'name' parameter as its value
+
+    obj.introduceSelf = function () { // create an object method
+        console.log(`Hi! I'm ${this.name}.`); // note the use of 'this' to set context
     };
+
     return obj;
+
 }
 
 const salva = createPerson("Salva");
 salva.introduceSelf(); // Hi! I'm Salva.
+
+// Note the above is 'constructor-like'. We will now proceed to demonstrate using an actual constructor function
 
 
 
@@ -476,22 +483,32 @@ salva.introduceSelf(); // Hi! I'm Salva.
 
 
 
-// define an object type without any specific values. Then, we create new object instances and populate each of them with different values.
+// Firstly, we will define the object type by writing a constructor function. 
+// There is a strong convention, with good reason, to use a capital initial letter.
 
-function Potat(firstName, lastName) {
+// Note that unlike the above method, we have no need to initialise an empty object, populate it with key-value pairs, then return the object
+// We are going straight into defining the key-value pairs
+
+function Potat (firstName, lastName) {
+
     this.firstName = firstName;
+
     this.lastName = lastName;
+
     this.getName = function () {
         return `User's name: ${this.firstName} ${this.lastName}`;
     }
+
 }
 
-const potatA = new Potat('Francine', 'Poh');
-console.log(potatA); // User { firstName: 'Francine', lastName: 'Poh', getName: [Function (anonymous)] }
-console.log(potatA.getName()); // User's name: Francine Poh
+// Secondly, we will create an instance of the object with new
 
-const potatB = new Potat('Werner', 'Marschall');
-console.log(potatB.getName()); // User's name: Werner Marschall
+const poTayTo = new Potat('Francine', 'Poh');
+console.log(poTayTo); // User { firstName: 'Francine', lastName: 'Poh', getName: [Function (anonymous)] }
+console.log(poTayTo.getName()); // User's name: Francine Poh
+
+const poTahTo = new Potat('Werner', 'Marschall');
+console.log(poTahTo.getName()); // User's name: Werner Marschall
 
 
 

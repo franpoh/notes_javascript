@@ -18,6 +18,7 @@ Table of Contents
 >> Inserting callback functions in functions with predefined arguments
 > PURE FUNCTION
 > ARGUMENTS OBJECT
+> RECURSIVE FUNCTION
 */
 
 
@@ -132,7 +133,7 @@ console.log(hello); // hello there
 
 let hi = 'hi there';
 
-function greeting() { 
+function greeting() {
     let hi = 'hey there'; // variable defined, with the same name
     console.log(hi);
 }
@@ -211,7 +212,7 @@ let britta = 3;
 
 function multiple(annie, britta) { // 'a' and 'b' in here are parameters 
     return annie * britta;
-} 
+}
 
 // outside of this function, 'a = 2' and 'b = 3'
 console.log(annie * britta); // 6
@@ -307,7 +308,7 @@ var notHoisted = function () {
 // This name is then local only to the function body (scope).
 
 let greeter = {
-    greeting: function(name) {
+    greeting: function (name) {
         console.log(`Hello ${name}!`);
     }
 }
@@ -318,7 +319,7 @@ greeter.greeting('Francine'); // Hello Francine!
 
 // The same, but as an unnamed function
 
-let farewell = function(name) {
+let farewell = function (name) {
     console.log(`Bye ${name}!`);
 }
 
@@ -467,7 +468,7 @@ console.log(blockFunction()); // Pancake
 
 // +++++ Returning object literals using the concise body syntax (params) => { object: literal } does not work as expected.
 
-const func = () => { foo: 1 }; 
+const func = () => { foo: 1 };
 console.log(func()); // undefined
 
 // This does not work because JavaScript will interpret the curly braces as the function body rather than an object
@@ -502,7 +503,7 @@ const community = {
 
     expName1() { console.log(this.abed); },
 
-    expName2: function() { console.log(this.annie); },
+    expName2: function () { console.log(this.annie); },
 }
 
 // 'this' does not work with arrow functions
@@ -865,9 +866,9 @@ myFunction('a', 'b'); // [Arguments] { '0': 'a', '1': 'b' }
 
 function enclosingFunction(n) {
 
-    const arrowFunction = () => { 
+    const arrowFunction = () => {
         console.log(`${arguments[0]} + ${n} = ${arguments[0] + n}`) // enclosingFunction's arguments[0] is actually n
-    }; 
+    };
 
     return arrowFunction();
 }
@@ -879,3 +880,71 @@ enclosingFunction(3); // 3 + 3 = 6
 
 
 // NOTE: In modern code, rest parameters should be preferred.
+
+
+
+// ----------------------------- > RECURSIVE FUNCTION -----------------------------
+
+// A recursive function is simply a function that calls itself until it hits a defined stopping condition. 
+
+// Every working recursive function requires two essential parts: 
+// 1. a Base Case (when to stop) and 
+// 2. a Recursive Step (the self-call that moves toward the base case).
+
+function sumFunction(num) {
+
+    // 1. Base Case: The stopping condition
+    if (num === 1) {
+        console.log('Base case has been reached');
+        return 1;
+    }
+
+    // 2. Recursive Step: add the value of num to the result of calling sumFunction(num-1) again
+    console.log(`Recursion continues with the value of num being ${num}.`);
+    return num + sumFunction(num - 1);
+
+}
+
+console.log(sumFunction(3));
+// Recursion continues with the value of num being 3.
+// Recursion continues with the value of num being 2.
+// Base case has been reached
+// 6
+
+// When you run sumRange(3), JavaScript builds up a stack of paused function execution contexts and then resolves them in reverse order:
+
+// sumRange(3) evaluates 3 + sumRange(2). ---> Pauses, waiting for sumRange(2)
+//      sumRange(2) evaluates 2 + sumRange(1). ---> Pauses, waiting for sumRange(1)
+//          sumRange(1) hits the base case (n === 1) and returns 1 directly.
+//      sumRange(1) returns 1. ---> sumRange(2) resumes: evaluates 2 + 1 and returns 3.
+// sumRange(2) returns 3. ---> sumRange(3) resumes: evaluates 3 + 3 and returns 6.
+
+
+
+// NOTE: f a recursive function lacks a base case, or if the recursive step doesn't progress toward the base case, it will call itself infinitely. 
+// JavaScript's call stack will run out of allocated memory and throw a RangeError: Maximum call stack size exceeded (a "stack overflow").
+
+
+
+// NOTE:  in JavaScript, an iterative loop is significantly more memory-efficient than a recursive function. 
+// Iterative loops operate in O(1) constant memory space, whereas recursive functions consume O(N) linear memory space proportional to the recursion depth.
+
+function sumRangeIterative(num) {
+    let total = 0; // 1. Accumulator replaces call stack frames
+
+    // 2. Loop condition replaces base case
+    // 3. i-- replaces recursive step sumRange(n - 1)
+    for (let i = num; i > 0; i--) {
+        total += i;
+    }
+
+    return total;
+}
+
+console.log(sumRangeIterative(3)); // 6
+
+// Every time a recursive function calls itself, JavaScript creates a new call stack frame containing function arguments, local variables, and the return address. 
+// If a recursive function runs 10,000 times, JavaScript holds 10,000 stack frames in active RAM simultaneously waiting for the base case to finish.
+
+// A loop maintains a single execution frame because of iterative variable reuse. 
+// Changing let i = 0 to i = 10000 updates the exact same memory location without requesting new memory allocation from the runtime.
