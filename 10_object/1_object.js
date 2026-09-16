@@ -4,8 +4,10 @@ Table of Contents
 > OBJECT LITERALS
 > SQUARE BRACKET NOTATION
 > SETTING OBJECT MEMBERS
-> CONSTRUCTOR
-> CLASS
+> OBJECT CREATION USING CONSTRUCTOR, FACTORY FUNCTION AND CLASS
+>> Constructor
+>> Factory Function
+>> Class
 > OBJECT.CREATE METHOD
 > PROPERTY EXISTENCE TEST, 'IN' OPERATOR
 > PROPERTY ORDER IN OBJECTS
@@ -28,7 +30,7 @@ const thisObject = {
 const favouriteCup = {
     colour: "blue",
     volumeML: 200,
-    drink: { 
+    drink: {
         drinkBase: "black tea",
         drinkAddition: "milk"
     }
@@ -39,13 +41,13 @@ const favouriteCup = {
 const favouriteDrink = {
 
     temperature: "hot",
-    
-    drink: { 
+
+    drink: {
         drinkBase: "black tea",
         drinkAddition: "milk"
     },
 
-    drinkMethod: function(name) {
+    drinkMethod: function (name) {
         console.log(`${name}'s favourite ${this.temperature} drink is ${this.drink.drinkBase} with ${this.drink.drinkAddition}.`);
     }
 
@@ -163,7 +165,7 @@ console.log(genericUser); // { name: 'John', age: 30 }
 // +++++ You can also create an object without assigning it to a variable
 // If you do not need to refer to this object elsewhere, you do not need to assign it to a variable. 
 
-function oneTimeUse ({ name, age }) {
+function oneTimeUse({ name, age }) {
     console.log(`This function will return ${name} and ${age} only once.`);
 }
 
@@ -228,7 +230,7 @@ console.log(personCopy.name.last)
 // +++++ Example
 
 let pets = {
-    household: "Smith", 
+    household: "Smith",
     totalPets: 5,
     typesOfPets: {
         cat: ["Pickles", "Kitty"],
@@ -303,7 +305,7 @@ let thatUser = {
     age: 30,
 };
 
-function logProperty (obj, propName) {
+function logProperty(obj, propName) {
     console.log(obj[propName]);
 }
 
@@ -316,8 +318,8 @@ logProperty(thatUser, "age"); // 30
 
 // Property names with spaces or hyphens
 
-const user = { 
-    "first-name": "Francine", 
+const user = {
+    "first-name": "Francine",
     "last name": "Poh",
     5: "What is this number doing here?",
 };
@@ -337,7 +339,7 @@ const thatPerson = {
 }
 
 for (let key in thatPerson) {
-  console.log(thatPerson[key]); // Evaluates each key dynamically during iteration
+    console.log(thatPerson[key]); // Evaluates each key dynamically during iteration
 }
 
 // John 30 Especially nightjars
@@ -358,7 +360,7 @@ birdSpotter = {
     [bag]: "full", // We are putting the variable/expression 'bag' in [] to be computed and used as the property name
 };
 
-console.log(birdSpotter); 
+console.log(birdSpotter);
 // { 
 //     name: 'John', 
 //     personality: 'likes birds', 
@@ -426,12 +428,12 @@ console.log(whatPerson.height); // 1.69m
 // A single generic function can update any field on an existing state object:
 
 const userForm = {
-  username: "Francine",
-  theme: "light"
+    username: "Francine",
+    theme: "light"
 };
 
 function updateFormField(existingObj, fieldName, newValue) {
-  existingObj[fieldName] = newValue; // Both the member name (fieldName) AND the member value (newValue) are dynamic
+    existingObj[fieldName] = newValue; // Both the member name (fieldName) AND the member value (newValue) are dynamic
 }
 
 // Updating an existing member:
@@ -447,112 +449,116 @@ console.log(userForm);
 //   notificationsEnabled: true
 // }
 
+// ----------------------------- > OBJECT CREATION USING CONSTRUCTOR, FACTORY FUNCTION AND CLASS -----------------------------
 
+// There are a number of outwardly similar methods of creating objects, but each comes with its own pros and cons
 
-// ----------------------------- > CONSTRUCTOR -----------------------------
-
-// This is a basic function demonstrating a constructor-like process to create a new object
-
-function createPerson (name) {
-
-    const obj = {}; // create empty object
-
-    obj.name = name; // create a key and assign the 'name' parameter as its value
-
-    obj.introduceSelf = function () { // create an object method
-        console.log(`Hi! I'm ${this.name}.`); // note the use of 'this' to set context
-    };
-
-    return obj;
-
-}
-
-const salva = createPerson("Salva");
-salva.introduceSelf(); // Hi! I'm Salva.
-
-// Note the above is 'constructor-like'. We will now proceed to demonstrate using an actual constructor function
+// Simply put:
+// Classes can get complicated with huge inheritance trees while Constructors and Factory functions can be very simple to implement in the right scenarios
+// Constructors and Factory Functions can use more memory where Classes is memory efficient
 
 
 
-// A constructor is just a function called using the new keyword. When you call a constructor, it will:
-
-// create a new object
-// bind this to the new object, so you can refer to this in your constructor code
-// run the code in the constructor
-// return the new object.
-
-
+// ----------------------------- > OBJECT CREATION USING CONSTRUCTOR, FACTORY FUNCTION AND CLASS >> Constructor
 
 // Firstly, we will define the object type by writing a constructor function. 
+// To define an object type, create a function for the object type that specifies its name, properties, and methods.
+
 // There is a strong convention, with good reason, to use a capital initial letter.
 
-// Note that unlike the above method, we have no need to initialise an empty object, populate it with key-value pairs, then return the object
-// We are going straight into defining the key-value pairs
+function CreateUserConstructor(firstName, lastName) {
 
-function Potat (firstName, lastName) {
+    let location = "Singapore"; // Private variable
 
-    this.firstName = firstName;
-
+    this.firstName = firstName; // Public property
     this.lastName = lastName;
 
-    this.getName = function () {
-        return `User's name: ${this.firstName} ${this.lastName}`;
-    }
-
-}
-
-// Secondly, we will create an instance of the object with new
-
-const poTayTo = new Potat('Francine', 'Poh');
-console.log(poTayTo); // User { firstName: 'Francine', lastName: 'Poh', getName: [Function (anonymous)] }
-console.log(poTayTo.getName()); // User's name: Francine Poh
-
-const poTahTo = new Potat('Werner', 'Marschall');
-console.log(poTahTo.getName()); // User's name: Werner Marschall
-
-
-
-// NOTE: following OOP, properties and methods can be made private by using ‘let' instead of ‘this'
-
-function UserOOP(firstName, lastName) {
-    let location = 'Singapore';
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.getName = function () {
-        return `User's name: ${this.firstName} ${this.lastName}`
+    this.getLocation = function () { // Re-created per instance
+        return `${firstName} ${lastName} lives in ${location}.`;
     };
-    this.getLocation = function () {
-        return `User's location: ${location}`
-    }
+
 }
 
-const privateUser = new UserOOP("Private", "Individual");
+const user1 = new CreateUserConstructor("Francine", "Poh"); // 'new' required for object creation
 
-console.log(privateUser); // UserOOP { firstName: 'Private', lastName: 'Individual', getName: [Function (anonymous)] }
-console.log(privateUser.location); // undefined
-console.log(privateUser.getLocation()); // User's location: Singapore
-
+console.log(user1.getLocation()); // Francine Poh lives in Singapore.
+console.log(user1.location); // undefined
 
 
-// ----------------------------- > CLASS -----------------------------
 
-// use the class attribute to create a class in JavaScript instead of a function constructor
+// +++++ NOTE: Creating private properties by using the block-scoped const and let and making use of lexical scoping
+
+// following OOP, properties and methods can be made private by using ‘let' instead of ‘this', as you can see in the above let location = "Singapore"
+// This works through lexical scope and closures — the exact same mechanism factory functions use to hide private state.
+
+// let creates a local variable, not an object property
+// When you call new CreateUserConstructor(...), JavaScript creates a new empty object and binds it to this.
+// Anything attached to this (this.firstName, this.getLocation) gets added as a public property on the instance.
+// let location = 'Singapore' creates a local variable that lives only inside the CreateUserConstructor function scope. It is never attached to this.
+
+// Why user1.location is undefined
+// Because location was never assigned to this, the property users1.location does not exist on the object. 
+// When JavaScript tries to read a non-existent property on an object, it returns undefined.
+
+// Why getLocation() can still read location (Closure)
+// In JavaScript, functions "remember" the variables in the scope where they were created.
+// When this.getLocation is created inside CreateUserConstructor, it forms a closure over location. 
+// Even after new CreateUserConstructor() finishes executing, getLocation() keeps a hidden reference back to that location variable.
+
+
+
+// ----------------------------- > OBJECT CREATION USING CONSTRUCTOR, FACTORY FUNCTION AND CLASS >> Factory Function
+
+// This operates entirely like a normal function
+// The return value of the createUserFactory function is an object
+
+function createUserFactory(firstName, lastName) {
+
+    let location = "Netherlands"; // Private variable
+
+    return {
+        firstName, // Public property
+        lastName,
+        getLocation() { // Re-created per instance
+            return `${firstName} ${lastName} lives in ${location}.`;
+        }
+    };
+
+}
+
+const user2 = createUserFactory("Werner", "Marschall"); // 'new' NOT required for object creation
+
+console.log(user2.getLocation()); // Werner Marschall lives in Netherlands.
+console.log(user2.location); // undefined
+
+
+
+// ----------------------------- > OBJECT CREATION USING CONSTRUCTOR, FACTORY FUNCTION AND CLASS >> Class
+
+// Now, we will use the class attribute to create a class in JavaScript instead of a function constructor
 // and use the new operator to create an instance
 
-class Banaan {
+class CreateUserClass {
+
+    #location = "Cardboard Box";
+
     constructor(firstName, lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.getName = function () {
-            return `User's name: ${this.firstName} ${this.lastName}`
-        };
-    }
+    };
+
+    getLocation () {
+        return `${this.firstName} ${this.lastName} lives in ${this.#location}.`;
+    };
+
 }
 
+const user3 = new CreateUserClass("Kitty", "Cat"); // 'new' required for object creation
 
-const ikBanaan = new Banaan('Francine', 'Poh');
-console.log(ikBanaan); // User { firstName: 'Francine', lastName: 'Poh', getName: [Function (anonymous)] }
-console.log(ikBanaan.getName()); // User's name: Francine Poh
+console.log(user3.getLocation()); // Kitty Cat lives in Cardboard Box.
+console.log(user3.location); // undefined
+
+
 
 
 
@@ -708,7 +714,7 @@ let johnAgain = {
     surname: "Smith"
 };
 
-johnAgain.age = 25; 
+johnAgain.age = 25;
 
 // non-integer properties are listed in the creation order
 

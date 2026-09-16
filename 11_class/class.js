@@ -187,38 +187,42 @@ console.log(myName.getFullName); // Fran Poh
 // However, developers often write it as a visual "document" of what properties the class has, or to set a default value.
 // By declaring a public field, you can ensure the field is always present, and the class definition is more self-documenting.
 
-class Student extends Person {
-  // Optional for public fields:
-  // major; 
 
-  constructor(name, major) {
-    super(name);
-    this.major = major; // ✅ Fully valid! Creates the property dynamically.
+
+// +++++ The more readable way of creating a class - by optionally declaring public properties before the constructor
+
+class Pet {
+
+  name; // declared public property here
+
+  constructor(name) {
+    this.name = name; 
   }
 }
 
-// 2. Private Properties (this.#gpa) — Declaration is Mandatory
+const myPet = new Pet("Kitty Cat");
+console.log(myPet); // Pet { name: 'Kitty Cat' }
+
+
+
+// +++++ The alternative way of creating a class - not declaring public properties before the constructor
+
+class Person {
+
+  // Optional for public fields:
+
+  constructor(name) {
+    this.name = name; // Fully valid! Creates the property dynamically.
+  }
+}
+
+const myPerson = new Person("Francine");
+console.log(myPerson); // Person { name: 'Francine' } - as you can see, this works identically whether you declared public properties before constructor or not
 
 // Unlike public properties, private fields (prefixed with #) must be declared at the top of the class body before they can be accessed anywhere inside the class.
+// You will learn more about this in the section > PRIVATE
 
-class Student extends Person {
-  // 🚨 Mandatory! Must be declared here first:
-  #gpa; 
-
-  constructor(name, gpa) {
-    super(name);
-    this.#gpa = gpa; // ✅ Works because #gpa was declared above.
-    
-    // this.#score = 100; 
-    // ❌ SyntaxError: Private field '#score' must be declared in an enclosing class
-  }
-}
-
-// Summary
-
-//     this.property (Public): Optional to declare at the top.
-
-//     this.#property (Private): Required to declare at the top.
+// 2. Private Properties (this.#gpa) — Declaration is Mandatory
 
 
 
@@ -859,6 +863,33 @@ class SubClass extends ClassWithPrivateField {
 const subbo = new SubClass();
 console.log(subbo); // SubClass {}
 // in browser console.log: SubClass {#privateField: 42, #subPrivateField: 23}
+
+
+
+// NOTE: Unlike public properties, private fields (prefixed with #) must be declared at the top of the class body before they can be accessed anywhere inside the class.
+
+// +++++ The proper way to do it - private properties MUST be declared before the constructor
+
+class privatePerson {
+
+  // 🚨 Mandatory! Must be declared here first:
+  #address; 
+
+  constructor(name, address) {
+    this.name = name;
+    this.#address = address; // Works because #address was declared above.
+    // this.#identificationNum = identificationNum; // Error: Private field '#identificationNum' must be declared in an enclosing class.
+  }
+
+  pullingData () {
+    console.log(`${this.name} lives at ${this.#address}.`);
+  }
+
+}
+
+const citizen = new privatePerson("Francine", "Hawk Peak");
+console.log(citizen); // privatePerson { name: 'Francine' }
+citizen.pullingData(); // Francine lives at Hawk Peak.
 
 
 
