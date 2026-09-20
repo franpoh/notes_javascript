@@ -4,20 +4,23 @@ Table of Contents
 > OBJECT LITERALS
 > SQUARE BRACKET NOTATION
 > SETTING OBJECT MEMBERS
-> OBJECT CREATION USING CONSTRUCTOR, FACTORY FUNCTION AND CLASS
+> OBJECT CREATION 
 >> Constructor
 >> Factory Function
 >> Class
-> OBJECT.CREATE METHOD
+>> Object.create
+>> Usage Scenarios
 > PROPERTY EXISTENCE TEST, 'IN' OPERATOR
 > PROPERTY ORDER IN OBJECTS
 */
 
 
 
-// JavaScript is designed on an object-based paradigm. 
+// A JavaScript object is a collection of properties, and a property is an association between a name (or key) and a value
+// Object properties are basically the same as variables, except that they are associated with objects, not scopes. 
+// The properties of an object define the characteristics of the object
 
-// An object is a collection of properties, and a property is an association between a name (or key) and a value. 
+// NOTE: Tangentially related to our current topic - JavaScript is designed on an object-based paradigm.  
 
 const thisObject = {
     key1: "Key One",
@@ -163,6 +166,7 @@ console.log(genericUser); // { name: 'John', age: 30 }
 
 
 // +++++ You can also create an object without assigning it to a variable
+
 // If you do not need to refer to this object elsewhere, you do not need to assign it to a variable. 
 
 function oneTimeUse({ name, age }) {
@@ -183,6 +187,7 @@ console.log(`My name is ${genUser().name} and my age is ${genUser().age}.`); // 
 
 
 // +++++ Object initializers are expressions
+
 // Each object initializer results in a new object being created whenever the statement in which it appears is executed. 
 // Identical object initializers create distinct objects that do not compare to each other as equal.
 
@@ -298,7 +303,7 @@ console.log(accessUser[propName]); // John
 
 
 
-// +++++ Another Example using a function
+// +++++ An Example using a function utilising square bracket notation
 
 let thatUser = {
     name: "John",
@@ -311,6 +316,30 @@ function logProperty(obj, propName) {
 
 logProperty(thatUser, "name"); // John
 logProperty(thatUser, "age"); // 30
+
+// This can be very useful for creating/changing properties, using a variety of property names, with a single versatile function
+
+function setProperty (obj, propName, propValue) {
+    obj[propName] = propValue;
+}
+
+setProperty(thatUser, "location", "singapore");
+setProperty(thatUser, "family-members", { 
+    wife: "Jane",
+    son: "James", 
+    daughter: "Janet"
+});
+setProperty(thatUser, 10, "Ten");
+setProperty(thatUser, "age", "40");
+
+console.log(thatUser);
+// {
+//   '10': 'Ten',
+//   name: 'John',
+//   age: '40',
+//   location: 'singapore',
+//   'family-members': { wife: 'Jane', son: 'James', daughter: 'Janet' }
+// }
 
 
 
@@ -368,6 +397,10 @@ console.log(birdSpotter);
 // }
 console.log(birdSpotter[bag]); // full
 console.log(birdSpotter['binoculars, sketchbook, pencil']); // full
+
+
+
+// +++++ This notation is also very useful when property names are to be dynamically determined, i.e., not determinable until runtime. 
 
 
 
@@ -449,17 +482,23 @@ console.log(userForm);
 //   notificationsEnabled: true
 // }
 
-// ----------------------------- > OBJECT CREATION USING CONSTRUCTOR, FACTORY FUNCTION AND CLASS -----------------------------
+
+
+// ----------------------------- > OBJECT CREATION -----------------------------
 
 // There are a number of outwardly similar methods of creating objects, but each comes with its own pros and cons
 
-// Simply put:
-// Classes can get complicated with huge inheritance trees while Constructors and Factory functions can be very simple to implement in the right scenarios
-// Constructors and Factory Functions can use more memory where Classes is memory efficient
+// The methods are:
+// Constructor
+// Factory Function
+// Class
+// Object.create
+
+// Not included in this section is writing it as an object literal, which we have already touched upon above
 
 
 
-// ----------------------------- > OBJECT CREATION USING CONSTRUCTOR, FACTORY FUNCTION AND CLASS >> Constructor
+// ----------------------------- > OBJECT CREATION >> Constructor
 
 // Firstly, we will define the object type by writing a constructor function. 
 // To define an object type, create a function for the object type that specifies its name, properties, and methods.
@@ -507,7 +546,7 @@ console.log(user1.location); // undefined
 
 
 
-// ----------------------------- > OBJECT CREATION USING CONSTRUCTOR, FACTORY FUNCTION AND CLASS >> Factory Function
+// ----------------------------- > OBJECT CREATION >> Factory Function
 
 // This operates entirely like a normal function
 // The return value of the createUserFactory function is an object
@@ -516,10 +555,11 @@ function createUserFactory(firstName, lastName) {
 
     let location = "Netherlands"; // Private variable
 
+    // Returns an object populated with properties
     return {
         firstName, // Public property
         lastName,
-        getLocation() { // Re-created per instance
+        getLocation() { // Method is re-created per instance - this uses more memory when creating lots of objects
             return `${firstName} ${lastName} lives in ${location}.`;
         }
     };
@@ -533,7 +573,7 @@ console.log(user2.location); // undefined
 
 
 
-// ----------------------------- > OBJECT CREATION USING CONSTRUCTOR, FACTORY FUNCTION AND CLASS >> Class
+// ----------------------------- > OBJECT CREATION >> Class
 
 // Now, we will use the class attribute to create a class in JavaScript instead of a function constructor
 // and use the new operator to create an instance
@@ -547,7 +587,7 @@ class CreateUserClass {
         this.lastName = lastName;
     };
 
-    getLocation () {
+    getLocation() {
         return `${this.firstName} ${this.lastName} lives in ${this.#location}.`;
     };
 
@@ -560,68 +600,163 @@ console.log(user3.location); // undefined
 
 
 
+// ----------------------------- > OBJECT CREATION >> Object.create
 
+// Create new objects by allowing us to use an existing object as the prototype of a new object we create. 
+// This method can be very useful, because it allows you to choose the prototype object for the object you want to create, without having to define a constructor function.
+// This pattern is often called OLOO (Objects Linked to Other Objects)
 
-// ----------------------------- > OBJECT.CREATE METHOD -----------------------------
+// create a 'customUser' object that has the same properties and methods as 'sausage', just with different values.
 
-// create new objects by allowing us to use an existing object literal as the prototype of a new object we create. 
+const defaultUser = {
+    login: 'admin',
+    password: 'password',
 
-
-
-// create a 'wiener' object that has the same properties and methods as 'sausage', just with different values.
-
-const sausage = {
-    firstName: 'Francine',
-    lastName: 'Poh',
-    getName: function () {
-        return `User's name: ${this.firstName} ${this.lastName}`;
+    getLoginDetails: function () {
+        console.log(`User's login: ${this.login} / User's password: ${this.password}`);
     }
 }
 
-console.log(sausage); // { firstName: 'Francine', lastName: 'Poh', getName: [Function: getName] }
+console.log(defaultUser);
+// {
+//     login: 'admin',
+//     password: 'password',
+//     getLoginDetails: [Function: getLoginDetails]
+// }
 
-const wiener = Object.create(sausage);
+const customUser = Object.create(defaultUser);
 
-console.log(wiener); // {}
+// customUser is an empty object
+// but we are still able to look up the prototype chain to access the login and password properties on defaultUser
+console.log(customUser); // {} - empty object
+console.log(customUser.login); // admin
+console.log(customUser.password); // password
 
-wiener.firstName = 'Werner';
-wiener.lastName = 'Marschall';
+// We will now set the login and password properties on customUser
+customUser.login = 'johndoe';
+customUser.password = 'johndoebirthdate';
+console.log(customUser); // { login: 'johndoe', password: 'johndoebirthdate' }
 
-console.log(wiener); // { firstName: 'Werner', lastName: 'Marschall' }
-
-// getName function didn't appear in the above console.log(wiener) but was able to call it anyway
-// It should be because it looked up the prototype chain and got it from sausage
-console.log(wiener.getName()); // User's name: Werner Marschall
-
-
-
-// We use the Object.create() method to:
-// instantiate the new 'wiener' object
-// add 'sausage' as an argument of the create() method, as that will be the prototype of the new object. 
-// set the values for the two properties (firstName, lastName) using dot notation.
+// Same with the getLoginDetails function - we are able to call it despite customeUser appearing to be an empty object due to the prototype chain
+customUser.getLoginDetails(); // User's login: johndoe / User's password: johndoebirthdate
 
 
 
-// +++++ Example
+// ----------------------------- > OBJECT CREATION >> Usage Scenario
 
-let dog = {
-    name: "Pillow",
-    breed: "Toy Poodle",
-}
+// Here is a very brief overview on the differences between all the object creating methods and what are the best scenarios for each
 
-let cat = Object.create(dog);
 
-cat.name = "Bolster";
-cat.breed = "Persian";
-cat.location = "Singapore";
 
-for (x in cat) {
-    console.log(x);
-} // name, breed, location
+// +++++ Object Literal
 
-for (x in dog) {
-    console.log(x);
-} // name, breed
+// The direct, inline creation of a single key - value object without using blueprints, constructors, or prototype linkages.
+
+// Pros:
+
+// Ultimate Simplicity: Cleanest, fastest syntax for defining structured data and key - value pairs on the fly.
+// Zero Overhead: No boilerplate, class definitions, or prototype lookup chains needed.
+// JSON Native: Directly mirrors standard data - interchange formats used across web APIs and configuration files.
+
+// Cons:
+
+// No Reusable Blueprint: Cannot easily spawn multiple structured instances without duplicating code.
+// No Encapsulation: Every property and method is fully public and mutable by default.
+// Duplicated Memory: Adding methods directly inside multiple object literals duplicates function instances in memory.
+
+// Where It Fits Best:
+
+// Singletons, configuration settings, options parameters, state snapshots, and simple data payloads where you only need a single, static object instance.
+
+
+
+// +++++ Constructor Function
+
+// Constructor function is the legacy ES5 approach to building objects. 
+// They rely on calling a standard function with the new keyword to attach properties and methods directly to this or its prototype.
+
+// Pros:
+
+// Shared Prototype Memory: Achieves efficient method sharing across instances without modern class syntax.
+// Universal Compatibility: Supported by ancient JavaScript runtimes and lightweight embedded JS engines (e.g., IoT environments).
+
+// Cons:
+
+// Outdated Syntax: Clunky and verbose compared to modern ES6 classes.
+// Error-Prone: Accidentally calling a constructor without new mutates global scope (or throws errors in strict mode).
+// Lacks Modern Privacy: Cannot use #private fields; must rely on memory-heavy closures or naming conventions (_property).
+
+// Where It Fits Best:
+
+// Maintaining older ES5 codebases, writing low-level utility libraries, or running code in memory-constrained, embedded JavaScript environments.
+
+
+
+// +++++ Factory Function
+
+// A standard function that builds and returns a plain object without requiring the new keyword or this references.
+// They rely on lexical closures to maintain private data and variables.
+
+// Pros:
+
+// Context Safety: Eliminates this context-loss bugs completely; methods can be safely passed around as callbacks or event handlers.
+// Lexical Privacy: Provides true private state using native JavaScript closures (let/const inside the function scope).
+// Simple Composition: Extremely flexible for combining multiple object mixins or behavioral traits without inheritance hierarchies.
+
+// Cons:
+
+// Higher Memory Footprint: Recreates method functions in memory for every instance created rather than sharing them on a prototype.
+// Slower JIT Optimization: Slightly harder for V8 engines to optimize into fixed "hidden classes" at massive scale compared to ES6 classes.
+
+// Where It Fits Best:
+
+// Application service modules, API clients, state managers, event listeners, utility toolsets, 
+// Any scenario where context safety (this immunity) and clean privacy outweigh raw memory limits.
+
+
+
+// +++++ Class
+
+// ES6 classes are the modern standard for object-oriented JavaScript. 
+// They use prototype-based inheritance under the hood, allowing all instances to share a single copy of each method in memory.
+
+// Pros:
+
+// Engine Efficiency: Shared prototype methods save RAM, and predictable shapes allow V8 to execute near-native property lookups via Inline Caching.
+// Native Private Fields: Supports modern #private fields for strict engine-level property privacy.
+// Ecosystem Standard: Fits seamlessly into TypeScript, modern frameworks, and traditional Object-Oriented Design patterns.
+
+// Cons:
+
+// Fragile this Context: Class methods lose their binding easily when passed as unbound callbacks or event handlers.
+// Requires new: Forgetting the new keyword throws an immediate runtime TypeError.
+
+// Where It Fits Best:
+
+// High-volume data models (tens of thousands of instances), UI component hierarchies, domain entities, and performance-critical loops where memory efficiency and execution speed are paramount.
+
+
+
+// +++++ Object.create()
+
+// JavaScript's pure, direct approach to prototypal inheritance (OLOO - Objects Linked to Other Objects) that creates a new object directly linked to an existing prototype object.
+
+// Pros:
+
+// Direct Prototype Control: Links objects directly without needing constructors, new, or class syntax.
+// Memory Efficient: Methods sit on the linked prototype object and are shared across all instances.
+// Pure Dictionaries: Creates prototype-less objects via Object.create(null) to eliminate default methods (toString, hasOwnProperty) and prevent prototype pollution.
+
+// Cons:
+
+// Clunky Property Definition: Adding instance properties during creation requires verbose property descriptors ({ value: 10, writable: true }).
+// No Native Private State: Cannot use #private fields without wrapping execution inside a factory function or class.
+// Fragile this Context: Methods on the prototype still rely on dynamic this binding and are prone to context-loss.
+
+// Where It Fits Best
+
+// Use Object.create(null) for pure key-value lookup maps and dictionary objects. 
+// For general object creation in modern applications, ES6 classes or Factory Functions remain much easier to read and maintain.
 
 
 
