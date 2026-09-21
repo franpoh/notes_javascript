@@ -319,14 +319,14 @@ logProperty(thatUser, "age"); // 30
 
 // This can be very useful for creating/changing properties, using a variety of property names, with a single versatile function
 
-function setProperty (obj, propName, propValue) {
+function setProperty(obj, propName, propValue) {
     obj[propName] = propValue;
 }
 
 setProperty(thatUser, "location", "singapore");
-setProperty(thatUser, "family-members", { 
+setProperty(thatUser, "family-members", {
     wife: "Jane",
-    son: "James", 
+    son: "James",
     daughter: "Janet"
 });
 setProperty(thatUser, 10, "Ten");
@@ -401,6 +401,69 @@ console.log(birdSpotter['binoculars, sketchbook, pencil']); // full
 
 
 // +++++ This notation is also very useful when property names are to be dynamically determined, i.e., not determinable until runtime. 
+
+// NOTE: However, beware of using square brackets to access properties whose names are given by external input. 
+// This may make your code susceptible to object injection attacks. 
+
+// +++++ Very Basic Example
+
+const userProfile = {
+    name: "Alex",
+    role: "user",
+    _internalApiKey: "secret_123" // Internal/private property
+};
+
+const userInput = "_internalApiKey";
+
+// DANGEROUS: Exposes internal state directly
+console.log(userProfile[userInput]); // "secret_123"
+
+// The most direct fix here is going to be to avoid the use of user input in property name fields. 
+
+// Another option is to create a allowlist of allowed property names, and filter each user input through a helper function to check before allowing it to be used. 
+// This is a great option in situations where you know specifically what property names to allow.
+
+// In cases where you don't have a strictly defined data model, then using the same method as above, but with a denylist of disallowed properties instead is a valid choice.
+
+// +++++ You also have the option of using ECMAScript 6 Proxy, which wraps around a target object and intercepts operations — like reading a property via get. 
+// It acts as a gatekeeper that inspects what key the user is trying to read before deciding whether to grant access.
+
+// The proxy can stand in front of your real object ( private API ) and expose a limited subset of the object ( public API ). 
+// The underlying object retains its internal state (_internalApiKey), but external code only interacts with the Proxy wrapper (publicProfile), which enforces encapsulation.
+
+// This is probably the best approach if you are using this pattern, as it is most consistent with typical object oriented programming paradigms.
+// Instead of writing defensive if/else checks everywhere you access properties (if (key !== '_internalApiKey' && ...)), 
+// you encapsulate access-control logic inside the object's interface. Consumers can use standard object bracket syntax (proxy[key]) seamlessly.
+
+// +++++ Basic Example of how proxies will work
+
+const privateProfile = {
+    name: "Alex",
+    role: "user",
+    _internalApiKey: "secret_123"
+};
+
+// Define the public "allowed" subset
+const allowedFields = ["name", "role"];
+
+// Create the Proxy gatekeeper
+const publicProfile = new Proxy(privateProfile, {
+    get(target, property) {
+
+        // Only allow access if the property is explicitly in our whitelist
+        if (allowedFields.includes(property)) {
+            return target[property];
+        }
+
+        // Return undefined or throw an error for anything else
+        return undefined;
+    }
+}
+);
+
+// SAFE: Dynamic bracket access through the Proxy
+console.log(publicProfile["name"]);            // "Alex" (Allowed)
+console.log(publicProfile["_internalApiKey"]); // undefined (Blocked!)
 
 
 
