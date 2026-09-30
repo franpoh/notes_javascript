@@ -3,13 +3,17 @@ Table of Contents
 
 > OBJECT LITERALS
 > SQUARE BRACKET NOTATION
-> SETTING OBJECT MEMBERS
+> HANDLING OBJECT MEMBERS
+>> Setting
+>> Enumerating
+>> Deleting
 > OBJECT CREATION 
 >> Constructor
 >> Factory Function
 >> Class
 >> Object.create
 >> Usage Scenarios
+> INHERITANCE
 > PROPERTY EXISTENCE TEST, 'IN' OPERATOR
 > PROPERTY ORDER IN OBJECTS
 */
@@ -425,15 +429,10 @@ console.log(userProfile[userInput]); // "secret_123"
 
 // In cases where you don't have a strictly defined data model, then using the same method as above, but with a denylist of disallowed properties instead is a valid choice.
 
-// +++++ You also have the option of using ECMAScript 6 Proxy, which wraps around a target object and intercepts operations — like reading a property via get. 
+// NOTE: You also have the option of using ECMAScript 6 *Proxy, which wraps around a target object and intercepts operations — like reading a property via get. 
 // It acts as a gatekeeper that inspects what key the user is trying to read before deciding whether to grant access.
 
-// The proxy can stand in front of your real object ( private API ) and expose a limited subset of the object ( public API ). 
-// The underlying object retains its internal state (_internalApiKey), but external code only interacts with the Proxy wrapper (publicProfile), which enforces encapsulation.
-
-// This is probably the best approach if you are using this pattern, as it is most consistent with typical object oriented programming paradigms.
-// Instead of writing defensive if/else checks everywhere you access properties (if (key !== '_internalApiKey' && ...)), 
-// you encapsulate access-control logic inside the object's interface. Consumers can use standard object bracket syntax (proxy[key]) seamlessly.
+// * Proxy: See proxy.js 
 
 // +++++ Basic Example of how proxies will work
 
@@ -467,7 +466,16 @@ console.log(publicProfile["_internalApiKey"]); // undefined (Blocked!)
 
 
 
-// ----------------------------- > SETTING OBJECT MEMBERS -----------------------------
+// ----------------------------- > HANDLING OBJECT MEMBERS -----------------------------
+
+// This this section, we will talk about: 
+//      Setting
+//      Enumerating
+//      Deleting
+
+
+
+// ----------------------------- > HANDLING OBJECT MEMBERS >> Setting
 
 // set (update) the value of object members by declaring the member you want to set (using dot or bracket notation)
 
@@ -544,6 +552,142 @@ console.log(userForm);
 //   theme: 'dark',
 //   notificationsEnabled: true
 // }
+
+
+
+// ----------------------------- > HANDLING OBJECT MEMBERS >> Enumerating
+
+// There are three native ways to list/traverse object properties:
+
+// +++++ for...in loops. 
+// This method traverses all of the enumerable string properties of an object as well as its prototype chain.
+
+const myDog = {
+    name: "Pancake",
+    age: 7,
+    owner: "John",
+}
+
+function showPropsOne(obj, objName) {
+
+    let result = "";
+
+    for (const item in obj) {
+
+        // Object.hasOwn() is used to exclude properties from the object's prototype chain and only show "own properties" 
+        if (Object.hasOwn(obj, item)) {
+            result += `${objName}.${item} = ${obj[item]}\n`;
+        }
+    }
+
+    console.log(result);
+}
+
+showPropsOne(myDog, 'myDog');
+// myDog.name = Pancake
+// myDog.age = 7
+// myDog.owner = John
+
+
+
+// +++++ Object.keys(). 
+// This method returns an array with only the enumerable own string property names ("keys") in the object myObj, but not those in the prototype chain.
+
+const myDuck = {
+    name: "Pannenkoek",
+    age: 7,
+    owner: "Jan",
+}
+
+function showPropsTwo(obj, objName) {
+
+    let result = "";
+
+    Object.keys(obj).forEach((item) => {
+        result += `${objName}.${item} = ${obj[item]}\n`;
+    });
+
+    console.log(result);
+}
+
+showPropsTwo(myDuck, 'myDuck');
+// myDuck.name = Pannenkoek
+// myDuck.age = 7
+// myDuck.owner = Jan
+
+
+
+// +++++ Object.getOwnPropertyNames(). 
+// This method returns an array containing all the own string property names in the object myObj, regardless of if they are enumerable or not.
+
+// There is no native way to list all inherited properties, including non-enumerable ones. 
+// However, this can be achieved with the following function:
+
+const myDeer = {
+    name: "Pfannkuchen",
+    age: 7,
+    owner: "Johann",
+}
+
+function showAllProps(obj) {
+
+    let objectToInspect = obj; // This variable acts as a moving pointer that traverses upward through the prototype chain step by step.
+    let result = []; // empty array to collect and accumulate property names from obj and every object along its prototype chain.
+
+    while (objectToInspect !== null) { // In JavaScript, the root prototype (Object.prototype.__proto__) is null, marking the end of the prototype chain.
+
+        // Object.getOwnPropertyNames(objectToInspect) returns an array of all string-key property names directly owned by the current level of objectToInspect 
+        // (including both enumerable and non-enumerable properties, such as built-in methods).
+        // .concat(...) merges these names into the result array and assigns the combined array back to result.
+        result = result.concat(Object.getOwnPropertyNames(objectToInspect));
+        console.log(result);
+        // 1. [ 'name', 'age', 'owner' ]
+        // 2. See result below
+
+        // Moves one level up the prototype chain by retrieving the parent prototype of objectToInspect 
+        // and updating objectToInspect to point to it (or null if the top has been reached).
+        objectToInspect = Object.getPrototypeOf(objectToInspect);
+        console.log(objectToInspect);
+        // 1. [Object: null prototype] {}
+        // 2. null
+    }
+
+    console.log(result);
+}
+
+showAllProps(myDeer);
+// [
+//   'name',
+//   'age',
+//   'owner',
+//   'constructor',
+//   '__defineGetter__',
+//   '__defineSetter__',
+//   'hasOwnProperty',
+//   '__lookupGetter__',
+//   '__lookupSetter__',
+//   'isPrototypeOf',
+//   'propertyIsEnumerable',
+//   'toString',
+//   'valueOf',
+//   '__proto__',
+//   'toLocaleString'
+// ]
+
+
+
+// ----------------------------- > HANDLING OBJECT MEMBERS >> Deleting
+
+// You can remove a non-inherited property using the delete operator. The following code shows how to remove a property.
+
+const myDwarfHamster = {
+    name: "Pandekager",
+    age: 7,
+    owner: "Jens",
+}
+
+delete myDwarfHamster.age;
+console.log(myDwarfHamster); // { name: 'Pandekager', owner: 'Jens' }
 
 
 
@@ -820,6 +964,105 @@ customUser.getLoginDetails(); // User's login: johndoe / User's password: johndo
 
 // Use Object.create(null) for pure key-value lookup maps and dictionary objects. 
 // For general object creation in modern applications, ES6 classes or Factory Functions remain much easier to read and maintain.
+
+
+
+// ----------------------------- > INHERITANCE -----------------------------
+
+// All objects in JavaScript inherit from at least one other object. 
+// The object being inherited from is known as the prototype, and the inherited properties can be found in the prototype object of the constructor.
+
+// You can add a property to all objects created through a certain constructor using the prototype property. 
+// This defines a property that is shared by all objects of the specified type, rather than by just one instance of the object. 
+
+function Car() {
+    this.type = "sedan";
+}
+
+const carOne = new Car();
+console.log(carOne.type); // sedan
+console.log(carOne.colour); // undefined
+
+Car.prototype.colour = "red";
+console.log(carOne.colour); // red
+
+const carTwo = new Car();
+console.log(carTwo.colour); // red
+
+
+
+// ----------------------------- > GETTERS AND SETTERS -----------------------------
+
+// A getter is a function associated with a property that gets the value of a specific property. 
+// A setter is a function associated with a property that sets the value of a specific property. 
+
+// Together, they can indirectly represent the value of a property.
+
+// Getters and setters can be either
+// defined within object initializers, or
+// added later to any existing object.
+
+// Within object initializers, getters and setters are defined like regular methods, but prefixed with the keywords get or set. 
+// The getter method must not expect a parameter, while the setter method expects exactly one parameter (the new value to set). 
+
+const myObj = {
+    theNumber: 7,
+    get gettingTheNumber() {
+        return `The number is ${this.theNumber}.`;
+    },
+    set settingTheNumber(newNumber) {
+        this.theNumber = newNumber;
+        return;
+    },
+};
+
+console.log(myObj.theNumber); // 7
+console.log(myObj.gettingTheNumber); // The number is 7.
+myObj.settingTheNumber = 25; // Calls the set settingTheNumber(newNumber) method
+console.log(myObj.theNumber); // 25
+
+// The myObj object's properties are:
+// myObj.theNumber — a number
+// myObj.gettingTheNumber — a getter that returns a string and theNumber
+// myObj.settingTheNumber — a setter that sets the value of myObj.theNumber to a new number
+
+
+
+// Getters and setters can also be added to an object at any time after creation using the Object.defineProperties() method. 
+// This method's first parameter is the object on which you want to define the getter or setter. 
+// The second parameter is an object whose property names are the getter or setter names, and whose property values are objects for defining the getter or setter functions. 
+
+// Here's an example that defines the same getter and setter used in the previous example:
+
+Object.defineProperties(myObj, {
+    gettingTheNumber: {
+        get() {
+            return `This is the new getter, and the number is currently ${this.theNumber}.`
+        },
+    },
+    settingTheNumber: {
+        set(newNumber) {
+            this.theNumber = this.theNumber * newNumber;
+        },
+    },
+});
+
+console.log(myObj.theNumber); // 25
+console.log(myObj.gettingTheNumber); // This is the new getter, and the number is currently 25.
+myObj.settingTheNumber = 4; // Calls the set settingTheNumber(newNumber) method, which will multiply theNumber by newNumber
+console.log(myObj.theNumber) // 100
+
+
+
+// Which of the two forms to choose depends on your programming style and task at hand.
+
+// If you can change the definition of the original object, you will probably define getters and setters through the original initializer. 
+// This form is more compact and natural.
+
+// However, if you need to add getters and setters later — maybe because you did not write the particular object — 
+// then the second form is the only possible form.
+
+// The second form better represents the dynamic nature of JavaScript, but it can make the code hard to read and understand.
 
 
 

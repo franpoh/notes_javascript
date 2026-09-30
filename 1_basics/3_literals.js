@@ -640,23 +640,28 @@ let person = {
     firstName: 'Francine',
     surname: 'Poh',
 
-    greetings: function () {
+    greetings: function () { // An object method can be created with 'functionName: function() {}'
         console.log('Hello! I am a person.');
+    },
+
+    farewell () { // You can also create an object method with 'functionName() {}'
+        console.log('Goodbye, it was nice meeting you.');
+    },
+
+    whatHobby: function (hobby) { // You can pass arguments into object methods
+        console.log('My favourite hobby is', hobby);
     },
 
     sayFullName: function () {
         console.log(this.firstName, this.surname); // You will learn more about 'this' in 4_functions\2_this_part1.js
     },
 
-    whatHobby: function (hobby) {
-        console.log('My favourite hobby is', hobby);
-    }
-
 }
 
 person.greetings(); // Hello! I am a person.
-person.sayFullName(); // Francine Poh
+person.farewell(); // Goodbye, it was nice meeting you.
 person.whatHobby('cycling'); // My favourite hobby is cycling
+person.sayFullName(); // Francine Poh
 
 
 
