@@ -620,17 +620,38 @@ console.log(car[7]); // Mazda
 const unusualPropertyNames = {
     '': 'An empty string',
     '!': 'Bang!',
+    'dash-text': '-----',
 }
 
-/* 
-console.log(unusualPropertyNames.''); // SyntaxError: Unexpected string
-console.log(unusualPropertyNames.!); // SyntaxError: Unexpected token !
-*/
+// console.log(unusualPropertyNames.''); // SyntaxError: Unexpected string
+// console.log(unusualPropertyNames.!); // SyntaxError: Unexpected token !
+// console.log(unusualPropertyNames.dash-text); // ReferenceError: text is not defined
 
 // Instead, they must be accessed with the bracket notation ([]).
 
 console.log(unusualPropertyNames[""]); // An empty string
 console.log(unusualPropertyNames["!"]); // Bang!
+console.log(unusualPropertyNames["dash-text"]); // -----
+
+
+
+// You can also assign unusual property names with square bracket notation
+// It allows you to put an expression in brackets [], that will be computed and used as the property name. 
+// Essentially, computed Property Names allow you to use a variable or JavaScript expression directly inside an object literal {} to define a key at creation time. 
+
+const strangeName = "A strange bird";
+
+const strangeObject = {
+    [strangeName]: "Nightjar",
+    [52-10]: "This is the answer to life.",
+};
+
+console.log(strangeObject[strangeName]); // Nightjar
+console.log(strangeObject["A strange bird"]); // Nightjar
+console.log(strangeObject[52-10]); // This is the answer to life.
+console.log(strangeObject[42]); // This is the answer to life.
+
+// You will learn more about this in 10_object\1_object.js > SQUARE BRACKET NOTATION
 
 
 
@@ -665,50 +686,17 @@ person.sayFullName(); // Francine Poh
 
 
 
-// ----------------------------- > OBJECT LITERALS >> Enhanced Object Literals
+// You can also assign existing variables to an object as properties with a shorthand
+// Syntax: obj = { variableName }
 
-// Object literals support a range of shorthand syntaxes that include 
+const lastName = "Doe";
 
-//      setting the *prototype at construction, 
-//      shorthand for foo: foo assignments, 
-//      defining methods, 
-//      making super calls, 
-//      and computing property names with expressions.
-
-// Together, these also bring object literals and class declarations closer together, and allow object-based design to benefit from some of the same conveniences.
-
-// * prototype
-//      Dictionary definition: the first example of something, such as a machine or other industrial product, from which all later forms are developed
-//      Coding Definition: new objects are produced by cloning existing objects, which are called prototypes
-//      See Cheatsheet\coding\prototype.js
-//      You will also learn more in 9_object\prototypes.js
-
-const originalObj = {
-    bar() {
-        return 'bar';
-    }
+const thePerson = {
+    firstName: "John",
+    lastName, // shorthand assignment, essentially means lastName: lastName
 }
 
-const handler = 'foo';
-
-const obj = {
-    __proto__: originalObj, // __proto__
-
-    handler, // Shorthand for 'handler: handler'
-
-    // Methods
-    womboCombo() {
-        return `${handler} ${super.bar()}`; // Super calls
-    },
-
-    ["prop_" + (() => 42)()]: 42, // Computed (dynamic) property names
-};
-
-console.log(obj.__proto__); // Object { bar: bar() }
-console.log(obj.handler); // foo
-console.log(obj.womboCombo()); // foo bar
-console.log(obj["prop_" + (() => 42)()]); // 42
-console.log(obj['prop_42']); // 42
+console.log(thePerson); // { firstName: 'John', lastName: 'Doe' }
 
 
 

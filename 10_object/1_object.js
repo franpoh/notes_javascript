@@ -16,6 +16,7 @@ Table of Contents
 > INHERITANCE
 > PROPERTY EXISTENCE TEST, 'IN' OPERATOR
 > PROPERTY ORDER IN OBJECTS
+> A BRIEF ABOUT OBJECT LITERALS
 */
 
 
@@ -975,19 +976,108 @@ customUser.getLoginDetails(); // User's login: johndoe / User's password: johndo
 // You can add a property to all objects created through a certain constructor using the prototype property. 
 // This defines a property that is shared by all objects of the specified type, rather than by just one instance of the object. 
 
-function Car() {
-    this.type = "sedan";
+const car = {
+    type: "sedan",
+    colour: "red",
+
+    message() {
+        console.log(`The car is a ${this.type} and the colour is ${this.colour}.`);
+    }
 }
 
-const carOne = new Car();
-console.log(carOne.type); // sedan
-console.log(carOne.colour); // undefined
+const toyota = Object.create(car);
+toyota.message(); // The car is a sedan and the colour is red.
 
-Car.prototype.colour = "red";
-console.log(carOne.colour); // red
+// Changing a property on the parent 'car'
+car.colour = "blue";
+car.message(); // The car is a sedan and the colour is blue.
+toyota.message(); // The car is a sedan and the colour is blue.
 
-const carTwo = new Car();
-console.log(carTwo.colour); // red
+// Changing a property on the child 'toyota'
+toyota.colour = "green";
+car.message(); // The car is a sedan and the colour is blue.
+toyota.message(); // The car is a sedan and the colour is green.
+
+
+
+// +++++ 'Super' keyword Examples +++++
+
+// NOTE: Accessing the original property on the parent through the child using the keyword 'super'
+
+const truck = {
+    colour: "red",
+}
+
+const hilux = {
+    __proto__: truck, // setting 'truck' as 'hilux's parent
+    colour: "green", // setting the 'colour' property on the child object to something different from the parent object
+
+    message() {
+        console.log(`My colour is ${this.colour} and not ${super.colour}.`); // note the use of 'this' vs 'super'
+    }
+}
+
+hilux.message(); // My colour is green and not red.
+
+// In this case, 'this' refers to the object 'hilux'
+// 'super' is used to call the constructor of 'hilux's parent class 'truck' to access the parent's properties and methods.
+
+// When another object inherits from 'hilux', 'this' changes dynamically to the caller 'hiluxChamp'
+// but 'super' stays statically bound to 'hilux's prototype, 'truck'
+
+const hiluxChamp = {
+    __proto__: hilux,
+    colour: "yellow",
+}
+
+hiluxChamp.message(); // My colour is yellow and not red.
+
+
+
+// When you define a method using ES6 concise method shorthand inside an object literal, JavaScript attaches a hidden internal slot to the function called [[HomeObject]]. 
+// This slot permanently stores a reference to the enclosing object literal.
+
+// Example of a failure to assign a super call retroactively 
+
+const boat = {
+    colour: "red",
+}
+
+const yacht = {
+    __proto__: boat,
+    colour: "yellow",
+}
+
+const addingSuperCall = {
+    message() {
+        console.log(`My colour is ${this.colour} and not ${super.colour}.`);
+    }
+}
+
+yacht.message = addingSuperCall.message;
+yacht.message(); // My colour is yellow and not undefined.
+
+// Process: 
+//      Call yacht.message, 'this' set to 'yacht'
+//      super resolution: super ignores this completely and checks searchMessage.[[HomeObject]], which is 'addingSuperCall'
+//      It retrieves Object.getPrototypeOf(addingSuperCall). 
+//      Because 'addingSuperCall' was created as a standard object literal ({}), its prototype is standard Object.prototype.
+//      It looks for Object.prototype.colour, finds nothing, and returns undefined.
+
+// Example of how to assign super calls retroactively properly
+
+const catamaran = {
+    __proto__: boat,
+    colour: "green",
+}
+
+// First, we must set 'addingSuperCall's prototype to 'boat'
+Object.setPrototypeOf(addingSuperCall, boat); 
+// if you want to just ensure it is definitely the prototype of catamaran, just write Object.setPrototypeOf(addingSuperCall, Object.getPrototypeOf(catamaran))
+
+// Next, we assign the method to the child object 'catamaran'
+catamaran.message = addingSuperCall.message;
+catamaran.message(); // My colour is green and not red.
 
 
 
@@ -1007,9 +1097,11 @@ console.log(carTwo.colour); // red
 
 const myObj = {
     theNumber: 7,
+
     get gettingTheNumber() {
         return `The number is ${this.theNumber}.`;
     },
+
     set settingTheNumber(newNumber) {
         this.theNumber = newNumber;
         return;
@@ -1035,11 +1127,13 @@ console.log(myObj.theNumber); // 25
 // Here's an example that defines the same getter and setter used in the previous example:
 
 Object.defineProperties(myObj, {
+
     gettingTheNumber: {
         get() {
             return `This is the new getter, and the number is currently ${this.theNumber}.`
         },
     },
+
     settingTheNumber: {
         set(newNumber) {
             this.theNumber = this.theNumber * newNumber;
@@ -1069,13 +1163,9 @@ console.log(myObj.theNumber) // 100
 // ----------------------------- > PROPERTY EXISTENCE TEST, 'IN' OPERATOR -----------------------------
 
 // A notable feature of objects in JavaScript, compared to many other languages, is that it's possible to access any property. 
-
-
-
 // There will be no error if the property doesn't exist, reading a non-existing property just returns undefined.
 
 let inUser = {};
-
 console.log(inUser.noSuchProperty === undefined); // true - "no such property"
 
 
@@ -1085,7 +1175,6 @@ console.log(inUser.noSuchProperty === undefined); // true - "no such property"
 "key" in object // syntax
 
 inUser = { name: "John", age: 30 };
-
 console.log("age" in inUser); // true
 console.log("blabla" in inUser); // false
 
@@ -1095,7 +1184,6 @@ console.log("blabla" in inUser); // false
 // If we omit quotes, that means a variable, it should contain the actual name to be tested.
 
 inUser = { name: "John", age: 30 };
-
 let key = "age";
 console.log(key in inUser); // true
 
@@ -1179,3 +1267,54 @@ let codes = {
 for (let code in codes) {
     console.log(+code); // 49, 41, 44, 1
 }
+
+
+
+// ----------------------------- > A BRIEF ABOUT OBJECT LITERALS -----------------------------
+
+// So, as you can see, object literals support a range of shorthand syntaxes that include 
+//      setting the *prototype at construction, 
+//      shorthand for property assignments, 
+//      defining methods, 
+//      making super calls, 
+//      and computing property names with expressions.
+
+// Together, these also bring object literals and class declarations closer together, and allow object-based design to benefit from some of the same conveniences.
+
+// * prototype
+//      Coding Definition: new objects are produced by cloning existing objects, which are called prototypes
+//      See Cheatsheet\coding\prototype.js
+//      You will also learn more in 10_object\prototypes.js
+
+const parentObject = {
+    parentName: "parentObject"
+}
+
+const greeting = "Hello!";
+
+const childObject = {
+    
+    // setting parentObject as childObject's prototype
+    __proto__: parentObject,
+
+    // Shorthand for 'greeting: greeting'
+    greeting, 
+
+    // Computed (dynamic) property names
+    ["child" + "Name"]: "childObject",
+
+    // Setting the parentName property here to show the difference between calling parentName with 'this' vs 'super'
+    parentName: "nonparentalObject",
+
+    // Defining Methods
+    message() {
+        return `${greeting} I am ${this["childName"]}, and my parent is not ${this.parentName}, it is ${super.parentName}.`; // Super calls
+    },
+
+};
+
+console.log(childObject.__proto__); // { parentName: 'parentObject' }
+console.log(childObject.parentName); // parentObject
+console.log(childObject.greeting); // Hello!
+console.log(childObject["child" + "Name"]); // childObject
+console.log(childObject.message()); // Hello! I am childObject, and my parent is not nonparentalObject, it is parentObject.
