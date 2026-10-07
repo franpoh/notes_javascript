@@ -14,6 +14,9 @@ Table of Contents
 >> Object.create
 >> Usage Scenarios
 > INHERITANCE
+> GETTERS AND SETTERS
+> OBJECT.KEYS, OBJECT.VALUES AND OBJECT.ENTRIES
+> OBJECT.DEFINEPROPERTY
 > PROPERTY EXISTENCE TEST, 'IN' OPERATOR
 > PROPERTY ORDER IN OBJECTS
 > A BRIEF ABOUT OBJECT LITERALS
@@ -1160,6 +1163,147 @@ console.log(myObj.theNumber) // 100
 
 
 
+// NOTE: this in getters and setters is based on which object the property is accessed on, not which object the property is defined on. 
+// A function used as getter or setter has its this bound to the object from which the property is being set or gotten.
+
+const thisPerson = {
+    firstName: 'John',
+    lastName: 'Doe',
+
+    get getName() {
+        return `${this.firstName} ${this.lastName}`;
+    },
+
+    set setName(value) {
+        const [first, last] = value.split(' ');
+        this.firstName = first;
+        this.lastName = last;
+    }
+}
+
+// Access the getter and setter on thisPerson object
+console.log(thisPerson.getName); // Output: "John Doe"
+thisPerson.setName = 'Jane Smith';
+console.log(thisPerson.getName); // Output: "Jane Smith"
+
+// Define another object that inherits from thisPerson
+const student = Object.create(thisPerson);
+student.firstName = 'Alice';
+student.lastName = 'Brown';
+
+// Access the getter and setter on student object
+console.log(student.getName); // Output: "Alice Brown"
+student.setName = 'Bob Johnson';
+console.log(student.getName); // Output: "Bob Johnson"
+
+
+
+// ----------------------------- > OBJECT.KEYS, OBJECT.VALUES AND OBJECT.ENTRIES -----------------------------
+
+const store = {
+    fruit: "orange",
+    vegetable: "chye sim",
+    meat: "bacon",
+}
+
+// Object.keys returns an array of a given object's own enumerable string-keyed property names.
+console.log(Object.keys(store)); // [ 'fruit', 'vegetable', 'meat' ]
+
+// Object.values() returns an array of a given object's own enumerable string-keyed property values
+console.log(Object.values(store)); // [ 'orange', 'chye sim', 'bacon' ]
+
+// Object.entries() returns an array of a given object's own enumerable string-keyed property key-value pairs
+console.log(Object.entries(store));
+// [
+//   [ 'fruit', 'orange' ],
+//   [ 'vegetable', 'chye sim' ],
+//   [ 'meat', 'bacon' ]
+// ]
+
+
+
+// ----------------------------- > OBJECT.DEFINEPROPERTY -----------------------------
+
+// The Object.defineProperty() static method defines a new property directly on an object, 
+// or modifies an existing property on an object, and returns the object.
+
+const theAnswer = {};
+
+Object.defineProperty(theAnswer, 'theNumber', { // object we want to add new property to (theAnswer), name of property (theNumber), and object ({})
+    value: 42, // value of theNumber
+    writable: false // writability set to false
+});
+
+console.log(theAnswer.theNumber); // 42
+
+// We try to change the value of theNumber by setting the value of the property directly
+theAnswer.theNumber = 77; // Throws an error in strict mode (writable: false)
+
+console.log(theAnswer.theNumber); // 42
+
+// We try to change the value of theNumber with Object.defineProperty
+Object.defineProperty(theAnswer, 'theNumber', { 
+    value: 77, 
+});
+
+console.log(theAnswer.theNumber); // TypeError: Cannot redefine property: theNumber (writable: false)
+
+
+
+// +++++ We try the above again, but this time we set the property to writable: true
+
+const myAnswer = {};
+
+Object.defineProperty(myAnswer, 'myNumber', {
+    value: 13,
+    writable: true
+});
+
+console.log(myAnswer.myNumber);
+
+// We try to change the value of theNumber by setting the value of the property directly
+myAnswer.myNumber = 77;
+
+console.log(myAnswer.myNumber); // 77 (writable: true)
+
+Object.defineProperty(myAnswer, 'myNumber', {
+    value: 42,
+});
+
+console.log(myAnswer.myNumber); // 42 (writable: true)
+
+
+
+// +++++ Example with Getter and Setter
+
+function User(firstName, lastName) {
+    let location = "Singapore";
+    this.firstName = firstName;
+    this.lastName = lastName;
+
+    Object.defineProperty(this, 'location', { // object we want to add new property to (this), name of property (location), and object ({})
+
+        // redefining location's get and set behaviour
+        get: function () {
+            return `${firstName} ${lastName} is currently in ${location}.`;
+        },
+
+        set: function (value) {
+            console.log(`${firstName} ${lastName}'s location has been set to ${value}.`);
+            location = value;
+        }
+
+    });  
+}
+
+const myUser = new User("Francine", "Poh");
+console.log(myUser.location); // Francine Poh is currently in Singapore.
+
+myUser.location = "Netherlands"; // Francine Poh's location has been set to Netherlands.
+console.log(myUser.location); // Francine Poh is currently in Netherlands.
+
+
+
 // ----------------------------- > PROPERTY EXISTENCE TEST, 'IN' OPERATOR -----------------------------
 
 // A notable feature of objects in JavaScript, compared to many other languages, is that it's possible to access any property. 
@@ -1284,7 +1428,6 @@ for (let code in codes) {
 // * prototype
 //      Coding Definition: new objects are produced by cloning existing objects, which are called prototypes
 //      See Cheatsheet\coding\prototype.js
-//      You will also learn more in 10_object\prototypes.js
 
 const parentObject = {
     parentName: "parentObject"

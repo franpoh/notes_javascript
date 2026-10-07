@@ -442,7 +442,6 @@ console.log(currentStatus); // adult
 
 // * prototype
 //      See Cheatsheet\coding\prototype.js
-//      You will also learn more in 10_object\prototypes.js
 
 function Car(make, model, year) {
     this.make = make;

@@ -277,7 +277,6 @@ console.log(buddy.getName()); // Buddy the Also Dog
 
 // * prototype
 //      See Cheatsheet\coding\prototype.js
-//      You will also learn more in 10_object\prototypes.js
 
 const mickey = {
     name: "Mickey",
