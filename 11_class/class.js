@@ -4,6 +4,7 @@ Table of Contents
 > CLASS
 > CLASS EXPRESSION AND DECLARATION
 > CLASS METHODS
+>> Arrow Functions
 > BODY
 > PUBLIC
 >> This and Super
@@ -29,9 +30,7 @@ Table of Contents
 // a template for creating objects. They encapsulate data with code to work on that data
 // Classes in JS are built on prototypes but also have some syntax and semantics that are unique to classes.
 
-
-
-// Difference between class and constructor:
+// NOTE: Difference between class and constructor:
 // a class is like a blueprint and defines the framework that other objects can inherit
 // a constructor is something that actually creates the object in the program
 
@@ -41,7 +40,7 @@ Table of Contents
 
 // As you can see in the below example, a class doesn't require instance fields, methods or a custom constructor, they are optional
 
-class Empty { }
+class Empty {}
 
 const what = new Empty;
 console.log(what.constructor); // Empty {}
@@ -51,7 +50,7 @@ console.log(what.constructor); // Empty {}
 
 
 
-// +++++ Example with just instance field
+// +++++ Example with instance field
 
 class Bovine {
     sound = 'moo'; // this is an instance field. In this case, a public instance field
@@ -62,20 +61,7 @@ console.log(cow.sound); // moo
 
 
 
-// +++++ Example with just a custom constructor
-
-class Canine {
-    constructor(sound) { // an (optional) custom class constructor. 
-        this.sound = sound;
-    }
-}
-
-const dog = new Canine('woof');
-console.log(dog.sound); // woof
-
-
-
-// +++++ Example with just method
+// +++++ Example with an instance method
 
 class Porcine {
     description() {
@@ -85,6 +71,19 @@ class Porcine {
 
 const pig = new Porcine();
 console.log(pig.description()); // It goes oink.
+
+
+
+// +++++ Example with a custom constructor
+
+class Canine {
+    constructor(sound) { // an (optional) custom class constructor. 
+        this.sound = sound;
+    }
+}
+
+const dog = new Canine('woof');
+console.log(dog.sound); // woof
 
 
 
@@ -107,12 +106,11 @@ console.log(cat.description()); // This cat is a siamese and it goes MEOW.
 
 
 
-// +++++ Example with Derived Class
+// +++++ Example with Derived Class, which is a child class of a parent class
 
-// A base class is defined using the new reserved 'class' keyword
 class Naam {
 
-    checkNaam = 'Check from Naam.';
+    checkNaam = 'This is a class called Naam.';
 
     constructor(name) {
         this.name = name;
@@ -124,22 +122,25 @@ class Naam {
 }
 
 const hisName = new Naam('Werner');
-console.log(hisName); // Naam { checkNaam: 'Check from Naam.', name: 'Werner' }
+console.log(hisName); // Naam { checkNaam: 'This is a class called Naam.', name: 'Werner' }
 console.log(hisName.getFirstName); // Werner
 
+// The 'extends' keyword is used in class declarations or class expressions to create a new class (child class) 
+// The child class inherits properties and methods from an existing class (parent class)
 
-
-// THe 'extends' keyword is used in class declarations or class expressions to create a new class (child class) that inherits properties and methods from an existing class (parent class)
-
-// Let's extend the Naam class to create a new derived class called VoorenAchternaam.
+// Let's extend the 'Naam' class to create a new derived class called 'VoorenAchternaam'.
 
 class VoorenAchternaam extends Naam {
-    checkVoorenAchternaam = 'Check from VoorenAchternaam.';
+
+    checkVoorenAchternaam = 'This is a derived class called VoorenAchternaam.';
 
     constructor(name, surname) {
+        
         // The reserved 'super' keyword is for making super-constructor calls and allows access to parent methods.
         // Here, it will call the parent class' constructor with a 'name' argument, for the Naam's name property
         super(name); // In derived classes, super() must be called before you can use 'this'. Leaving this out will cause a reference error.
+        // However, if you are not defining a custom class, super does not need to be called
+
         this.surname = surname;
     }
 
@@ -159,17 +160,15 @@ const myName = new VoorenAchternaam('Francine', 'Poh');
 // Below, you can see how myName, from derived class VoorenAchternaam, has inherited everything from both Naam and VoorenAchternaam
 
 console.log(myName);
-/* 
-VoorenAchternaam {
-    checkNaam: 'Check from Naam.',
-    name: 'Francine',
-    checkVoorenAchternaam: 'Check from VoorenAchternaam',
-    surname: 'Poh'
-}
-*/
+// VoorenAchternaam {
+//   checkNaam: 'This is a class called Naam.',
+//   name: 'Francine',
+//   checkVoorenAchternaam: 'This is a derived class called VoorenAchternaam.',
+//   surname: 'Poh'
+// }
 
-console.log(myName.checkNaam); // Check from Naam.
-console.log(myName.checkVoorenAchternaam); // Check from VoorenAchternaam.
+console.log(myName.checkNaam); // This is a class called Naam.
+console.log(myName.checkVoorenAchternaam); // This is a derived class called VoorenAchternaam.
 
 console.log(myName.getFirstName); // Francine
 console.log(myName.getFullName); // Francine Poh
@@ -186,8 +185,6 @@ console.log(myName.getFullName); // Fran Poh
 
 // However, developers often write it as a visual "document" of what properties the class has, or to set a default value.
 // By declaring a public field, you can ensure the field is always present, and the class definition is more self-documenting.
-
-
 
 // +++++ The more readable way of creating a class - by optionally declaring public properties before the constructor
 
@@ -221,8 +218,6 @@ console.log(myPerson); // Person { name: 'Francine' } - as you can see, this wor
 
 // Unlike public properties, private fields (prefixed with #) must be declared at the top of the class body before they can be accessed anywhere inside the class.
 // You will learn more about this in the section > PRIVATE
-
-// 2. Private Properties (this.#gpa) — Declaration is Mandatory
 
 
 
@@ -265,77 +260,150 @@ const Rectangle = class Rectangle2 {
 
 // ----------------------------- > CLASS METHODS -----------------------------
 
-// Because a class's body has a this context, arrow functions as class fields close over the class's this context, 
-// and the this inside the arrow function's body will correctly point to the instance (or the class itself, for static fields). 
 
-// However, because it is a closure, not the function's own binding, the value of this will not change based on the execution context.
+// ----------------------------- > CLASS METHODS >> Arrow Functions
 
-class C {
+// NOTE: Because a class's body has a 'this' context, arrow functions as class fields close over the class's 'this' context, 
+// and the 'this' inside the arrow function's body will correctly point to the instance (or the class itself, for static fields). 
 
-    a = 1;
+// However, because it is a closure, not the function's own binding, the value of 'this' will not change based on the execution context.
+
+
+
+// +++++ First, we will look at how the 'this' context is created
+
+class Book {
+
+    introText = "Once upon a time";
 
     autoBoundMethod = () => {
-        console.log(this.a);
+        console.log(this.introText);
     };
 
 }
 
-const c = new C();
+const myBook = new Book();
 
-c.autoBoundMethod(); // 1
+// The moment new Book() is called, the JavaScript engine immediately allocates a fresh, empty object in memory (myBook) and sets its prototype link to Book.prototype
+// At the same time, myBook is designated as the this binding for the constructor call.
 
-const { autoBoundMethod } = c;
+// Before the body of the Book class/constructor executes, JavaScript runs the field initializers in order, using myBook as 'this':
 
-autoBoundMethod(); // 1 - If it were a normal method, it should be undefined in this case
+// introText = "Once upon a time";
+// Evaluates this.introText, adding the property directly to myBook.
+
+// autoBoundMethod = () => { ... };
+// Creates the arrow function. 
+// The arrow function looks at its current lexical scope (the constructor execution environment), sees this pointing to myBook, and permanently locks onto that reference via a closure.
+
+myBook.autoBoundMethod(); // Once upon a time
 
 
 
-// Arrow function properties are often said to be "auto-bound methods", because the equivalent with normal methods is:
+// +++++ Next, we will look at an example where the 'this' context of a derived class's arrow function method is pointed correctly at their object instance
 
-class Z {
+class HistoryBook extends Book {} 
 
-    a = 1;
-    b = 2;
+// We create a child class from the parent class 'Book'
+// Because HistoryBook does not define an explicit constructor, JavaScript automatically inserts a default constructor 
+// constructor(...args) { super(...args); } - Invisible default constructor inserted by JS
+
+const myHistoryBook = new HistoryBook();
+
+// When you call const myHistoryBook = new HistoryBook():
+// JavaScript starts in HistoryBook's constructor. Because it extends Book, myHistoryBook does not have a 'this' context yet.
+// super() is called, which invokes Book's constructor.
+// The JavaScript engine creates a single new object instance 'myHistoryBook' linked to HistoryBook.prototype and designates myHistoryBook as 'this'.
+
+// Inside Book's constructor execution, before any constructor body code runs, JavaScript runs the field initializers in order, using myHistoryBook as 'this':
+
+// introText = "Once upon a time";
+// Evaluates this.introText, adding the property directly to myHistoryBook.
+
+// autoBoundMethod = () => { ... };
+// Creates the arrow function. 
+// The arrow function looks at its current lexical scope (the constructor execution environment), sees this pointing to myHistoryBook, and permanently locks onto that reference via a closure.
+
+console.log(myHistoryBook.introText); // Once upon a time
+
+myHistoryBook.introText = "A long, long time ago";
+console.log(myHistoryBook.introText); // A long, long time ago
+myHistoryBook.autoBoundMethod(); // A long, long time ago
+
+
+
+// +++++ Now we will look at what happens when you try to call an already bound method in a different execution context
+
+class Text {
+    text = "I am some text."
+
+    arrowMethod = () => {
+        console.log(this.text);
+    }
+
+    normalMethod() {
+        console.log(this.text);
+    }
+}
+
+const myText = new Text();
+myText.arrowMethod(); // I am some text.
+myText.normalMethod(); // I am some text.
+
+// We destructure the methods from myText object into standalone functions 
+
+const { arrowMethod } = myText; 
+arrowMethod(); // I am some text.
+
+// If arrowMethod were a normal method (like normalMethod), it should be undefined in this case
+
+const { normalMethod } = myText; 
+normalMethod(); // TypeError: Cannot read properties of undefined (reading 'text')
+
+
+
+// +++++ Arrow function properties are often said to be "auto-bound methods", because the equivalent with normal methods is using bind
+
+class Greeting {
+
+    english = "Hello";
+    dutch = "Hoi";
 
     constructor() {
-        this.methodA = this.methodA.bind(this);
+        this.englishGreeting = this.englishGreeting.bind(this); // binds englishGreeting's 'this' to the created object instance
     }
 
-    methodA() {
-        console.log(this.a);
+    englishGreeting() {
+        console.log(this.english);
     }
 
-    methodB() {
-        console.log(this.b);
+    dutchGreeting() {
+        console.log(this.dutch);
     }
 
 }
 
-const z = new Z();
+const myGreeting = new Greeting();
 
-z.methodA(); // 1
-z.methodB(); // 2
+myGreeting.englishGreeting(); // Hello
+myGreeting.dutchGreeting(); // Hoi
 
-const { methodA } = z;
-console.log(methodA); // [Function: bound methodA]
-methodA(); // 1
+const { englishGreeting } = myGreeting;
+console.log(englishGreeting); // [Function: bound englishGreeting]
+englishGreeting(); // Hello
 
-const { methodB } = z;
-console.log(methodB); // [Function: methodB]
-methodB(); // TypeError: Cannot read properties of undefined (reading 'b')
-
-
-
-// Note: Class fields are defined on the instance, not on the prototype, 
-// so every instance creation would create a new function reference and allocate a new closure, 
-// potentially leading to more memory usage than a normal unbound method.
+const { dutchGreeting } = myGreeting;
+console.log(dutchGreeting); // [Function: dutchGreeting]
+dutchGreeting(); // TypeError: Cannot read properties of undefined (reading 'dutch')
 
 
+
+// NOTE: Class fields are defined on the instance, not on the prototype, 
+// so every instance creation would create a new function reference and allocate a new closure, potentially leading to more memory usage than a normal unbound method.
 
 // For similar reasons, the call(), apply(), and bind() methods are not useful when called on arrow functions, 
-// because arrow functions establish this based on the scope the arrow function is defined within, 
-// and the this value does not change based on how the function is invoked.
-// whereas call(), apply() and bind() as were designed to allow methods to execute within different scopes 
+// because arrow functions establish this based on the scope the arrow function is defined within, and the this value does not change based on how the function is invoked.
+// whereas call(), apply() and bind() were designed to allow methods to execute within different scopes 
 
 
 

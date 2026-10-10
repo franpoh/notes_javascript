@@ -19,21 +19,39 @@ Table of Contents
 
 // The constructor method is a special method of a class for creating and initializing an object instance of that class.
 
+class A {
+    constructor() {}
+}
+
 // There can only be one special method with the name "constructor" in a class — 
 // a SyntaxError is thrown if the class contains more than one occurrence of a constructor method.
 
 // A constructor can use the super keyword to call the constructor of the super class.
 
+class B extends A {
+    constructor(...optionalArgs) {
+        super(...optionalArgs)
+    }
+}
+
 // You can create instance properties inside the constructor
+
+class C { 
+    constructor(optionalArg) {
+        this.optionalArg = optionalArg;
+    }
+}
+
 // Alternatively, if your instance properties' values do not depend on the constructor's arguments, you can define them as class fields.
+
+class D {
+    classField = "classField";
+    constructor() {}
+}
 
 // There are some additional syntax restrictions:
 // A class method called constructor cannot be a getter, setter, async, or generator.
 // A class cannot have more than one constructor method.
-
-
-
-// NOTE: See example in class.js > CLASS
 
 
 
@@ -50,7 +68,6 @@ class Person {
 }
 
 const otto = new Person("Otto");
-
 otto.introduce(); // Hello, my name is Otto
 
 
@@ -60,38 +77,45 @@ otto.introduce(); // Hello, my name is Otto
 // If you don't provide your own constructor, then a default constructor will be supplied for you. 
 
 // If your class is a base class, the default constructor is empty:
-// constructor() {}
+
+class Base {
+    constructor() {} // this is not actually shown, it's an example of what is happening in the background
+}
 
 // If your class is a derived class, the default constructor calls the parent constructor, passing along any arguments that were provided:
-// constructor(...args) {
-//   super(...args);
-// } 
 
-// (Note: The difference between an explicit constructor like the one above and the default constructor is that 
-// the latter doesn't actually invoke the array iterator through argument spreading.)
-
-// That enables code like this to work:
-
-class ValidationError extends Error {
-    printCustomerMessage() {
-        return `Validation failed :-( (details: ${this.message})`;
+class Derived extends Base {
+    constructor(...optionalArgs) { // this is not actually shown, it's an example of what is happening in the background
+        super(...optionalArgs)
     }
 }
 
-try {
-    throw new ValidationError("Not a valid phone number");
-} catch (error) {
-    if (error instanceof ValidationError) {
-        console.log(error.name); // Error 
-        console.log(error.printCustomerMessage()); // Validation failed :-( (details: Not a valid phone number)
-    } else {
-        console.log("Unknown error", error);
-        throw error;
+// NOTE: The explanation constructor(...optionalArgs) { super(...optionalArgs); } is a conceptual mental model used to explain default constructor behavior
+// When written out explicitly, it actually creates a real array, unpacks it with an iterator, and passes it to 'super'
+// The implicit default constructor skips Javascript entirely, reads the arguments straight off the computer's memory stack and passes them directly to the parent.
+
+// +++++ Here is an example of an implicit constructor working
+
+class Plant  {
+    constructor(colour, length) {
+        this.colour = colour;
+        this.length = length;
+    }
+
+    plantColour() {
+        console.log(`My plant is ${this.colour} and it is ${this.length}cm long.`);
     }
 }
 
-// The ValidationError class doesn't need an explicit constructor, because it doesn't need to do any custom initialization. 
-// The default constructor then takes care of initializing the parent Error from the argument it is given.
+class Pothos extends Plant {}
+
+const myPothos = new Pothos("green", 60);
+// in the creation of myPothos, we are passing "green" and 60 along as an 'array' of values that will be unpacked by the Plant constructor
+// The values are assigned in the order they are passed in, so colour = "green", and length = 60
+
+myPothos.plantColour(); // My plant is green and it is 60cm long.
+
+// The Pothos class doesn't need an explicit constructor, because it doesn't need to do any custom initialization. 
 
 
 
